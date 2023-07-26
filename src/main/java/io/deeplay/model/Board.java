@@ -1,9 +1,11 @@
 package io.deeplay.model;
 
 
+import io.deeplay.model.move.Move;
 import io.deeplay.model.piece.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Board {

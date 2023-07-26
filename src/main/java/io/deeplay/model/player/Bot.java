@@ -1,25 +1,20 @@
-<<<<<<< HEAD
 package io.deeplay.model.player;
 
-import io.deeplay.model.Board;
-import io.deeplay.model.move.Move;
 
-import java.util.List;
+
+
+
+import io.deeplay.model.piece.Color;
+
 import java.util.Random;
 
 public class Bot extends Player {
     private int difficultyLevel;
-    private char piecesColor;
+    private Color piecesColor;
 
-    public Bot(char piecesColor, int difficultyLevel) {
+    public Bot(Color piecesColor, int difficultyLevel) {
         super(piecesColor);
         this.difficultyLevel = difficultyLevel;
-    }
-
-    @Override
-    public Move move(List<Move> allPossibleMoves) {
-        Random random = new Random();
-        return allPossibleMoves.get(random.nextInt(allPossibleMoves.size() - 1));
     }
 
     public void chooseDifficultyLevel(int level) {
@@ -46,8 +41,10 @@ public class Bot extends Player {
                 ", piecesColor=" + piecesColor +
                 '}';
     }
+
+    @Override
+    public void move() {
+        Random random = new Random();
+        return allPossibleMoves.get(random.nextInt(allPossibleMoves.size() - 1));
+    }
 }
-=======
-package io.deeplay.model;public class Bot {
-}
->>>>>>> 0f73375 (created board, classes moveHistory and Player)

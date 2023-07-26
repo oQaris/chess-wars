@@ -28,8 +28,4 @@ public class Move {
     public MoveType getMoveType() {
         return moveType;
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 0f73375 (created board, classes moveHistory and Player)

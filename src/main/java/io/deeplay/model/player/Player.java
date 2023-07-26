@@ -10,7 +10,7 @@ public abstract class Player {
         this.piecesColor = piecesColor;
     }
 
-    public abstract Move move(List<Move> moves);
+    public abstract void move();
 
     public Color getPiecesColor() {
         return piecesColor;

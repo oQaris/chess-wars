@@ -2,7 +2,7 @@
 package io.deeplay.model.player;
 
 
-import io.deeplay.model.Move;
+import io.deeplay.model.move.Move;
 import io.deeplay.model.piece.Color;
 
 import java.util.List;
