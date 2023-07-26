@@ -1,4 +1,4 @@
-package io.deeplay.model;
+package io.deeplay.model.move;
 
 public class Move {
     private int startPosition;

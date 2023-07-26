@@ -1,4 +1,4 @@
-package io.deeplay.model;
+package io.deeplay.model.player;
 
 public abstract class Player {
     protected char piecesColor;
@@ -9,7 +9,7 @@ public abstract class Player {
 
     public abstract void move();
 
-    public String getPiecesColor() {
+    public char getPiecesColor() {
         return piecesColor;
     }
 }
