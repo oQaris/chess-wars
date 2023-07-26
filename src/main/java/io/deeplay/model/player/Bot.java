@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package io.deeplay.model.player;
 
 import io.deeplay.model.Board;
@@ -46,3 +47,7 @@ public class Bot extends Player {
                 '}';
     }
 }
+=======
+package io.deeplay.model;public class Bot {
+}
+>>>>>>> 0f73375 (created board, classes moveHistory and Player)
