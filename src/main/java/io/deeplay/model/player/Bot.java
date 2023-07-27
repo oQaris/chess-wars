@@ -1,5 +1,11 @@
 package io.deeplay.model.player;
 
+import io.deeplay.model.Board;
+import io.deeplay.model.move.Move;
+
+import java.util.List;
+import java.util.Random;
+
 public class Bot extends Player {
     private int difficultyLevel;
 
@@ -9,8 +15,13 @@ public class Bot extends Player {
     }
 
     @Override
-    public void move() {
-        // random move
+    public Board move(Board board) {
+        List<Move> allPossibleMoves = board.getAllPossibleMoves();
+        Random random = new Random();
+        Move randomMove  = allPossibleMoves.get(random.nextInt(allPossibleMoves.size() - 1));
+        board.movePiece(randomMove.getStartPosition(), randomMove.getEndPosition());
+
+        return board;
     }
 
     public int getDifficultyLevel() {
