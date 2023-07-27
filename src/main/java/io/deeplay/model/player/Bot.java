@@ -17,11 +17,15 @@ public class Bot extends Player {
     @Override
     public Board move(Board board) {
         List<Move> allPossibleMoves = board.getAllPossibleMoves();
-        Random random = new Random();
-        Move randomMove  = allPossibleMoves.get(random.nextInt(allPossibleMoves.size() - 1));
+        Move randomMove = getRandomMove(allPossibleMoves);
         board.movePiece(randomMove.getStartPosition(), randomMove.getEndPosition());
 
         return board;
+    }
+
+    protected Move getRandomMove(List<Move> allPossibleMoves) {
+        Random random = new Random();
+        return allPossibleMoves.get(random.nextInt(allPossibleMoves.size() - 1));
     }
 
     public int getDifficultyLevel() {
