@@ -78,7 +78,7 @@ public class Board {
     }
 
 
-    private void updateBoard() {
+    public void updateBoard() {
         for (int i = 0; i < 64; i++) {
             board[i] = getPieceAt(i);
         }
@@ -88,6 +88,110 @@ public class Board {
         whitePawns &= ~(1L << from);
         whitePawns |= (1L << to);
         updateBoard();
+    }
+
+    public long getWhitePawns() {
+        return whitePawns;
+    }
+
+    public long getWhiteKnights() {
+        return whiteKnights;
+    }
+
+    public long getWhiteBishops() {
+        return whiteBishops;
+    }
+
+    public long getWhiteRooks() {
+        return whiteRooks;
+    }
+
+    public long getWhiteQueen() {
+        return whiteQueen;
+    }
+
+    public long getWhiteKing() {
+        return whiteKing;
+    }
+
+    public long getBlackPawns() {
+        return blackPawns;
+    }
+
+    public long getBlackKnights() {
+        return blackKnights;
+    }
+
+    public long getBlackBishops() {
+        return blackBishops;
+    }
+
+    public long getBlackRooks() {
+        return blackRooks;
+    }
+
+    public long getBlackQueen() {
+        return blackQueen;
+    }
+
+    public long getBlackKing() {
+        return blackKing;
+    }
+
+    public char[] getBoard() {
+        return board;
+    }
+
+    public void setWhitePawns(long whitePawns) {
+        this.whitePawns = whitePawns;
+    }
+
+    public void setWhiteKnights(long whiteKnights) {
+        this.whiteKnights = whiteKnights;
+    }
+
+    public void setWhiteBishops(long whiteBishops) {
+        this.whiteBishops = whiteBishops;
+    }
+
+    public void setWhiteRooks(long whiteRooks) {
+        this.whiteRooks = whiteRooks;
+    }
+
+    public void setWhiteQueen(long whiteQueen) {
+        this.whiteQueen = whiteQueen;
+    }
+
+    public void setWhiteKing(long whiteKing) {
+        this.whiteKing = whiteKing;
+    }
+
+    public void setBlackPawns(long blackPawns) {
+        this.blackPawns = blackPawns;
+    }
+
+    public void setBlackKnights(long blackKnights) {
+        this.blackKnights = blackKnights;
+    }
+
+    public void setBlackBishops(long blackBishops) {
+        this.blackBishops = blackBishops;
+    }
+
+    public void setBlackRooks(long blackRooks) {
+        this.blackRooks = blackRooks;
+    }
+
+    public void setBlackQueen(long blackQueen) {
+        this.blackQueen = blackQueen;
+    }
+
+    public void setBlackKing(long blackKing) {
+        this.blackKing = blackKing;
+    }
+
+    public void setBoard(char[] board) {
+        this.board = board;
     }
 }
 
