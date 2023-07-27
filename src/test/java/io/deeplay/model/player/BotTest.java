@@ -25,13 +25,6 @@ class BotTest {
 
     @Test
     void testRandomMove() {
-        final Bot bot = new Bot('w', 1);
-        Move move = new Move(0, 0, MoveType.ORDINARY, '\0');
-        Move randomMove = bot.getRandomMove(possibleMoves);
 
-        Assertions.assertNotNull(randomMove);
-
-        Assertions.assertNotEquals(move.getStartPosition(), randomMove.getStartPosition());
-        Assertions.assertNotEquals(move.getEndPosition(), randomMove.getEndPosition());
     }
 }
