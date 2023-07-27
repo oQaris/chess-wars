@@ -23,7 +23,7 @@ public class Bot extends Player {
         return board;
     }
 
-    protected Move getRandomMove(List<Move> allPossibleMoves) {
+    private Move getRandomMove(List<Move> allPossibleMoves) {
         Random random = new Random();
         return allPossibleMoves.get(random.nextInt(allPossibleMoves.size() - 1));
     }
