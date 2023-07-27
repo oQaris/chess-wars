@@ -1,5 +1,10 @@
 package io.deeplay.model;
 
+import io.deeplay.model.move.Move;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Board {
     private long whitePawns;
     private long whiteKnights;
@@ -77,6 +82,9 @@ public class Board {
         }
     }
 
+    public List<Move> getAllPossibleMoves() {
+        return new ArrayList<>();
+    }
 
     public void updateBoard() {
         for (int i = 0; i < 64; i++) {
