@@ -1,4 +1,4 @@
-package io.deeplay.piece;
+package io.deeplay.model.piece;
 
 public enum Color {
     WHITE,

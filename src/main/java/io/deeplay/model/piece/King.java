@@ -1,9 +1,9 @@
-package io.deeplay.piece;
+package io.deeplay.model.piece;
 
 import java.util.List;
 
-public class Queen extends Piece {
-    public Queen(int x, int y, Color color) {
+public class King extends Piece {
+    public King(int x, int y, Color color) {
         super(x, y, color);
     }
 
