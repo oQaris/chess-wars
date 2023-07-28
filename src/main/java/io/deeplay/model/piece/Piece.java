@@ -1,4 +1,4 @@
-package io.deeplay.piece;
+package io.deeplay.model.piece;
 
 import java.util.List;
 

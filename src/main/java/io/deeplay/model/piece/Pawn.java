@@ -1,9 +1,9 @@
-package io.deeplay.piece;
+package io.deeplay.model.piece;
 
 import java.util.List;
 
-public class Rook extends Piece {
-    public Rook(int x, int y, Color color) {
+public class Pawn extends Piece{
+    public Pawn(int x, int y, Color color) {
         super(x, y, color);
     }
 
