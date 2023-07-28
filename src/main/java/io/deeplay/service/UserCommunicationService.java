@@ -3,7 +3,6 @@ package io.deeplay.service;
 import io.deeplay.domain.Color;
 import io.deeplay.domain.GameType;
 import io.deeplay.engine.GameSession;
-import io.deeplay.engine.SelfPlay;
 import io.deeplay.model.player.Bot;
 import io.deeplay.model.player.Human;
 

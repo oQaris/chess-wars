@@ -14,7 +14,7 @@ public abstract class Player {
 
     public abstract Move move(List<Move> moves);
 
-    public Color getPiecesColor() {
+    public Color getColor() {
         return color;
     }
 }
