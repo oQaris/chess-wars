@@ -4,6 +4,7 @@ import io.deeplay.engine.SelfPlay;
 import io.deeplay.model.Board;
 import io.deeplay.model.player.Bot;
 import io.deeplay.model.player.Human;
+import io.deeplay.service.UserCommunicationService;
 
 import java.nio.charset.Charset;
 import java.util.Scanner;
@@ -34,15 +35,15 @@ public class Main {
         String gameType = scanner.nextLine();
 
         if (gameType.equals("bot-bot")) {
-            SelfPlay selfPlay = new SelfPlay(new Bot('w', SelfPlay.chooseBotLevel()), new Bot('b', SelfPlay.chooseBotLevel()));
+            SelfPlay selfPlay = new SelfPlay(new Bot('w', UserCommunicationService.chooseBotLevel()), new Bot('b', UserCommunicationService.chooseBotLevel()));
             selfPlay.startGame();
         } else if (gameType.equals("human-human")) {
-            char[] userColor = SelfPlay.chooseColor();
+            char[] userColor = UserCommunicationService.chooseColor();
             SelfPlay selfPlay = new SelfPlay(new Human(userColor[0]), new Human(userColor[1]));
             selfPlay.startGame();
         } else if (gameType.equals("human-bot")) {
-            char[] userColor = SelfPlay.chooseColor();
-            SelfPlay selfPlay = new SelfPlay(new Human(userColor[0]), new Bot(userColor[1], SelfPlay.chooseBotLevel()));
+            char[] userColor = UserCommunicationService.chooseColor();
+            SelfPlay selfPlay = new SelfPlay(new Human(userColor[0]), new Bot(userColor[1], UserCommunicationService.chooseBotLevel()));
             selfPlay.startGame();
         } else {
             System.out.println("Invalid input. Ending...");
