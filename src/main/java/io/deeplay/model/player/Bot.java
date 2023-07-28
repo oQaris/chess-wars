@@ -8,6 +8,7 @@ import java.util.Random;
 
 public class Bot extends Player {
     private int difficultyLevel;
+    private char piecesColor;
 
     public Bot(char piecesColor, int difficultyLevel) {
         super(piecesColor);
@@ -28,10 +29,6 @@ public class Bot extends Player {
         return allPossibleMoves.get(random.nextInt(allPossibleMoves.size() - 1));
     }
 
-    public int getDifficultyLevel() {
-        return difficultyLevel;
-    }
-
     public void chooseDifficultyLevel(int level) {
         switch (level) {
             case 1: // easy
@@ -43,5 +40,17 @@ public class Bot extends Player {
             default: // incorrect input
                 break;
         }
+    }
+
+    public int getDifficultyLevel() {
+        return difficultyLevel;
+    }
+
+    @Override
+    public String toString() {
+        return "Bot{" +
+                "difficultyLevel=" + difficultyLevel +
+                ", piecesColor=" + piecesColor +
+                '}';
     }
 }
