@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import io.deeplay.model.piece.*;
+
 public class Board {
     private Piece[][] board;
 
@@ -23,6 +25,7 @@ public class Board {
         for (int i = 0; i < 8; i++) {
             board[1][i] = new Pawn(1, i, Color.WHITE);
         }
+    }
 
         board[7][0] = new Rook(7, 0, Color.BLACK);
         board[7][1] = new Knight(7, 1, Color.BLACK);

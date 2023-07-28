@@ -14,4 +14,6 @@ public abstract class Piece {
     }
 
     public abstract List<int[]> getPossibleMoves(Piece[][] board);
+
+    // public abstract boolean canMove();
 }
