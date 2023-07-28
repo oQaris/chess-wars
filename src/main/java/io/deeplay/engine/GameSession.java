@@ -3,7 +3,7 @@ package io.deeplay.engine;
 import io.deeplay.domain.Color;
 import io.deeplay.domain.GameType;
 import io.deeplay.model.Board;
-import io.deeplay.model.Piece;
+import io.deeplay.model.piece.Piece;
 import io.deeplay.model.move.Move;
 import io.deeplay.model.player.Player;
 import io.deeplay.service.PieceService;
