@@ -19,6 +19,7 @@ allprojects {
     }
 
     dependencies {
+        implementation("org.junit.jupiter:junit-jupiter:5.8.1")
         errorprone("com.google.errorprone:error_prone_core:2.20.0")
 
         testImplementation(platform("org.junit:junit-bom:5.9.3"))
