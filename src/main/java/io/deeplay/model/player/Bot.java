@@ -16,15 +16,7 @@ public class Bot extends Player {
     }
 
     @Override
-    public Board move(Board board) {
-        List<Move> allPossibleMoves = board.getAllPossibleMoves();
-        Move randomMove = getRandomMove(allPossibleMoves);
-        board.movePiece(randomMove.getStartPosition(), randomMove.getEndPosition());
-
-        return board;
-    }
-
-    private Move getRandomMove(List<Move> allPossibleMoves) {
+    public Move move(List<Move> allPossibleMoves) {
         Random random = new Random();
         return allPossibleMoves.get(random.nextInt(allPossibleMoves.size() - 1));
     }
