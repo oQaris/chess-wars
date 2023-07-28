@@ -1,6 +1,6 @@
 package io.deeplay.model.player;
 
-import io.deeplay.model.Board;
+import io.deeplay.domain.Color;
 import io.deeplay.model.move.Move;
 
 import java.util.List;
@@ -8,10 +8,10 @@ import java.util.Random;
 
 public class Bot extends Player {
     private int difficultyLevel;
-    private char piecesColor;
+    private Color color;
 
-    public Bot(char piecesColor, int difficultyLevel) {
-        super(piecesColor);
+    public Bot(Color color, int difficultyLevel) {
+        super(color);
         this.difficultyLevel = difficultyLevel;
     }
 
@@ -42,7 +42,7 @@ public class Bot extends Player {
     public String toString() {
         return "Bot{" +
                 "difficultyLevel=" + difficultyLevel +
-                ", piecesColor=" + piecesColor +
+                ", color=" + color +
                 '}';
     }
 }

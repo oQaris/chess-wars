@@ -1,13 +1,13 @@
 package io.deeplay.model.player;
 
-import io.deeplay.model.Board;
+import io.deeplay.domain.Color;
 import io.deeplay.model.move.Move;
 
 import java.util.List;
 
 public class Human extends Player {
-    public Human(char piecesColor) {
-        super(piecesColor);
+    public Human(Color color) {
+        super(color);
     }
 
     @Override
