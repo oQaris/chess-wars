@@ -1,2 +1,14 @@
-package io.deeplay.piece;public class Knight {
+package io.deeplay.piece;
+
+import java.util.List;
+
+public class Knight extends Piece {
+    public Knight(int x, int y, Color color) {
+        super(x, y, color);
+    }
+
+    @Override
+    public List<int[]> getPossibleMoves(Piece[][] board) {
+        return null;
+    }
 }

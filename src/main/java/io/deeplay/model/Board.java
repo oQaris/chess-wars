@@ -1,205 +1,50 @@
 package io.deeplay.model;
 
 import io.deeplay.model.move.Move;
+import io.deeplay.piece.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
-    private long whitePawns;
-    private long whiteKnights;
-    private long whiteBishops;
-    private long whiteRooks;
-    private long whiteQueen;
-    private long whiteKing;
-    private long blackPawns;
-    private long blackKnights;
-    private long blackBishops;
-    private long blackRooks;
-    private long blackQueen;
-    private long blackKing;
-    private char[] board;
+    private Piece[][] board;
 
     public Board() {
-        whitePawns = 0x00FF000000000000L;
-        whiteKnights = 0x4200000000000000L;
-        whiteBishops = 0x2400000000000000L;
-        whiteRooks = 0x8100000000000000L;
-        whiteQueen = 0x0800000000000000L;
-        whiteKing = 0x1000000000000000L;
+        board[0][0] = new Rook(0, 0, Color.WHITE);
+        board[0][1] = new Knight(0, 1, Color.WHITE);
+        board[0][2] = new Bishop(0, 2, Color.WHITE);
+        board[0][3] = new Queen(0, 3, Color.WHITE);
+        board[0][4] = new King(0, 4, Color.WHITE);
+        board[0][5] = new Bishop(0, 5, Color.WHITE);
+        board[0][6] = new Knight(0, 6, Color.WHITE);
+        board[0][7] = new Rook(0, 7, Color.WHITE);
+        for (int i = 0; i < 8; i++) {
+            board[1][i] = new Pawn(1, i, Color.WHITE);
+        }
 
-        blackPawns = 0x000000000000FF00L;
-        blackKnights = 0x0000000000000042L;
-        blackBishops = 0x0000000000000024L;
-        blackRooks = 0x0000000000000081L;
-        blackQueen = 0x0000000000000008L;
-        blackKing = 0x0000000000000010L;
-
-        board = new char[64];
-
-        for (int i = 0; i < 64; i++) {
-            board[i] = getPieceAt(i);
+        board[7][0] = new Rook(7, 0, Color.BLACK);
+        board[7][1] = new Knight(7, 1, Color.BLACK);
+        board[7][2] = new Bishop(7, 2, Color.BLACK);
+        board[7][3] = new Queen(7, 3, Color.BLACK);
+        board[7][4] = new King(7, 4, Color.BLACK);
+        board[7][5] = new Bishop(7, 5, Color.BLACK);
+        board[7][6] = new Knight(7, 6, Color.BLACK);
+        board[7][7] = new Rook(7, 7, Color.BLACK);
+        for (int i = 0; i < 8; i++) {
+            board[6][i] = new Pawn(6, i, Color.BLACK);
         }
     }
 
-    public void printBoard() {
-        for (int i = 0; i < 64; i++) {
-            System.out.print(board[i] + " ");
-
-            if ((i + 1) % 8 == 0) {
-                System.out.println();
-            }
-        }
+    public Piece getPiece(int x, int y) {
+        return board[x][y];
     }
 
-    private char getPieceAt(int cell) {
-        if ((whitePawns & (1L << cell)) != 0) {
-            return 'P';
-        } else if ((blackPawns & (1L << cell)) != 0) {
-            return 'p';
-        } else if ((whiteKnights & (1L << cell)) != 0) {
-            return 'N';
-        } else if ((blackKnights & (1L << cell)) != 0) {
-            return 'n';
-        } else if ((whiteBishops & (1L << cell)) != 0) {
-            return 'B';
-        } else if ((blackBishops & (1L << cell)) != 0) {
-            return 'b';
-        } else if ((whiteRooks & (1L << cell)) != 0) {
-            return 'R';
-        } else if ((blackRooks & (1L << cell)) != 0) {
-            return 'r';
-        } else if ((whiteQueen & (1L << cell)) != 0) {
-            return 'Q';
-        } else if ((blackQueen & (1L << cell)) != 0) {
-            return 'q';
-        } else if ((whiteKing & (1L << cell)) != 0) {
-            return 'K';
-        } else if ((blackKing & (1L << cell)) != 0) {
-            return 'k';
-        } else {
-            return '_';
-        }
+    public void setPiece(int x, int y, Piece piece) {
+        board[x][y] = piece;
     }
 
     public List<Move> getAllPossibleMoves() {
         return new ArrayList<>();
-    }
-
-    public void updateBoard() {
-        for (int i = 0; i < 64; i++) {
-            board[i] = getPieceAt(i);
-        }
-    }
-
-    public void movePiece(int from, int to) {
-        whitePawns &= ~(1L << from);
-        whitePawns |= (1L << to);
-        updateBoard();
-    }
-
-    public long getWhitePawns() {
-        return whitePawns;
-    }
-
-    public long getWhiteKnights() {
-        return whiteKnights;
-    }
-
-    public long getWhiteBishops() {
-        return whiteBishops;
-    }
-
-    public long getWhiteRooks() {
-        return whiteRooks;
-    }
-
-    public long getWhiteQueen() {
-        return whiteQueen;
-    }
-
-    public long getWhiteKing() {
-        return whiteKing;
-    }
-
-    public long getBlackPawns() {
-        return blackPawns;
-    }
-
-    public long getBlackKnights() {
-        return blackKnights;
-    }
-
-    public long getBlackBishops() {
-        return blackBishops;
-    }
-
-    public long getBlackRooks() {
-        return blackRooks;
-    }
-
-    public long getBlackQueen() {
-        return blackQueen;
-    }
-
-    public long getBlackKing() {
-        return blackKing;
-    }
-
-    public char[] getBoard() {
-        return board;
-    }
-
-    public void setWhitePawns(long whitePawns) {
-        this.whitePawns = whitePawns;
-    }
-
-    public void setWhiteKnights(long whiteKnights) {
-        this.whiteKnights = whiteKnights;
-    }
-
-    public void setWhiteBishops(long whiteBishops) {
-        this.whiteBishops = whiteBishops;
-    }
-
-    public void setWhiteRooks(long whiteRooks) {
-        this.whiteRooks = whiteRooks;
-    }
-
-    public void setWhiteQueen(long whiteQueen) {
-        this.whiteQueen = whiteQueen;
-    }
-
-    public void setWhiteKing(long whiteKing) {
-        this.whiteKing = whiteKing;
-    }
-
-    public void setBlackPawns(long blackPawns) {
-        this.blackPawns = blackPawns;
-    }
-
-    public void setBlackKnights(long blackKnights) {
-        this.blackKnights = blackKnights;
-    }
-
-    public void setBlackBishops(long blackBishops) {
-        this.blackBishops = blackBishops;
-    }
-
-    public void setBlackRooks(long blackRooks) {
-        this.blackRooks = blackRooks;
-    }
-
-    public void setBlackQueen(long blackQueen) {
-        this.blackQueen = blackQueen;
-    }
-
-    public void setBlackKing(long blackKing) {
-        this.blackKing = blackKing;
-    }
-
-    public void setBoard(char[] board) {
-        this.board = board;
     }
 }
 
