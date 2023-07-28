@@ -1,8 +1,7 @@
 package io.deeplay;
 
-import io.deeplay.engine.SelfPlay;
+import io.deeplay.engine.GameSession;
 import io.deeplay.model.Board;
-import io.deeplay.service.SessionService;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,7 +16,7 @@ public class Main {
 //        System.out.println();
 //        board.printBoard();
 
-        SelfPlay selfPlay = SessionService.openGameAndGetInfo();
-        SessionService.startGameSession(selfPlay);
+        GameSession gameSession = new GameSession();
+        gameSession.startGameSession();
     }
 }
