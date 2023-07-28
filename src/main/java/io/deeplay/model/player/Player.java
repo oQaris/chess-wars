@@ -1,10 +1,5 @@
 package io.deeplay.model.player;
 
-import io.deeplay.model.Board;
-import io.deeplay.model.move.Move;
-
-import java.util.List;
-
 public abstract class Player {
     protected char piecesColor;
 
@@ -12,7 +7,7 @@ public abstract class Player {
         this.piecesColor = piecesColor;
     }
 
-    public abstract Move move(List<Move> moves);
+    public abstract void move();
 
     public char getPiecesColor() {
         return piecesColor;
