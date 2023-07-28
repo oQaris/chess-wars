@@ -5,6 +5,8 @@ import io.deeplay.model.player.Human;
 import io.deeplay.model.player.Player;
 import io.deeplay.service.SessionService;
 
+// Класс должен иметь одну цель - самостоятельно понимать кто ходит,
+// а также записывать в лог каждый ход
 public class SelfPlay {
 
     private Player player1;
@@ -19,11 +21,6 @@ public class SelfPlay {
     public SelfPlay(Player player1, Player player2) {
         this.player1 = player1;
         this.player2 = player2;
-    }
-
-    public void startGame() {
-        System.out.println("Game started!");
-        SessionService.startGameSession();
     }
 
     private GameType checkGameType() {
