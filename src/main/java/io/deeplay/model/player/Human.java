@@ -1,6 +1,9 @@
 package io.deeplay.model.player;
 
 import io.deeplay.model.Board;
+import io.deeplay.model.move.Move;
+
+import java.util.List;
 
 public class Human extends Player {
     public Human(char piecesColor) {
@@ -8,11 +11,11 @@ public class Human extends Player {
     }
 
     @Override
-    public Board move(Board board) {
+    public Move move(List<Move> moves) {
 
         // move
 
-        return board;
+        return null;
     }
 
     public void lose() {
