@@ -1,2 +1,6 @@
-package io.deeplay.piece;public enum Color {
+package io.deeplay.piece;
+
+public enum Color {
+    WHITE,
+    BLACK
 }

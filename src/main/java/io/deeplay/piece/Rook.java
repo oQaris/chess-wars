@@ -1,2 +1,14 @@
-package io.deeplay.piece;public class Rook {
+package io.deeplay.piece;
+
+import java.util.List;
+
+public class Rook extends Piece {
+    public Rook(int x, int y, Color color) {
+        super(x, y, color);
+    }
+
+    @Override
+    public List<int[]> getPossibleMoves(Piece[][] board) {
+        return null;
+    }
 }
