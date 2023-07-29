@@ -2,6 +2,7 @@ package io.deeplay.model.piece;
 
 import io.deeplay.model.Board;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Empty extends Piece {
@@ -11,7 +12,7 @@ public class Empty extends Piece {
 
     @Override
     public List<Integer> getPossibleMoves(Board board) {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
