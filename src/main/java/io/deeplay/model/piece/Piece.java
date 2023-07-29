@@ -1,5 +1,7 @@
 package io.deeplay.model.piece;
 
+import io.deeplay.model.Board;
+
 import java.util.List;
 
 public abstract class Piece {
@@ -13,7 +15,11 @@ public abstract class Piece {
         this.color = color;
     }
 
-    public abstract List<int[]> getPossibleMoves(Piece[][] board);
+    public Color getColor() {
+        return color;
+    }
 
-    // public abstract boolean canMove();
+    public abstract List<Integer> getPossibleMoves(Board board);
+
+     public abstract boolean canMoveAt(int x, int y, Board board);
 }

@@ -4,14 +4,9 @@ import io.deeplay.model.Board;
 
 import java.util.List;
 
-public class Pawn extends Piece {
-    public Pawn(int x, int y, Color color) {
-        super(x, y, color);
-    }
-
-    @Override
-    public Color getColor() {
-        return super.getColor();
+public class Empty extends Piece {
+    public Empty(int x, int y, Color color) {
+        super(x, y, Color.EMPTY);
     }
 
     @Override

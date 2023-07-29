@@ -1,5 +1,7 @@
 package io.deeplay.model.piece;
 
+import io.deeplay.model.Board;
+
 import java.util.List;
 
 public class Bishop extends Piece {
@@ -8,8 +10,18 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public List<int[]> getPossibleMoves(Piece[][] board) {
+    public Color getColor() {
+        return super.getColor();
+    }
+
+    @Override
+    public List<Integer> getPossibleMoves(Board board) {
         // метод
         return null;
+    }
+
+    @Override
+    public boolean canMoveAt(int x, int y, Board board) {
+        return false;
     }
 }
