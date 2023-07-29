@@ -18,7 +18,7 @@ public class Board {
         board[0][7] = new Rook(0, 7, Color.WHITE);
 
         for (int i = 0; i < 8; i++) {
-            board[1][i] = new Empty(1, i, Color.EMPTY);
+            board[1][i] = new Pawn(1, i, Color.WHITE);
         }
 
         board[7][0] = new Rook(7, 0, Color.BLACK);

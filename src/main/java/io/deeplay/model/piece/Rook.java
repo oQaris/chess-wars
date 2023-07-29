@@ -19,52 +19,13 @@ public class Rook extends Piece {
     public List<Integer> getPossibleMoves(Board board) {
         List<Integer> possibleMoves = new ArrayList<>();
 
-        // вправо
-        for (int i = x + 1; i < 8; i++) {
-            if (canMoveAt(i, y, board)) {
-                possibleMoves.add(i * 8 + y);
-
-                if (!board.getBoard()[i][y].getColor().equals(color)) {
-                    break;
-                }
-            } else {
-                break;
-            }
-        }
-
-        // влево
-        for (int i = x - 1; i >= 0; i--) {
-            if (canMoveAt(i, y, board)) {
-                possibleMoves.add(i * 8 + y);
-                if (!board.getBoard()[i][y].getColor().equals(color)) {
-                    break;
-                }
-            } else {
-                break;
-            }
-        }
-
-        // вверх
-        for (int i = y - 1; i >= 0; i--) {
+        for (int i = 0; i < 8; i++) {
             if (canMoveAt(x, i, board)) {
-                possibleMoves.add(x * 8 + i);
-                if (!board.getBoard()[x][i].getColor().equals(color)) {
-                    break;
-                }
-            } else {
-                break;
+                possibleMoves.add((x * 8) + i);
             }
-        }
 
-        // вниз
-        for (int i = y + 1; i < 8; i++) {
-            if (canMoveAt(x, i, board)) {
-                possibleMoves.add(x * 8 + i);
-                if (!board.getBoard()[x][i].getColor().equals(color)) {
-                    break;
-                }
-            } else {
-                break;
+            if (canMoveAt(i, y, board)) {
+                possibleMoves.add((i * 8) + y);
             }
         }
 
@@ -80,29 +41,19 @@ public class Rook extends Piece {
             return false;
         }
 
-        int xDirection = Integer.compare(x, this.x);
-        int yDirection = Integer.compare(y, this.y);
-
-        boolean isFoundOpponentPiece = false;
-
-        if (xDirection != 0 && yDirection != 0) {
+        if (board.getBoard()[x][y].getColor().equals(color)) { // фигура того же цвета
             return false;
         }
 
-        int currentX = x + xDirection;
-        int currentY = y + yDirection;
+        int xDirection = Integer.compare(x, this.x);
+        int yDirection = Integer.compare(y, this.y);
+
+        int currentX = this.x + xDirection;
+        int currentY = this.y + yDirection;
 
         while (currentX != x || currentY != y) {
-            if (!board.getBoard()[currentX][currentY].getColor().equals(Color.EMPTY)) {
-                if (!board.getBoard()[currentX][currentY].getColor().equals(color)) {
-                    return false; // фигура своего цвета
-                }
-
-                if (isFoundOpponentPiece) {
-                    return false;
-                }
-
-                isFoundOpponentPiece = true;
+            if (!board.getBoard()[currentX][currentY].getColor().equals(Color.EMPTY)) { // если не пустая, на пути стоит фигура другого цвета
+                return false;
             }
 
             currentX += xDirection;
