@@ -3,6 +3,7 @@ package io.deeplay.engine;
 import io.deeplay.domain.Color;
 import io.deeplay.domain.GameType;
 import io.deeplay.model.Board;
+import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.MoveHistory;
 import io.deeplay.model.piece.Piece;
 import io.deeplay.model.move.Move;
@@ -33,37 +34,23 @@ public class GameSession {
 
         while(true) {
             Color currentColor = gameInfo.getCurrentMoveColor();
-
+            System.out.println(currentColor);
             Player playerWhoMoves = choosePlayer(currentColor);
-            List<Piece> possiblePiecesToMove = PieceService.getPossibleToMovePieces();
+            System.out.println("current player: " + playerWhoMoves.getClass().getName());
+            List<Piece> possiblePiecesToMove = PieceService.getPiecesPossibleToMove(gameInfo.getCurrentBoardState(), currentColor);
+            System.out.println("Amount of possibleMoves: " + possiblePiecesToMove.size());
+            Move move = playerWhoMoves.move(possiblePiecesToMove, gameInfo.getCurrentBoardState());
 
-            System.out.println("Возможные фигуры для хода и их позиции: ");
-
-            System.out.println("Choose piece to make a move: ");
-            Scanner scanner = new Scanner(System.in, Charset.defaultCharset().name());
-            scanner.nextLine();
-            // ...
-            // Пользователь выбирает фигуру, которой будет ходить
-            // ...
-
-            Piece selectedPiece = possiblePiecesToMove.get(0);
-
-            List<Integer> possibleMovesByPiece = playerWhoMoves.move(selectedPiece.getPossibleMoves(board));
-
-            System.out.println("choose where you want to move your Piece");
-
-            Move move = MoveService.createMove();
-            board = Board.move(move);
+//            board = Board.move(move);
             moveHistory.addMove(move);
 
             gameInfo.setCurrentBoardState(board);
+            gameInfo.setMoveHistory(moveHistory);
             if (currentColor == Color.WHITE) gameInfo.setCurrentMoveColor(Color.BLACK);
             else gameInfo.setCurrentMoveColor(Color.WHITE);
 
             boolean isFinished = GameState.check(board);
             if (isFinished == true) endGame();
-
-            return;
         }
     }
 

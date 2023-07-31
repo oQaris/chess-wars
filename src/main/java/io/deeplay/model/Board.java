@@ -1,5 +1,6 @@
 package io.deeplay.model;
 
+import io.deeplay.domain.Color;
 import io.deeplay.model.piece.*;
 
 public class Board {
@@ -31,7 +32,7 @@ public class Board {
         board[7][7] = new Rook(new Coordinates(7, 7), Color.BLACK);
 
         for (int i = 0; i < 8; i++) {
-            board[i][6] = new Pawn(new Coordinates(i, 6), Color.BLACK);
+            board[i][6] = new Empty(new Coordinates(i, 6), Color.BLACK);
             board[i][1] = new Empty(new Coordinates(i, 1), Color.WHITE);
         }
 
