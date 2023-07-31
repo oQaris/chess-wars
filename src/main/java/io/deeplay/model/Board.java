@@ -41,4 +41,12 @@ public class Board {
     public void setPiece(int x, int y, Piece piece) {
         board[x][y] = piece;
     }
+
+    public Piece[][] getBoard() {
+        return board;
+    }
+
+    public void setBoard(Piece[][] board) {
+        this.board = board;
+    }
 }
