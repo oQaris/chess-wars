@@ -1,55 +1,95 @@
 package io.deeplay.model;
 
-
-import io.deeplay.model.move.Move;
-import io.deeplay.model.piece.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
-
 import io.deeplay.model.piece.*;
 
 public class Board {
-    private Piece[][] board;
+    private static Piece[][] board;
 
     public Board() {
-        board[0][0] = new Rook(0, 0, Color.WHITE);
-        board[0][1] = new Knight(0, 1, Color.WHITE);
-        board[0][2] = new Bishop(0, 2, Color.WHITE);
-        board[0][3] = new Queen(0, 3, Color.WHITE);
-        board[0][4] = new King(0, 4, Color.WHITE);
-        board[0][5] = new Bishop(0, 5, Color.WHITE);
-        board[0][6] = new Knight(0, 6, Color.WHITE);
-        board[0][7] = new Rook(0, 7, Color.WHITE);
-        for (int i = 0; i < 8; i++) {
-            board[1][i] = new Pawn(1, i, Color.WHITE);
-        }
+        board = getStartBoard();
     }
 
-        board[7][0] = new Rook(7, 0, Color.BLACK);
-        board[7][1] = new Knight(7, 1, Color.BLACK);
-        board[7][2] = new Bishop(7, 2, Color.BLACK);
-        board[7][3] = new Queen(7, 3, Color.BLACK);
-        board[7][4] = new King(7, 4, Color.BLACK);
-        board[7][5] = new Bishop(7, 5, Color.BLACK);
-        board[7][6] = new Knight(7, 6, Color.BLACK);
-        board[7][7] = new Rook(7, 7, Color.BLACK);
+    public Piece[][] getStartBoard() {
+        board = new Piece[8][8];
+
+        board[0][0] = new Rook(new Coordinates(0, 0), Color.WHITE);
+        board[1][0] = new Knight(new Coordinates(1, 0), Color.WHITE);
+        board[2][0] = new Bishop(new Coordinates(2, 0), Color.WHITE);
+        board[3][0] = new Queen(new Coordinates(3, 0), Color.WHITE);
+        board[4][0] = new King(new Coordinates(4, 0), Color.WHITE);
+        board[5][0] = new Bishop(new Coordinates(5, 0), Color.WHITE);
+        board[6][0] = new Knight(new Coordinates(6, 0), Color.WHITE);
+        board[7][0] = new Rook(new Coordinates(7, 0), Color.WHITE);
+
+        board[0][7] = new Rook(new Coordinates(0, 7), Color.BLACK);
+        board[1][7] = new Knight(new Coordinates(1, 7), Color.BLACK);
+        board[2][7] = new Bishop(new Coordinates(2, 7), Color.BLACK);
+        board[3][7] = new Queen(new Coordinates(3, 7), Color.BLACK);
+        board[4][7] = new King(new Coordinates(4, 7), Color.BLACK);
+        board[5][7] = new Bishop(new Coordinates(5, 7), Color.BLACK);
+        board[6][7] = new Knight(new Coordinates(6, 7), Color.BLACK);
+        board[7][7] = new Rook(new Coordinates(7, 7), Color.BLACK);
+
         for (int i = 0; i < 8; i++) {
-            board[6][i] = new Pawn(6, i, Color.BLACK);
+            board[i][6] = new Pawn(new Coordinates(i, 6), Color.BLACK);
+            board[i][1] = new Pawn(new Coordinates(i, 1), Color.WHITE);
         }
+
+        for (int i = 2; i < 6; i++) {
+            for (int j = 0; j < 8; j++) {
+                board[j][i] = new Empty(new Coordinates(j, i), Color.EMPTY);
+            }
+        }
+
+        return board;
     }
 
-    public Piece getPiece(int x, int y) {
+    public static Piece getPiece(int x, int y) {
         return board[x][y];
+    }
+
+    public static Piece[][] getBoard() {
+        return board;
     }
 
     public void setPiece(int x, int y, Piece piece) {
         board[x][y] = piece;
     }
+    public static boolean isSquareDark(int x, int y) {
+        return (((x + 1) + y + 1) % 2) == 0;
+    }
 
-    public List<Move> getAllPossibleMoves() {
-        return new ArrayList<>();
+    public static int[] getIndex(Piece piece){
+        int[] index = new int[1];
+        for(int i =0; i < getBoard().length; i++) {
+            for (int j = 0; j < getBoard()[i].length; j++) {
+                if (piece == getPiece(i, j)){
+                    index[0] = i;
+                    index[1] = j;
+                }
+            }
+        }
+        return index;
+    }
+
+    public static int[] getIndex(Board board){
+        int[] index = new int[1];
+        for(int i =0; i < getBoard().length; i++) {
+            for (int j = 0; j < getBoard()[i].length; j++) {
+                if (board.equals(getPiece(i, j))){
+                    index[0] = i;
+                    index[1] = j;
+                }
+            }
+        }
+        return index;
+    }
+
+    public boolean isSquareEmpty(Coordinates coordinates) {
+        boolean isSquareEmpty = false;
+        if(board[coordinates.getX()][coordinates.getY()].getClass() == Piece.class){
+            isSquareEmpty = true;
+        }
+        return isSquareEmpty;
     }
 }
-
