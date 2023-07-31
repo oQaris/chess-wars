@@ -1,12 +1,13 @@
 package io.deeplay.model.piece;
 
 import io.deeplay.model.Board;
+import io.deeplay.model.Coordinates;
 
 import java.util.List;
 
 public class Pawn extends Piece {
-    public Pawn(int x, int y, Color color) {
-        super(x, y, color);
+    public Pawn(Coordinates coordinates, Color color) {
+        super(coordinates, color);
     }
 
     @Override
@@ -20,7 +21,7 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public boolean canMoveAt(int x, int y, Board board) {
+    public boolean canMoveAt(Coordinates coordinates, Board board) {
         return false;
     }
 }

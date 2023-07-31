@@ -1,17 +1,16 @@
 package io.deeplay.model.piece;
 
 import io.deeplay.model.Board;
+import io.deeplay.model.Coordinates;
 
 import java.util.List;
 
 public abstract class Piece {
-    public int x;
-    public int y;
+    Coordinates coordinates;
     public Color color;
 
-    public Piece(int x, int y, Color color) {
-        this.x = x;
-        this.y = y;
+    public Piece(Coordinates coordinates, Color color) {
+        this.coordinates = coordinates;
         this.color = color;
     }
 
@@ -21,5 +20,5 @@ public abstract class Piece {
 
     public abstract List<Integer> getPossibleMoves(Board board);
 
-     public abstract boolean canMoveAt(int x, int y, Board board);
+    public abstract boolean canMoveAt(Coordinates coordinates, Board board);  // rename at isValidMove
 }

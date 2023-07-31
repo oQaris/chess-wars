@@ -1,13 +1,14 @@
 package io.deeplay.model.piece;
 
 import io.deeplay.model.Board;
+import io.deeplay.model.Coordinates;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Empty extends Piece {
-    public Empty(int x, int y, Color color) {
-        super(x, y, Color.EMPTY);
+    public Empty(Coordinates coordinates, Color color) {
+        super(coordinates, Color.EMPTY);
     }
 
     @Override
@@ -16,7 +17,12 @@ public class Empty extends Piece {
     }
 
     @Override
-    public boolean canMoveAt(int x, int y, Board board) {
+    public boolean canMoveAt(Coordinates coordinates, Board board) {
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Empty: x = " + coordinates.getX() + " y = " + coordinates.getY();
     }
 }
