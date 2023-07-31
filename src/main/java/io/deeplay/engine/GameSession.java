@@ -7,6 +7,7 @@ import io.deeplay.model.move.MoveHistory;
 import io.deeplay.model.piece.Piece;
 import io.deeplay.model.move.Move;
 import io.deeplay.model.player.Player;
+import io.deeplay.service.MoveService;
 import io.deeplay.service.PieceService;
 
 import java.nio.charset.Charset;
@@ -47,9 +48,11 @@ public class GameSession {
 
             Piece selectedPiece = possiblePiecesToMove.get(0);
 
-            // Нужен рабочий метод getPossibleMoves()
-//             Move move = playerWhoMoves.move(selectedPiece.getPossibleMoves(board.getBoard()));
+            List<Integer> possibleMovesByPiece = playerWhoMoves.move(selectedPiece.getPossibleMoves(board));
 
+            System.out.println("choose where you want to move your Piece");
+
+            Move move = MoveService.createMove();
             board = Board.move(move);
             moveHistory.addMove(move);
 
@@ -70,7 +73,9 @@ public class GameSession {
         else return player2;
     }
 
-    public void endGame() {}
+    public void endGame() {
+        System.exit(0);
+    }
 
     public GameType getGameType() {
         return gameType;
