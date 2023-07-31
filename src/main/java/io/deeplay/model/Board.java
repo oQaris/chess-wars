@@ -110,4 +110,12 @@ public class Board {
             // обработка promotion
         }
     }
+
+    public Piece[][] getBoard() {
+        return board;
+    }
+
+    public void setBoard(Piece[][] board) {
+        this.board = board;
+    }
 }

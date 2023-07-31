@@ -3,6 +3,7 @@ package io.deeplay.engine;
 import io.deeplay.domain.Color;
 import io.deeplay.domain.GameType;
 import io.deeplay.model.Board;
+import io.deeplay.model.move.MoveHistory;
 import io.deeplay.model.piece.Piece;
 import io.deeplay.model.move.Move;
 import io.deeplay.model.player.Player;
@@ -27,10 +28,16 @@ public class GameSession {
     public void startGameSession() {
         Board board = new Board();
         GameInfo gameInfo = new GameInfo(board, player1, player2);
+        MoveHistory moveHistory = new MoveHistory();
 
         while(true) {
-            Player playerWhoMoves = choosePlayer(gameInfo.getCurrentMoveColor());
+            Color currentColor = gameInfo.getCurrentMoveColor();
+
+            Player playerWhoMoves = choosePlayer(currentColor);
             List<Piece> possiblePiecesToMove = PieceService.getPossibleToMovePieces();
+
+            System.out.println("Возможные фигуры для хода и их позиции: ");
+
             System.out.println("Choose piece to make a move: ");
             Scanner scanner = new Scanner(System.in, Charset.defaultCharset().name());
             scanner.nextLine();
@@ -39,6 +46,19 @@ public class GameSession {
             // ...
 
             Piece selectedPiece = possiblePiecesToMove.get(0);
+
+            // Нужен рабочий метод getPossibleMoves()
+//             Move move = playerWhoMoves.move(selectedPiece.getPossibleMoves(board.getBoard()));
+
+            board = Board.move(move);
+            moveHistory.addMove(move);
+
+            gameInfo.setCurrentBoardState(board);
+            if (currentColor == Color.WHITE) gameInfo.setCurrentMoveColor(Color.BLACK);
+            else gameInfo.setCurrentMoveColor(Color.WHITE);
+
+            boolean isFinished = GameState.check(board);
+            if (isFinished == true) endGame();
 
             return;
         }
@@ -49,6 +69,8 @@ public class GameSession {
         if (player1.getColor() == movingColor) return player1;
         else return player2;
     }
+
+    public void endGame() {}
 
     public GameType getGameType() {
         return gameType;
