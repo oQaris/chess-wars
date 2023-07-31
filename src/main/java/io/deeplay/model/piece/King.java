@@ -17,16 +17,20 @@ public class King extends Piece {
     }
 
     @Override
-    public List<Integer> getPossibleMoves(Board board) {
-        List<Integer> possibleMoves = new ArrayList<>();
+    public List<Coordinates> getPossibleMoves(Board board) {
+        List<Coordinates> possibleMoves = new ArrayList<>();
 
-        // проверяем все клетки вокруг короля
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
-                int x = getCoordinates().getX() + i;
-                int y = getCoordinates().getY() + j;
+        int x = this.getCoordinates().getX();
+        int y = this.getCoordinates().getY();
 
-                possibleMoves.add(x * 8 + y);
+        for (int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1; j++) {
+                if (i >= 0 && i < 8 && j >= 0 && j < 8 && !(i == x && j == y)) {
+                    Coordinates coordinates = new Coordinates(i, j);
+                    if (canMoveAt(coordinates, board)) {
+                        possibleMoves.add(coordinates);
+                    }
+                }
             }
         }
 

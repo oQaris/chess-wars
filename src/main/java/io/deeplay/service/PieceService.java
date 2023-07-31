@@ -1,18 +1,26 @@
 package io.deeplay.service;
 
+import io.deeplay.model.Board;
+import io.deeplay.model.Coordinates;
 import io.deeplay.model.piece.Color;
 import io.deeplay.model.piece.Piece;
-import io.deeplay.model.piece.Rook;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class PieceService {
+    public static List<Piece> getPiecesPossibleToMove(Board board) {
+        List<Piece> movablePieces = new ArrayList<>();
 
-    public static List<Piece> getPossibleToMovePieces() {
-        // вернуть List с фигурами
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                Piece piece = board.getPiece(new Coordinates(x, y));
+                if (!piece.getColor().equals(Color.EMPTY) && !piece.getPossibleMoves(board).isEmpty()) {
+                    movablePieces.add(piece);
+                }
+            }
+        }
 
-        return new ArrayList<>(List.of(new Rook(0, 0, Color.WHITE)));
+        return movablePieces;
     }
 }

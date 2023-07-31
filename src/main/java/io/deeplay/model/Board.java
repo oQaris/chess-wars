@@ -32,7 +32,7 @@ public class Board {
 
         for (int i = 0; i < 8; i++) {
             board[i][6] = new Pawn(new Coordinates(i, 6), Color.BLACK);
-            board[i][1] = new Pawn(new Coordinates(i, 1), Color.WHITE);
+            board[i][1] = new Empty(new Coordinates(i, 1), Color.WHITE);
         }
 
         for (int i = 2; i < 6; i++) {
@@ -44,19 +44,15 @@ public class Board {
         return board;
     }
 
-    public Piece getPiece(int x, int y) {
-        return board[x][y];
-    }
-
-    public void setPiece(int x, int y, Piece piece) {
-        board[x][y] = piece;
+    public Piece getPiece(Coordinates coordinates) {
+        return board[coordinates.getX()][coordinates.getY()];
     }
 
     public Piece[][] getBoard() {
         return board;
     }
 
-    public void setBoard(Piece[][] board) {
-        this.board = board;
+    public void setPiece(Coordinates coordinates, Piece piece) {
+        board[coordinates.getX()][coordinates.getY()] = piece;
     }
 }

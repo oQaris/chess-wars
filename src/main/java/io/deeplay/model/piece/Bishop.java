@@ -17,17 +17,16 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public List<Integer> getPossibleMoves(Board board) {
-        List<Integer> possibleMoves = new ArrayList<>();
+    public List<Coordinates> getPossibleMoves(Board board) {
+        List<Coordinates> possibleMoves = new ArrayList<>();
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (canMoveAt(new Coordinates(i, j), board)) {
-                    possibleMoves.add(i * 8 + j);
+                    possibleMoves.add(new Coordinates(i, j));
                 }
             }
         }
-
         return possibleMoves;
     }
 
