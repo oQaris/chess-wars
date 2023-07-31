@@ -1,4 +1,4 @@
-package io.deeplay.model.player;
+package io.deeplay.model;
 
 import org.junit.jupiter.api.Test;
 
