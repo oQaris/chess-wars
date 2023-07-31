@@ -4,7 +4,7 @@ import io.deeplay.model.move.Move;
 
 public class MoveService {
 
-    public Move createMove() {
-
+    public static Move createMove() {
+        return new Move();
     }
 }
