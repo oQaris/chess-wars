@@ -49,6 +49,10 @@ public class Rook extends Piece {
             return false;
         }
 
+        if (Math.abs(coordinates.getX() - this.getCoordinates().getX()) == Math.abs(coordinates.getY() - this.getCoordinates().getY())) {
+            return false;
+        }
+
         int xDirection = Integer.compare(coordinates.getX(), this.getCoordinates().getX());
         int yDirection = Integer.compare(coordinates.getY(), this.getCoordinates().getY());
 
