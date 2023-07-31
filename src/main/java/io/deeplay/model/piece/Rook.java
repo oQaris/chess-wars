@@ -21,12 +21,12 @@ public class Rook extends Piece {
         List<Integer> possibleMoves = new ArrayList<>();
 
         for (int i = 0; i < 8; i++) {
-            if (canMoveAt(new Coordinates(coordinates.getX(), i), board)) {
-                possibleMoves.add((coordinates.getX() * 8) + i);
+            if (canMoveAt(new Coordinates(getCoordinates().getX(), i), board)) {
+                possibleMoves.add((getCoordinates().getX() * 8) + i);
             }
 
-            if (canMoveAt(new Coordinates(i, coordinates.getY()), board)) {
-                possibleMoves.add((i * 8) + coordinates.getY());
+            if (canMoveAt(new Coordinates(i, getCoordinates().getY()), board)) {
+                possibleMoves.add((i * 8) + getCoordinates().getY());
             }
         }
 
@@ -39,19 +39,19 @@ public class Rook extends Piece {
             return false;
         }
 
-        if (this.coordinates.getX() == coordinates.getX() && this.coordinates.getY() == coordinates.getY()) {
+        if (this.getCoordinates().getX() == coordinates.getX() && this.getCoordinates().getY() == coordinates.getY()) {
             return false;
         }
 
-        if (board.getBoard()[coordinates.getX()][coordinates.getY()].getColor().equals(color)) { // фигура того же цвета
+        if (board.getBoard()[coordinates.getX()][coordinates.getY()].getColor().equals(getColor())) { // фигура того же цвета
             return false;
         }
 
-        int xDirection = Integer.compare(coordinates.getX(), this.coordinates.getX());
-        int yDirection = Integer.compare(coordinates.getY(), this.coordinates.getY());
+        int xDirection = Integer.compare(coordinates.getX(), this.getCoordinates().getX());
+        int yDirection = Integer.compare(coordinates.getY(), this.getCoordinates().getY());
 
-        int currentX = this.coordinates.getX() + xDirection;
-        int currentY = this.coordinates.getY() + yDirection;
+        int currentX = this.getCoordinates().getX() + xDirection;
+        int currentY = this.getCoordinates().getY() + yDirection;
 
         while (currentX != coordinates.getX() || currentY != coordinates.getY()) {
             if (!board.getBoard()[currentX][currentY].getColor().equals(Color.EMPTY)) { // если не пустая, на пути стоит фигура другого цвета
@@ -67,6 +67,6 @@ public class Rook extends Piece {
 
     @Override
     public String toString() {
-        return "Rook: x = " + coordinates.getX() + " y = " + coordinates.getY();
+        return "Rook: x = " + getCoordinates().getX() + " y = " + getCoordinates().getY();
     }
 }

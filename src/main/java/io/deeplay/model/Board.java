@@ -6,6 +6,10 @@ public class Board {
     private Piece[][] board;
 
     public Board() {
+        board = getStartBoard();
+    }
+
+    public Piece[][] getStartBoard() {
         board = new Piece[8][8];
 
         board[0][0] = new Rook(new Coordinates(0, 0), Color.WHITE);
@@ -36,6 +40,8 @@ public class Board {
                 board[j][i] = new Empty(new Coordinates(j, i), Color.EMPTY);
             }
         }
+
+        return board;
     }
 
     public Piece getPiece(int x, int y) {
