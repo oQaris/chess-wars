@@ -17,16 +17,18 @@ public class Rook extends Piece {
     }
 
     @Override
-    public List<Integer> getPossibleMoves(Board board) {
-        List<Integer> possibleMoves = new ArrayList<>();
+    public List<Coordinates> getPossibleMoves(Board board) {
+        List<Coordinates> possibleMoves = new ArrayList<>();
+        int x = getCoordinates().getX();
+        int y = getCoordinates().getY();
 
         for (int i = 0; i < 8; i++) {
-            if (canMoveAt(new Coordinates(getCoordinates().getX(), i), board)) {
-                possibleMoves.add((getCoordinates().getX() * 8) + i);
+            if (canMoveAt(new Coordinates(x, i), board)) {
+                possibleMoves.add(new Coordinates(x, i));
             }
 
-            if (canMoveAt(new Coordinates(i, getCoordinates().getY()), board)) {
-                possibleMoves.add((i * 8) + getCoordinates().getY());
+            if (canMoveAt(new Coordinates(i, y), board)) {
+                possibleMoves.add(new Coordinates(i, y));
             }
         }
 

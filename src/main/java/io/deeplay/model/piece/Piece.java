@@ -30,7 +30,7 @@ public abstract class Piece {
         this.coordinates = coordinates;
     }
 
-    public abstract List<Integer> getPossibleMoves(Board board);
+    public abstract List<Coordinates> getPossibleMoves(Board board);
 
-    public abstract boolean canMoveAt(Coordinates coordinates, Board board);  // rename at isValidMove
+    public abstract boolean canMoveAt(Coordinates coordinates, Board board);
 }

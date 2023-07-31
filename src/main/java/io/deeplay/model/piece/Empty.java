@@ -12,7 +12,7 @@ public class Empty extends Piece {
     }
 
     @Override
-    public List<Integer> getPossibleMoves(Board board) {
+    public List<Coordinates> getPossibleMoves(Board board) {
         return new ArrayList<>();
     }
 

@@ -3,6 +3,7 @@ package io.deeplay.model.piece;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Pawn extends Piece {
@@ -16,8 +17,8 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public List<Integer> getPossibleMoves(Board board) {
-        return null;
+    public List<Coordinates> getPossibleMoves(Board board) {
+        return new ArrayList<>();
     }
 
     @Override
