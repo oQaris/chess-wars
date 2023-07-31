@@ -23,6 +23,6 @@ public class Empty extends Piece {
 
     @Override
     public String toString() {
-        return "Empty: x = " + coordinates.getX() + " y = " + coordinates.getY();
+        return "Empty: x = " + getCoordinates().getX() + " y = " + getCoordinates().getY();
     }
 }

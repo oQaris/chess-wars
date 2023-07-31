@@ -23,8 +23,8 @@ public class King extends Piece {
         // проверяем все клетки вокруг короля
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
-                int x = coordinates.getX() + i;
-                int y = coordinates.getY() + j;
+                int x = getCoordinates().getX() + i;
+                int y = getCoordinates().getY() + j;
 
                 possibleMoves.add(x * 8 + y);
             }
@@ -39,22 +39,22 @@ public class King extends Piece {
             return false;
         }
 
-        if (this.coordinates.getX() == coordinates.getX() && this.coordinates.getY() == coordinates.getY()) {
+        if (this.getCoordinates().getX() == coordinates.getX() && this.getCoordinates().getY() == coordinates.getY()) {
             return false;
         }
 
-        if (board.getBoard()[coordinates.getX()][coordinates.getY()].getColor().equals(color)) { // фигура того же цвета
+        if (board.getBoard()[coordinates.getX()][coordinates.getY()].getColor().equals(getColor())) { // фигура того же цвета
             return false;
         }
 
-        int distanceX = Math.abs(coordinates.getX() - this.coordinates.getX());
-        int distanceY = Math.abs(coordinates.getY() - this.coordinates.getY());
+        int distanceX = Math.abs(coordinates.getX() - this.getCoordinates().getX());
+        int distanceY = Math.abs(coordinates.getY() - this.getCoordinates().getY());
 
         return distanceX <= 1 && distanceY <= 1;
     }
 
     @Override
     public String toString() {
-        return "King: x = " + coordinates.getX() + " y = " + coordinates.getY();
+        return "King: x = " + getCoordinates().getX() + " y = " + getCoordinates().getY();
     }
 }

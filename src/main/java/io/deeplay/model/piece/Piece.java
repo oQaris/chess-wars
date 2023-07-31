@@ -6,8 +6,8 @@ import io.deeplay.model.Coordinates;
 import java.util.List;
 
 public abstract class Piece {
-    Coordinates coordinates;
-    public Color color;
+    private Coordinates coordinates;
+    private Color color;
 
     public Piece(Coordinates coordinates, Color color) {
         this.coordinates = coordinates;
@@ -16,6 +16,18 @@ public abstract class Piece {
 
     public Color getColor() {
         return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
 
     public abstract List<Integer> getPossibleMoves(Board board);

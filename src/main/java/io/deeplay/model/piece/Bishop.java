@@ -37,19 +37,19 @@ public class Bishop extends Piece {
             return false;
         }
 
-        if (board.getBoard()[coordinates.getX()][coordinates.getY()].getColor().equals(color)) { // фигура того же цвета
+        if (board.getBoard()[coordinates.getX()][coordinates.getY()].getColor().equals(getColor())) { // фигура того же цвета
             return false;
         }
 
-        if (Math.abs(coordinates.getX() - this.coordinates.getX()) != Math.abs(coordinates.getY() - this.coordinates.getY())) {
+        if (Math.abs(coordinates.getX() - this.getCoordinates().getX()) != Math.abs(coordinates.getY() - this.getCoordinates().getY())) {
             return false;
         }
 
-        int xDirection = Integer.compare(coordinates.getX(), this.coordinates.getX());
-        int yDirection = Integer.compare(coordinates.getY(), this.coordinates.getY());
+        int xDirection = Integer.compare(coordinates.getX(), this.getCoordinates().getX());
+        int yDirection = Integer.compare(coordinates.getY(), this.getCoordinates().getY());
 
-        int currentX = this.coordinates.getX() + xDirection;
-        int currentY = this.coordinates.getY() + yDirection;
+        int currentX = this.getCoordinates().getX() + xDirection;
+        int currentY = this.getCoordinates().getY() + yDirection;
 
         while (currentX != coordinates.getX() || currentY != coordinates.getY()) {
             if (!board.getBoard()[currentX][currentY].getColor().equals(Color.EMPTY)) { // если не пустая, на пути стоит фигура другого цвета
@@ -65,6 +65,6 @@ public class Bishop extends Piece {
 
     @Override
     public String toString() {
-        return "Bishop: x = " + coordinates.getX() + " y = " + coordinates.getY();
+        return "Bishop: x = " + getCoordinates().getX() + " y = " + getCoordinates().getY();
     }
 }
