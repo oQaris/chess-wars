@@ -1,3 +1,7 @@
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+}
+
 plugins {
     id("java")
     id("net.ltgt.errorprone") version "3.1.0"

@@ -1,4 +1,4 @@
-package io.deeplay.model.move;
+package io.deeplay.model;
 
 import io.deeplay.model.Coordinates;
 
