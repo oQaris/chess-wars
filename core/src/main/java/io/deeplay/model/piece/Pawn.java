@@ -42,7 +42,6 @@ public class Pawn extends Piece{
 
     @Override
     public boolean canMoveAt(Coordinates coordinates, Board board) {
-
         int dx = coordinates.getX() - getCoordinates().getX();
         int dy = coordinates.getY() - getCoordinates().getY();
 
@@ -56,7 +55,7 @@ public class Pawn extends Piece{
         int currentX = getCoordinates().getX() + xDirection;
         int currentY = getCoordinates().getY() + yDirection;
 
-        while (currentX != coordinates.getX() && currentY != coordinates.getY()) {
+        while (currentX != coordinates.getX() || currentY != coordinates.getY()) {
             if (board.getPiece(new Coordinates(currentX, currentY)).equals(Color.EMPTY)) {
                 return false;
             }
