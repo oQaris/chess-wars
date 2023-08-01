@@ -53,13 +53,15 @@ public class UserCommunicationService {
         String gameType = scanner.nextLine();
 
         if (gameType.equals("bot-bot")) {
-            return new GameSession(new Bot(Color.WHITE, UserCommunicationService.chooseBotLevel()), new Bot(Color.BLACK, UserCommunicationService.chooseBotLevel()), GameType.BotVsBot);
+            return new GameSession(new Bot(Color.WHITE, UserCommunicationService.chooseBotLevel()),
+                    new Bot(Color.BLACK, UserCommunicationService.chooseBotLevel()), GameType.BotVsBot);
         } else if (gameType.equals("human-human")) {
             Color[] userColor = UserCommunicationService.chooseColor();
             return new GameSession(new Human(userColor[0]), new Human(userColor[1]), GameType.HumanVsHuman);
         } else if (gameType.equals("human-bot")) {
             Color[] userColor = UserCommunicationService.chooseColor();
-            return new GameSession(new Human(userColor[0]), new Bot(userColor[1], UserCommunicationService.chooseBotLevel()), GameType.HumanVsBot);
+            return new GameSession(new Human(userColor[0]), new Bot(userColor[1],
+                    UserCommunicationService.chooseBotLevel()), GameType.HumanVsBot);
         } else {
             System.out.println("Invalid input. Ending...");
             System.exit(0);
