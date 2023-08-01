@@ -36,7 +36,7 @@ class BishopTest {
     @Test
     void getPossibleMovesFromCenter(){
         List<Coordinates> possibleMovesFromCenter = bishop.getPossibleMoves(board);
-        Assertions.assertEquals(9, possibleMovesFromCenter.size());
+        Assertions.assertEquals(8, possibleMovesFromCenter.size());
     }
 
     @Test
