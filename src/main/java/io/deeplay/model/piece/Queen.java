@@ -48,6 +48,4 @@ public class Queen extends Piece {
     public String toString() {
         return "Queen: x = " + getCoordinates().getX() + ", y = " + getCoordinates().getY();
     }
-
-
 }

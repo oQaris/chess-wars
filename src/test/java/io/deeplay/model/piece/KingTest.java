@@ -13,10 +13,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class KingTest {
     Board board;
+    King king;
 
     @BeforeEach
     void setUp() {
         board = new Board();
+        king = new King(new Coordinates(0,5), Color.WHITE);
     }
 
     @Test
@@ -26,17 +28,47 @@ class KingTest {
     }
 
     @Test
-    void getPossibleMoves() {
-        List<Coordinates> possibleMoves = board.getPiece(new Coordinates(0, 0)).getPossibleMoves(board);
+    void getPossibleMovesFromStartBoard() {
+        List<Coordinates> possibleMoves = board.getPiece(new Coordinates(4, 0)).getPossibleMoves(board);
 
         Assertions.assertEquals(0, possibleMoves.size());
     }
 
     @Test
-    void canMoveAt() {
-        Assertions.assertFalse(board.getPiece(new Coordinates(4, 0)).canMoveAt(new Coordinates(-1, 0), board));
-        Assertions.assertFalse(board.getPiece(new Coordinates(4, 0)).canMoveAt(new Coordinates(0, 0), board));
+    void getPossibleMovesFromCenter(){
+        List<Coordinates> possibleMovesFromCenter = king.getPossibleMoves(board);
+        Assertions.assertEquals(5, possibleMovesFromCenter.size());
+    }
 
-        Assertions.assertFalse(board.getPiece(new Coordinates(4, 0)).canMoveAt(new Coordinates(4, 1), board));
+    @Test
+    void canMoveToEmptyCell() {
+        List<Coordinates> possibleMovesFromCenter = king.getPossibleMoves(board);
+        assertTrue(possibleMovesFromCenter.contains(new Coordinates(1, 5)));
+    }
+
+    @Test
+    void canMoveToCellWithAllyPiece() {
+        board.setPiece(new Coordinates(0,4), new King(new Coordinates(0,4), Color.WHITE));
+        assertFalse(king.canMoveAt(new Coordinates(0, 4), board));
+    }
+
+    @Test
+    void canMoveAtEnemyPiece(){
+        assertTrue(king.canMoveAt(new Coordinates(0,6), board));
+    }
+
+    @Test
+    void canMoveOffTheBoard(){
+        assertFalse(king.canMoveAt(new Coordinates(-1, 5), board));
+    }
+
+    @Test
+    void canMoveOnCurrent(){
+        assertFalse(king.canMoveAt(new Coordinates(0,5),board));
+    }
+
+    @Test
+    public void toStringTest() {
+        assertEquals("King: x = 0 y = 5", king.toString());
     }
 }

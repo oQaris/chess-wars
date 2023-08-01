@@ -13,10 +13,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RookTest {
     private Board board;
+    private Rook rook;
 
     @BeforeEach
     void setUp() {
         board = new Board();
+        rook = new Rook(new Coordinates(4,4), Color.WHITE);
     }
 
     @Test
@@ -26,18 +28,45 @@ class RookTest {
     }
 
     @Test
-    void getPossibleMoves() {
+    void getPossibleMovesFromStartBoard() {
         List<Coordinates> possibleMoves = board.getPiece(new Coordinates(0, 0)).getPossibleMoves(board);
 
         Assertions.assertEquals(0, possibleMoves.size());
     }
 
     @Test
-    void canMoveAt() {
-        Assertions.assertFalse(board.getPiece(new Coordinates(0, 0)).canMoveAt(new Coordinates(-1, 0), board));
-        Assertions.assertFalse(board.getPiece(new Coordinates(0, 0)).canMoveAt(new Coordinates(0, 0), board));
+    void getPossibleMovesFromCenter(){
+        List<Coordinates> possibleMovesFromCenter = rook.getPossibleMoves(board);
+        Assertions.assertEquals(11, possibleMovesFromCenter.size());
+    }
 
-        Assertions.assertFalse(board.getPiece(new Coordinates(0, 0)).canMoveAt(new Coordinates(2, 0), board));
-        Assertions.assertFalse(board.getPiece(new Coordinates(0, 0)).canMoveAt(new Coordinates(1, 1), board));
+    @Test
+    void canMoveToEmptyCell() {
+        assertTrue(rook.canMoveAt(new Coordinates(4, 2), board));
+    }
+
+    @Test
+    void canMoveToCellWithAllyPiece() {
+        assertFalse(rook.canMoveAt(new Coordinates(4, 1), board));
+    }
+
+    @Test
+    void canMoveAtEnemyPiece(){
+        assertTrue(rook.canMoveAt(new Coordinates(4,6), board));
+    }
+
+    @Test
+    void canMoveOffTheBoard(){
+        assertFalse(rook.canMoveAt(new Coordinates(-1, 4), board));
+    }
+
+    @Test
+    void canMoveOnCurrent(){
+        assertFalse(rook.canMoveAt(new Coordinates(4,4),board));
+    }
+
+    @Test
+    public void toStringTest() {
+        assertEquals("Rook: x = 4 y = 4", rook.toString());
     }
 }
