@@ -1,5 +1,6 @@
 package io.deeplay.model.piece;
 
+import io.deeplay.domain.Color;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 

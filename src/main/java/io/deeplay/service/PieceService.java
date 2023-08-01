@@ -1,8 +1,8 @@
 package io.deeplay.service;
 
+import io.deeplay.domain.Color;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
-import io.deeplay.model.piece.Color;
 import io.deeplay.model.piece.Piece;
 
 import java.util.ArrayList;

@@ -1,5 +1,6 @@
 package io.deeplay.model;
 
+import io.deeplay.domain.Color;
 import io.deeplay.model.move.Move;
 import io.deeplay.model.move.MoveType;
 import io.deeplay.model.piece.*;
@@ -50,10 +51,6 @@ public class Board {
 
     public Piece getPiece(Coordinates coordinates) {
         return board[coordinates.getX()][coordinates.getY()];
-    }
-
-    public Piece[][] getBoard() {
-        return board;
     }
 
     public void setPiece(Coordinates coordinates, Piece piece) {

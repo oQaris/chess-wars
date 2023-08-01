@@ -35,7 +35,7 @@ public class GameSession {
             Color currentColor = gameInfo.getCurrentMoveColor();
 
             Player playerWhoMoves = choosePlayer(currentColor);
-            List<Piece> possiblePiecesToMove = PieceService.getPossibleToMovePieces();
+            List<Piece> possiblePiecesToMove = PieceService.getPiecesPossibleToMove();
 
             System.out.println("Возможные фигуры для хода и их позиции: ");
 
