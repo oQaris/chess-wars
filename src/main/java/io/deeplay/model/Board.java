@@ -6,7 +6,7 @@ import io.deeplay.model.move.MoveType;
 import io.deeplay.model.piece.*;
 
 public class Board {
-    private Piece[][] board;
+    private static Piece[][] board;
     private int blackPiecesNumber = 16;
     private int whitePiecesNumber = 16;
 
@@ -14,7 +14,7 @@ public class Board {
         board = getStartBoard();
     }
 
-    public Piece[][] getStartBoard() {
+    public static Piece[][] getStartBoard() {
         board = new Piece[8][8];
 
         board[0][0] = new Rook(new Coordinates(0, 0), Color.WHITE);
@@ -57,7 +57,7 @@ public class Board {
         board[coordinates.getX()][coordinates.getY()] = piece;
     }
 
-    public Piece[][] getEmptyBoard() {
+    public static Piece[][] getEmptyBoard() {
         board = new Piece[8][8];
 
         for (int i = 0; i < 8; i++) {

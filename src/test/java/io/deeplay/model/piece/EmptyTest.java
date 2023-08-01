@@ -1,5 +1,6 @@
 package io.deeplay.model.piece;
 
+import io.deeplay.domain.Color;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 import org.junit.jupiter.api.Assertions;
@@ -28,5 +29,16 @@ class EmptyTest {
     @Test
     void canMoveAt() {
         Assertions.assertFalse(board.getPiece(new Coordinates(3, 3)).canMoveAt(new Coordinates(2, 0), board));
+    }
+
+    @Test
+    public void getColor() {
+        assertEquals(Color.EMPTY, board.getPiece(new Coordinates(3, 3)).getColor());
+    }
+
+    @Test
+    public void toStringTest() {
+        Empty empty = new Empty(new Coordinates(3, 3), Color.EMPTY);
+        assertEquals("Empty: x = 3 y = 3", empty.toString());
     }
 }

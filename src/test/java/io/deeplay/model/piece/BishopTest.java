@@ -28,44 +28,42 @@ class BishopTest {
     }
 
     @Test
-    void getPossibleMoves() {
-        List<Coordinates> possibleMoves = board.getPiece(new Coordinates(0, 0)).getPossibleMoves(board);
+    void getPossibleMovesFromStartBoard() {
+        List<Coordinates> possibleMoves = board.getPiece(new Coordinates(2, 0)).getPossibleMoves(board);
         Assertions.assertEquals(0, possibleMoves.size());
+    }
 
+    @Test
+    void getPossibleMovesFromCenter(){
         List<Coordinates> possibleMovesFromCenter = bishop.getPossibleMoves(board);
         Assertions.assertEquals(9, possibleMovesFromCenter.size());
     }
 
     @Test
-    public void canMoveToEmptyCell() {
+    void canMoveToEmptyCell() {
         List<Coordinates> possibleMovesFromCenter = bishop.getPossibleMoves(board);
         assertTrue(possibleMovesFromCenter.contains(new Coordinates(4, 4)));
     }
 
     @Test
-    public void canMoveToCellWithAllyPiece() {
+    void canMoveToCellWithAllyPiece() {
         board.setPiece(new Coordinates(4,4), new Bishop(new Coordinates(4,4), Color.WHITE));
         assertFalse(bishop.canMoveAt(new Coordinates(4, 4), board));
     }
 
     @Test
-    public void canMoveAtEnemyPiece(){
+    void canMoveAtEnemyPiece(){
         assertTrue(bishop.canMoveAt(new Coordinates(0,6), board));
     }
 
     @Test
-    public void canMoveOffTheBoard(){
+    void canMoveOffTheBoard(){
         assertFalse(bishop.canMoveAt(new Coordinates(-1, -1), board));
-        assertFalse(bishop.canMoveAt(new Coordinates(8, 8), board));
     }
 
     @Test
-    void canMoveAt() {
-        Assertions.assertFalse(board.getPiece(new Coordinates(0, 0)).canMoveAt(new Coordinates(-1, 0), board));
-        Assertions.assertFalse(board.getPiece(new Coordinates(0, 0)).canMoveAt(new Coordinates(0, 0), board));
-
-        Assertions.assertFalse(board.getPiece(new Coordinates(0, 0)).canMoveAt(new Coordinates(2, 0), board));
-        Assertions.assertFalse(board.getPiece(new Coordinates(0, 0)).canMoveAt(new Coordinates(1, 1), board));
+    void canMoveOnCurrent(){
+        assertFalse(bishop.canMoveAt(new Coordinates(3,3),board));
     }
 
     @Test

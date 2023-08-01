@@ -37,6 +37,10 @@ public class Bishop extends Piece {
             return false;
         }
 
+        if (coordinates.getX() == this.getCoordinates().getX() && coordinates.getY() == this.getCoordinates().getY()) {
+            return false;
+        }
+
         if (board.getBoard()[coordinates.getX()][coordinates.getY()].getColor().equals(getColor())) { // фигура того же цвета
             return false;
         }
