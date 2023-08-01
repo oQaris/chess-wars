@@ -1,6 +1,5 @@
 package io.deeplay.model;
 
-import io.deeplay.model.piece.Color;
 import io.deeplay.model.piece.Piece;
 
 import java.util.ArrayList;

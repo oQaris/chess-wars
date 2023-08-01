@@ -22,7 +22,7 @@ public class Human extends Player {
 
         Piece selectedPiece = null;
         while (selectedPiece == null) {
-            System.out.println("Выберите фигуру (ее номер), которой хотите походить:");
+            System.out.println("choose piece (its number) which you want to move:");
             for (int i = 0; i < possiblePiecesToMove.size(); i++) {
                 System.out.println("(" + i + ") " + possiblePiecesToMove.get(i).getColor().name() + " "
                         + possiblePiecesToMove.get(i).getClass().getName() + " at x:" + possiblePiecesToMove.get(i).getCoordinates().getX()
@@ -36,7 +36,7 @@ public class Human extends Player {
         Coordinates moveCoordinates = null;
 
         while (moveCoordinates == null) {
-            System.out.println("Выберите точку, в которую хотите походить:");
+            System.out.println("choose coordinates in which you want to move you piece:");
             for (int i = 0; i < availableMoves.size(); i++) {
                 System.out.println("(" + i + ") x: " + availableMoves.get(i).getX() + " y: " + availableMoves.get(i).getY());
             }

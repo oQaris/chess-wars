@@ -1,7 +1,7 @@
 package io.deeplay.model.move;
 
 
-import io.deeplay.model.Move;
+import io.deeplay.model.move.Move;
 
 import java.util.ArrayList;
 

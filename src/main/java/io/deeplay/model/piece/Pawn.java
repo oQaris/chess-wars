@@ -1,5 +1,6 @@
 package io.deeplay.model.piece;
 
+import io.deeplay.domain.Color;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 
@@ -56,7 +57,7 @@ public class Pawn extends Piece{
         int currentY = getCoordinates().getY() + yDirection;
 
         while (currentX != coordinates.getX() && currentY != coordinates.getY()) {
-            if (board.getPiece(currentX, currentY) != null) {
+            if (board.getPiece(new Coordinates(currentX, currentY)).equals(Color.EMPTY)) {
                 return false;
             }
 
