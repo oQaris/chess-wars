@@ -2,6 +2,7 @@ package io.deeplay.engine;
 
 import io.deeplay.domain.Color;
 import io.deeplay.model.Board;
+import io.deeplay.model.move.Move;
 import io.deeplay.model.move.MoveHistory;
 import io.deeplay.model.player.Player;
 
@@ -21,20 +22,19 @@ public class GameInfo {
         this.player2 = player2;
     }
 
-    public Player getPlayer1() {
-        return player1;
-    }
-
-    public void setPlayer1(Player player1) {
+    public GameInfo(Player player1, Player player2) {
         this.player1 = player1;
-    }
-
-    public Player getPlayer2() {
-        return player2;
-    }
-
-    public void setPlayer2(Player player2) {
         this.player2 = player2;
+        this.currentMoveColor = Color.WHITE;
+        this.currentBoard = new Board();
+        this.moveHistory = new MoveHistory();
+    }
+
+    public void move(Move move) {
+        currentBoard.move(move);
+        moveHistory.addMove(move);
+        if (currentMoveColor == Color.WHITE) currentMoveColor = Color.BLACK;
+        else currentMoveColor = Color.WHITE;
     }
 
     public Color getCurrentMoveColor() {
@@ -45,19 +45,13 @@ public class GameInfo {
         this.currentMoveColor = currentMoveColor;
     }
 
-    public Board getCurrentBoardState() {
+    public Board getCurrentBoard() {
         return currentBoard;
-    }
-
-    public void setCurrentBoardState(Board currentBoardState) {
-        this.currentBoard = currentBoardState;
     }
 
     public MoveHistory getMoveHistory() {
         return moveHistory;
     }
 
-    public void setMoveHistory(MoveHistory moveHistory) {
-        this.moveHistory = moveHistory;
-    }
+
 }

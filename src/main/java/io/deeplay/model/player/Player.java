@@ -1,6 +1,7 @@
 package io.deeplay.model.player;
 
 import io.deeplay.domain.Color;
+import io.deeplay.engine.GameInfo;
 import io.deeplay.model.Board;
 import io.deeplay.model.move.Move;
 import io.deeplay.model.piece.Piece;
@@ -14,7 +15,7 @@ public abstract class Player {
         this.color = color;
     }
 
-    public abstract Move move(List<Piece> possiblePiecesToMove, Board board);
+    public abstract Move getMove(List<Piece> possiblePiecesToMove, GameInfo gameInfo);
 
     public Color getColor() {
         return color;

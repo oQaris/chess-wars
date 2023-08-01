@@ -1,6 +1,7 @@
 package io.deeplay.model.player;
 
 import io.deeplay.domain.Color;
+import io.deeplay.engine.GameInfo;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
@@ -20,16 +21,16 @@ public class Bot extends Player {
     }
 
     @Override
-    public Move move(List<Piece> possiblePiecesToMove, Board board) {
+    public Move getMove(List<Piece> possiblePiecesToMove, GameInfo gameInfo) {
         Random random = new Random();
 
         Piece randomPiece = possiblePiecesToMove.get(random.nextInt(possiblePiecesToMove.size() - 1));
-        List<Coordinates> availableMoves = randomPiece.getPossibleMoves(board);
+        List<Coordinates> availableMoves = randomPiece.getPossibleMoves(gameInfo.getCurrentBoard());
 
         Coordinates randomMoveCoordinates = availableMoves.get(random.nextInt(availableMoves.size() - 1));
-        System.out.println("Bot selected to move: " + randomPiece.getColor() + " " + randomPiece.getClass().getName()
+        System.out.println("Bot selected to move: " + randomPiece.getColor() + " " + randomPiece.getClass().getSimpleName()
                 + " to coordinates: x=" + randomMoveCoordinates.getX() + ", y=" + randomMoveCoordinates.getY());
-        return MoveService.createMove(randomPiece, randomMoveCoordinates, board);
+        return MoveService.createMove(randomPiece, randomMoveCoordinates, gameInfo.getCurrentBoard());
     }
 
     public void chooseDifficultyLevel(int level) {
