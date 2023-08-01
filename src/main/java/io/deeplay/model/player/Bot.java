@@ -1,24 +1,35 @@
 package io.deeplay.model.player;
 
+import io.deeplay.domain.Color;
 import io.deeplay.model.Board;
+import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
+import io.deeplay.model.piece.Piece;
+import io.deeplay.service.MoveService;
 
 import java.util.List;
 import java.util.Random;
 
 public class Bot extends Player {
     private int difficultyLevel;
-    private char piecesColor;
+    private Color color;
 
-    public Bot(char piecesColor, int difficultyLevel) {
-        super(piecesColor);
+    public Bot(Color color, int difficultyLevel) {
+        super(color);
         this.difficultyLevel = difficultyLevel;
     }
 
     @Override
-    public Move move(List<Move> allPossibleMoves) {
+    public Move move(List<Piece> possiblePiecesToMove, Board board) {
         Random random = new Random();
-        return allPossibleMoves.get(random.nextInt(allPossibleMoves.size() - 1));
+
+        Piece randomPiece = possiblePiecesToMove.get(random.nextInt(possiblePiecesToMove.size() - 1));
+        List<Coordinates> availableMoves = randomPiece.getPossibleMoves(board);
+
+        Coordinates randomMoveCoordinates = availableMoves.get(random.nextInt(availableMoves.size() - 1));
+        System.out.println("Bot selected to move: " + randomPiece.getColor() + " " + randomPiece.getClass().getName()
+                + " to coordinates: x=" + randomMoveCoordinates.getX() + ", y=" + randomMoveCoordinates.getY());
+        return MoveService.createMove(randomPiece, randomMoveCoordinates, board);
     }
 
     public void chooseDifficultyLevel(int level) {
@@ -42,7 +53,7 @@ public class Bot extends Player {
     public String toString() {
         return "Bot{" +
                 "difficultyLevel=" + difficultyLevel +
-                ", piecesColor=" + piecesColor +
+                ", color=" + color +
                 '}';
     }
 }

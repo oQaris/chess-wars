@@ -1,101 +1,118 @@
 package io.deeplay.model;
 
+import io.deeplay.domain.Color;
 import io.deeplay.model.move.Move;
-
-import java.util.ArrayList;
-import java.util.List;
+import io.deeplay.model.move.MoveType;
+import io.deeplay.model.piece.*;
 
 public class Board {
-    private long whitePawns;
-    private long whiteKnights;
-    private long whiteBishops;
-    private long whiteRooks;
-    private long whiteQueen;
-    private long whiteKing;
-    private long blackPawns;
-    private long blackKnights;
-    private long blackBishops;
-    private long blackRooks;
-    private long blackQueen;
-    private long blackKing;
-    private char[] board;
+    private Piece[][] board;
+    private int blackPiecesNumber = 16;
+    private int whitePiecesNumber = 16;
 
     public Board() {
-        whitePawns = 0x00FF000000000000L;
-        whiteKnights = 0x4200000000000000L;
-        whiteBishops = 0x2400000000000000L;
-        whiteRooks = 0x8100000000000000L;
-        whiteQueen = 0x0800000000000000L;
-        whiteKing = 0x1000000000000000L;
-
-        blackPawns = 0x000000000000FF00L;
-        blackKnights = 0x0000000000000042L;
-        blackBishops = 0x0000000000000024L;
-        blackRooks = 0x0000000000000081L;
-        blackQueen = 0x0000000000000008L;
-        blackKing = 0x0000000000000010L;
-
-        board = new char[64];
-
-        for (int i = 0; i < 64; i++) {
-            board[i] = getPieceAt(i);
-        }
+        board = getStartBoard();
     }
 
-    public void printBoard() {
-        for (int i = 0; i < 64; i++) {
-            System.out.print(board[i] + " ");
+    public Piece[][] getStartBoard() {
+        board = new Piece[8][8];
 
-            if ((i + 1) % 8 == 0) {
-                System.out.println();
+        board[0][0] = new Rook(new Coordinates(0, 0), Color.WHITE);
+        board[1][0] = new Knight(new Coordinates(1, 0), Color.WHITE);
+        board[2][0] = new Bishop(new Coordinates(2, 0), Color.WHITE);
+        board[3][0] = new Queen(new Coordinates(3, 0), Color.WHITE);
+        board[4][0] = new King(new Coordinates(4, 0), Color.WHITE);
+        board[5][0] = new Bishop(new Coordinates(5, 0), Color.WHITE);
+        board[6][0] = new Knight(new Coordinates(6, 0), Color.WHITE);
+        board[7][0] = new Rook(new Coordinates(7, 0), Color.WHITE);
+
+        board[0][7] = new Rook(new Coordinates(0, 7), Color.BLACK);
+        board[1][7] = new Knight(new Coordinates(1, 7), Color.BLACK);
+        board[2][7] = new Bishop(new Coordinates(2, 7), Color.BLACK);
+        board[3][7] = new Queen(new Coordinates(3, 7), Color.BLACK);
+        board[4][7] = new King(new Coordinates(4, 7), Color.BLACK);
+        board[5][7] = new Bishop(new Coordinates(5, 7), Color.BLACK);
+        board[6][7] = new Knight(new Coordinates(6, 7), Color.BLACK);
+        board[7][7] = new Rook(new Coordinates(7, 7), Color.BLACK);
+
+        for (int i = 0; i < 8; i++) {
+            board[i][6] = new Pawn(new Coordinates(i, 6), Color.BLACK);
+            board[i][1] = new Pawn(new Coordinates(i, 1), Color.WHITE);
+        }
+
+        for (int i = 2; i < 6; i++) {
+            for (int j = 0; j < 8; j++) {
+                board[j][i] = new Empty(new Coordinates(j, i), Color.EMPTY);
             }
         }
+
+        return board;
     }
 
-    private char getPieceAt(int cell) {
-        if ((whitePawns & (1L << cell)) != 0) {
-            return 'P';
-        } else if ((blackPawns & (1L << cell)) != 0) {
-            return 'p';
-        } else if ((whiteKnights & (1L << cell)) != 0) {
-            return 'N';
-        } else if ((blackKnights & (1L << cell)) != 0) {
-            return 'n';
-        } else if ((whiteBishops & (1L << cell)) != 0) {
-            return 'B';
-        } else if ((blackBishops & (1L << cell)) != 0) {
-            return 'b';
-        } else if ((whiteRooks & (1L << cell)) != 0) {
-            return 'R';
-        } else if ((blackRooks & (1L << cell)) != 0) {
-            return 'r';
-        } else if ((whiteQueen & (1L << cell)) != 0) {
-            return 'Q';
-        } else if ((blackQueen & (1L << cell)) != 0) {
-            return 'q';
-        } else if ((whiteKing & (1L << cell)) != 0) {
-            return 'K';
-        } else if ((blackKing & (1L << cell)) != 0) {
-            return 'k';
-        } else {
-            return '_';
+    public Piece getPiece(Coordinates coordinates) {
+        return board[coordinates.getX()][coordinates.getY()];
+    }
+
+    public void setPiece(Coordinates coordinates, Piece piece) {
+        board[coordinates.getX()][coordinates.getY()] = piece;
+    }
+
+    public Piece[][] getEmptyBoard() {
+        board = new Piece[8][8];
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                board[i][j] = new Empty(new Coordinates(i, j), Color.EMPTY);
+            }
+        }
+
+        return board;
+    }
+
+    public void move(Move move) {
+        Coordinates start = move.getStartPosition();
+        Coordinates end = move.getEndPosition();
+        MoveType moveType = move.getMoveType();
+
+        Piece pieceToMove = board[start.getX()][start.getY()];
+        Piece pieceToRemove = board[end.getX()][end.getY()];
+
+        if (pieceToMove.getColor().equals(Color.EMPTY)) {
+            return;
+        }
+
+        if (!pieceToMove.canMoveAt(end, this)) {
+            return;
+        }
+
+        Color pieceToRemoveColor = pieceToRemove.getColor();
+
+        if (moveType == MoveType.ORDINARY) {
+            if (!pieceToRemoveColor.equals(Color.EMPTY)) {   // сруб фигуры (подсчет оставшихся фигур??)
+                if (pieceToRemoveColor.equals(Color.BLACK)) {
+                    blackPiecesNumber--;
+                } else {
+                    whitePiecesNumber--;
+                }
+            }
+
+            board[end.getX()][end.getY()] = pieceToMove;
+            board[start.getX()][start.getY()] = new Empty(start, Color.EMPTY);
+            pieceToMove.setCoordinates(end);
+        } else if (moveType == MoveType.CASTLING) {
+            // обработка рокировки
+        } else if (moveType == MoveType.EN_PASSANT) {
+            // обработка взятия на проходе
+        } else if (moveType == MoveType.PROMOTION) {
+            // обработка promotion
         }
     }
 
-    public List<Move> getAllPossibleMoves() {
-        return new ArrayList<>();
+    public Piece[][] getBoard() {
+        return board;
     }
 
-    private void updateBoard() {
-        for (int i = 0; i < 64; i++) {
-            board[i] = getPieceAt(i);
-        }
-    }
-
-    public void movePiece(int from, int to) {
-        whitePawns &= ~(1L << from);
-        whitePawns |= (1L << to);
-        updateBoard();
+    public void setBoard(Piece[][] board) {
+        this.board = board;
     }
 }
-

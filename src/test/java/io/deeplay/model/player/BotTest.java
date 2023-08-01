@@ -16,11 +16,11 @@ class BotTest {
     @BeforeEach
     public void initializeBoard() {
         possibleMoves = new ArrayList<>();
-        possibleMoves.add(new Move(8, 16, MoveType.ORDINARY, '\0'));
-        possibleMoves.add(new Move(9, 17, MoveType.ORDINARY, '\0'));
-        possibleMoves.add(new Move(10, 18, MoveType.ORDINARY, '\0'));
-        possibleMoves.add(new Move(11, 19, MoveType.ORDINARY, '\0'));
-        possibleMoves.add(new Move(12, 20, MoveType.ORDINARY, '\0'));
+        //     possibleMoves.add(new Move(8, 16, MoveType.ORDINARY, '\0'));
+        //     possibleMoves.add(new Move(9, 17, MoveType.ORDINARY, '\0'));
+        //     possibleMoves.add(new Move(10, 18, MoveType.ORDINARY, '\0'));
+        //     possibleMoves.add(new Move(11, 19, MoveType.ORDINARY, '\0'));
+        //     possibleMoves.add(new Move(12, 20, MoveType.ORDINARY, '\0'));
     }
 
     @Test

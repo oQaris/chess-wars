@@ -1,5 +1,8 @@
 package io.deeplay.model.move;
 
+
+import io.deeplay.model.move.Move;
+
 import java.util.ArrayList;
 
 public class MoveHistory {

@@ -1,23 +1,25 @@
 package io.deeplay.model.move;
 
+import io.deeplay.model.Coordinates;
+
 public class Move {
-    private int startPosition;
-    private int endPosition;
+    private Coordinates startPosition;
+    private Coordinates endPosition;
     private MoveType moveType;
     private char switchTo;
 
-    public Move(int startPosition, int endPosition, MoveType moveType, char switchTo) {
+    public Move(Coordinates startPosition, Coordinates endPosition, MoveType moveType, char switchTo) {
         this.startPosition = startPosition;
         this.endPosition = endPosition;
         this.moveType = moveType;
         this.switchTo = switchTo;
     }
 
-    public int getStartPosition() {
+    public Coordinates getStartPosition() {
         return startPosition;
     }
 
-    public int getEndPosition() {
+    public Coordinates getEndPosition() {
         return endPosition;
     }
 
