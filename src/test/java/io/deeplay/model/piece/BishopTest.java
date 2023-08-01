@@ -11,18 +11,22 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class RookTest {
+class BishopTest {
     private Board board;
+    private Board emptyBoard;
 
     @BeforeEach
     void setUp() {
         board = new Board();
+
+        emptyBoard = new Board();
+        emptyBoard.getEmptyBoard();
     }
 
     @Test
     void getColor() {
-        assertEquals(Color.WHITE, board.getPiece(new Coordinates(0, 0)).getColor());
-        assertEquals(Color.BLACK, board.getPiece(new Coordinates(7, 7)).getColor());
+        assertEquals(Color.WHITE, board.getPiece(new Coordinates(2, 0)).getColor());
+        assertEquals(Color.BLACK, board.getPiece(new Coordinates(2, 7)).getColor());
     }
 
     @Test

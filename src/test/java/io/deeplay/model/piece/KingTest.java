@@ -11,8 +11,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class RookTest {
-    private Board board;
+class KingTest {
+    Board board;
 
     @BeforeEach
     void setUp() {
@@ -21,8 +21,8 @@ class RookTest {
 
     @Test
     void getColor() {
-        assertEquals(Color.WHITE, board.getPiece(new Coordinates(0, 0)).getColor());
-        assertEquals(Color.BLACK, board.getPiece(new Coordinates(7, 7)).getColor());
+        assertEquals(Color.WHITE, board.getPiece(new Coordinates(4, 0)).getColor());
+        assertEquals(Color.BLACK, board.getPiece(new Coordinates(4, 7)).getColor());
     }
 
     @Test
@@ -34,10 +34,9 @@ class RookTest {
 
     @Test
     void canMoveAt() {
-        Assertions.assertFalse(board.getPiece(new Coordinates(0, 0)).canMoveAt(new Coordinates(-1, 0), board));
-        Assertions.assertFalse(board.getPiece(new Coordinates(0, 0)).canMoveAt(new Coordinates(0, 0), board));
+        Assertions.assertFalse(board.getPiece(new Coordinates(4, 0)).canMoveAt(new Coordinates(-1, 0), board));
+        Assertions.assertFalse(board.getPiece(new Coordinates(4, 0)).canMoveAt(new Coordinates(0, 0), board));
 
-        Assertions.assertFalse(board.getPiece(new Coordinates(0, 0)).canMoveAt(new Coordinates(2, 0), board));
-        Assertions.assertFalse(board.getPiece(new Coordinates(0, 0)).canMoveAt(new Coordinates(1, 1), board));
+        Assertions.assertFalse(board.getPiece(new Coordinates(4, 0)).canMoveAt(new Coordinates(4, 1), board));
     }
 }

@@ -1,10 +1,14 @@
 package io.deeplay.model;
 
 import io.deeplay.domain.Color;
+import io.deeplay.model.move.Move;
+import io.deeplay.model.move.MoveType;
 import io.deeplay.model.piece.*;
 
 public class Board {
     private Piece[][] board;
+    private int blackPiecesNumber = 16;
+    private int whitePiecesNumber = 16;
 
     public Board() {
         board = getStartBoard();
@@ -32,8 +36,8 @@ public class Board {
         board[7][7] = new Rook(new Coordinates(7, 7), Color.BLACK);
 
         for (int i = 0; i < 8; i++) {
-            board[i][6] = new Empty(new Coordinates(i, 6), Color.BLACK);
-            board[i][1] = new Empty(new Coordinates(i, 1), Color.WHITE);
+            board[i][6] = new Pawn(new Coordinates(i, 6), Color.BLACK);
+            board[i][1] = new Pawn(new Coordinates(i, 1), Color.WHITE);
         }
 
         for (int i = 2; i < 6; i++) {
@@ -49,11 +53,66 @@ public class Board {
         return board[coordinates.getX()][coordinates.getY()];
     }
 
+    public void setPiece(Coordinates coordinates, Piece piece) {
+        board[coordinates.getX()][coordinates.getY()] = piece;
+    }
+
+    public Piece[][] getEmptyBoard() {
+        board = new Piece[8][8];
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                board[i][j] = new Empty(new Coordinates(i, j), Color.EMPTY);
+            }
+        }
+
+        return board;
+    }
+
+    public void move(Move move) {
+        Coordinates start = move.getStartPosition();
+        Coordinates end = move.getEndPosition();
+        MoveType moveType = move.getMoveType();
+
+        Piece pieceToMove = board[start.getX()][start.getY()];
+        Piece pieceToRemove = board[end.getX()][end.getY()];
+
+        if (pieceToMove.getColor().equals(Color.EMPTY)) {
+            return;
+        }
+
+        if (!pieceToMove.canMoveAt(end, this)) {
+            return;
+        }
+
+        Color pieceToRemoveColor = pieceToRemove.getColor();
+
+        if (moveType == MoveType.ORDINARY) {
+            if (!pieceToRemoveColor.equals(Color.EMPTY)) {   // сруб фигуры (подсчет оставшихся фигур??)
+                if (pieceToRemoveColor.equals(Color.BLACK)) {
+                    blackPiecesNumber--;
+                } else {
+                    whitePiecesNumber--;
+                }
+            }
+
+            board[end.getX()][end.getY()] = pieceToMove;
+            board[start.getX()][start.getY()] = new Empty(start, Color.EMPTY);
+            pieceToMove.setCoordinates(end);
+        } else if (moveType == MoveType.CASTLING) {
+            // обработка рокировки
+        } else if (moveType == MoveType.EN_PASSANT) {
+            // обработка взятия на проходе
+        } else if (moveType == MoveType.PROMOTION) {
+            // обработка promotion
+        }
+    }
+
     public Piece[][] getBoard() {
         return board;
     }
 
-    public void setPiece(Coordinates coordinates, Piece piece) {
-        board[coordinates.getX()][coordinates.getY()] = piece;
+    public void setBoard(Piece[][] board) {
+        this.board = board;
     }
 }
