@@ -1,6 +1,7 @@
 package io.deeplay.model.player;
 
 import io.deeplay.domain.Color;
+import io.deeplay.engine.GameInfo;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
@@ -17,7 +18,7 @@ public class Human extends Player {
     }
 
     @Override
-    public Move move(List<Piece> possiblePiecesToMove, Board board) {
+    public Move getMove(List<Piece> possiblePiecesToMove, GameInfo gameInfo) {
         Scanner scanner = new Scanner(System.in, Charset.defaultCharset().name());
 
         Piece selectedPiece = null;
@@ -25,13 +26,13 @@ public class Human extends Player {
             System.out.println("choose piece (its number) which you want to move:");
             for (int i = 0; i < possiblePiecesToMove.size(); i++) {
                 System.out.println("(" + i + ") " + possiblePiecesToMove.get(i).getColor().name() + " "
-                        + possiblePiecesToMove.get(i).getClass().getName() + " at x:" + possiblePiecesToMove.get(i).getCoordinates().getX()
+                        + possiblePiecesToMove.get(i).getClass().getSimpleName() + " at x:" + possiblePiecesToMove.get(i).getCoordinates().getX()
                         + " y:" + possiblePiecesToMove.get(i).getCoordinates().getY());
             }
 
             selectedPiece = possiblePiecesToMove.get(scanner.nextInt());
         }
-        List<Coordinates> availableMoves = selectedPiece.getPossibleMoves(board);
+        List<Coordinates> availableMoves = selectedPiece.getPossibleMoves(gameInfo.getCurrentBoard());
 
         Coordinates moveCoordinates = null;
 
@@ -45,9 +46,9 @@ public class Human extends Player {
         }
 
         System.out.println("You selected " + selectedPiece.getColor().name() + " "
-                + selectedPiece.getClass().getName() + " to move to coordinates x:" + moveCoordinates.getX() + " y:" + moveCoordinates.getY());
+                + selectedPiece.getClass().getSimpleName() + " to move to coordinates x:" + moveCoordinates.getX() + " y:" + moveCoordinates.getY());
 
-        return MoveService.createMove(selectedPiece, moveCoordinates, board);
+        return MoveService.createMove(selectedPiece, moveCoordinates, gameInfo.getCurrentBoard());
     }
 
     public void lose() {

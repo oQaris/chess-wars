@@ -28,28 +28,20 @@ public class GameSession {
     }
 
     public void startGameSession() {
-        Board board = new Board();
-        GameInfo gameInfo = new GameInfo(board, player1, player2);
-        MoveHistory moveHistory = new MoveHistory();
+        GameInfo gameInfo = new GameInfo(player1, player2);
 
         while(true) {
             Color currentColor = gameInfo.getCurrentMoveColor();
             System.out.println(currentColor);
             Player playerWhoMoves = choosePlayer(currentColor);
-            System.out.println("current player: " + playerWhoMoves.getClass().getName());
-            List<Piece> possiblePiecesToMove = PieceService.getPiecesPossibleToMove(gameInfo.getCurrentBoardState(), currentColor);
+            System.out.println("current player: " + playerWhoMoves.getClass().getSimpleName());
+            List<Piece> possiblePiecesToMove = PieceService.getPiecesPossibleToMove(gameInfo.getCurrentBoard(), currentColor);
             System.out.println("Amount of possibleMoves: " + possiblePiecesToMove.size());
-            Move move = playerWhoMoves.move(possiblePiecesToMove, gameInfo.getCurrentBoardState());
+            Move move = playerWhoMoves.getMove(possiblePiecesToMove, gameInfo);
 
-//            board = Board.move(move);
-            moveHistory.addMove(move);
+            gameInfo.move(move);
 
-            gameInfo.setCurrentBoardState(board);
-            gameInfo.setMoveHistory(moveHistory);
-            if (currentColor == Color.WHITE) gameInfo.setCurrentMoveColor(Color.BLACK);
-            else gameInfo.setCurrentMoveColor(Color.WHITE);
-
-            boolean isFinished = GameState.check(board);
+            boolean isFinished = GameState.check(gameInfo.getCurrentBoard());
             if (isFinished == true) endGame();
         }
     }
