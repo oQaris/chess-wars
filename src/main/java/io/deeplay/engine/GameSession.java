@@ -36,7 +36,7 @@ public class GameSession {
             Player playerWhoMoves = choosePlayer(currentColor);
             System.out.println("current player: " + playerWhoMoves.getClass().getSimpleName());
             List<Piece> possiblePiecesToMove = PieceService.getPiecesPossibleToMove(gameInfo.getCurrentBoard(), currentColor);
-            System.out.println("Amount of possibleMoves: " + possiblePiecesToMove.size());
+            System.out.println("Number of Pieces you can move: " + possiblePiecesToMove.size());
             Move move = playerWhoMoves.getMove(possiblePiecesToMove, gameInfo);
 
             gameInfo.move(move);

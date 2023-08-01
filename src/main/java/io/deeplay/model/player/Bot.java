@@ -24,10 +24,19 @@ public class Bot extends Player {
     public Move getMove(List<Piece> possiblePiecesToMove, GameInfo gameInfo) {
         Random random = new Random();
 
-        Piece randomPiece = possiblePiecesToMove.get(random.nextInt(possiblePiecesToMove.size() - 1));
+        Piece randomPiece = null;
+
+        if (possiblePiecesToMove.size() == 1) randomPiece = possiblePiecesToMove.get(0);
+        else randomPiece = possiblePiecesToMove.get(random.nextInt(possiblePiecesToMove.size() - 1));
+
         List<Coordinates> availableMoves = randomPiece.getPossibleMoves(gameInfo.getCurrentBoard());
 
-        Coordinates randomMoveCoordinates = availableMoves.get(random.nextInt(availableMoves.size() - 1));
+        System.out.println("Number of moves you can do using this Piece: " + availableMoves.size());
+
+        Coordinates randomMoveCoordinates = null;
+        if (availableMoves.size() == 1) randomMoveCoordinates = availableMoves.get(0);
+        else randomMoveCoordinates = availableMoves.get(random.nextInt(availableMoves.size() - 1));
+
         System.out.println("Bot selected to move: " + randomPiece.getColor() + " " + randomPiece.getClass().getSimpleName()
                 + " to coordinates: x=" + randomMoveCoordinates.getX() + ", y=" + randomMoveCoordinates.getY());
         return MoveService.createMove(randomPiece, randomMoveCoordinates, gameInfo.getCurrentBoard());

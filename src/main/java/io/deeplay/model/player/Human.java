@@ -37,7 +37,7 @@ public class Human extends Player {
         Coordinates moveCoordinates = null;
 
         while (moveCoordinates == null) {
-            System.out.println("choose coordinates in which you want to move you piece:");
+            System.out.println("choose coordinates in which you want to move your piece:");
             for (int i = 0; i < availableMoves.size(); i++) {
                 System.out.println("(" + i + ") x: " + availableMoves.get(i).getX() + " y: " + availableMoves.get(i).getY());
             }
