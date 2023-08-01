@@ -9,6 +9,7 @@ import java.util.List;
 public abstract class Piece {
     private Coordinates coordinates;
     private Color color;
+    private char symbol;
 
     public Piece(Coordinates coordinates, Color color) {
         this.coordinates = coordinates;
