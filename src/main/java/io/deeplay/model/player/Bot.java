@@ -25,7 +25,6 @@ public class Bot extends Player {
         Random random = new Random();
 
         Piece randomPiece = null;
-
         if (possiblePiecesToMove.size() == 1) randomPiece = possiblePiecesToMove.get(0);
         else randomPiece = possiblePiecesToMove.get(random.nextInt(possiblePiecesToMove.size() - 1));
 

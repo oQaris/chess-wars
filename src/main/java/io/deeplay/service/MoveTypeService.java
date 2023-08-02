@@ -7,7 +7,6 @@ import io.deeplay.model.piece.Piece;
 
 public class MoveTypeService {
     public static MoveType getType(Piece selectedPiece, Coordinates moveCoordinates, Board board) {
-
         return MoveType.ORDINARY;
     }
 }
