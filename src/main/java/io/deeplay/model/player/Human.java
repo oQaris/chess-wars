@@ -1,7 +1,6 @@
 package io.deeplay.model.player;
 
 import io.deeplay.domain.Color;
-import io.deeplay.engine.GameInfo;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
@@ -18,7 +17,7 @@ public class Human extends Player {
     }
 
     @Override
-    public Move getMove(List<Piece> possiblePiecesToMove, GameInfo gameInfo) {
+    public Move getMove(List<Piece> possiblePiecesToMove, Board board) {
         Scanner scanner = new Scanner(System.in, Charset.defaultCharset().name());
 
         Piece selectedPiece = null;
@@ -32,7 +31,7 @@ public class Human extends Player {
 
             selectedPiece = possiblePiecesToMove.get(scanner.nextInt());
         }
-        List<Coordinates> availableMoves = selectedPiece.getPossibleMoves(gameInfo.getCurrentBoard());
+        List<Coordinates> availableMoves = selectedPiece.getPossibleMoves(board);
 
         Coordinates moveCoordinates = null;
 
@@ -48,7 +47,7 @@ public class Human extends Player {
         System.out.println("You selected " + selectedPiece.getColor().name() + " "
                 + selectedPiece.getClass().getSimpleName() + " to move to coordinates x:" + moveCoordinates.getX() + " y:" + moveCoordinates.getY());
 
-        return MoveService.createMove(selectedPiece, moveCoordinates, gameInfo.getCurrentBoard());
+        return MoveService.createMove(selectedPiece, moveCoordinates, board);
     }
 
     public void lose() {
