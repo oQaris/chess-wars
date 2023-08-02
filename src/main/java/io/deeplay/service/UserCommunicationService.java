@@ -3,13 +3,18 @@ package io.deeplay.service;
 import io.deeplay.domain.Color;
 import io.deeplay.domain.GameType;
 import io.deeplay.engine.GameSession;
+import io.deeplay.model.Coordinates;
+import io.deeplay.model.piece.Piece;
 import io.deeplay.model.player.Bot;
 import io.deeplay.model.player.Human;
 
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.Scanner;
 
 public class UserCommunicationService {
+
+    private static final Scanner scanner = new Scanner(System.in, Charset.defaultCharset().name());
 
     public static int chooseBotLevel() {
         // Scanner или с помощью интерфейса вводить число от 1 до 3
@@ -18,7 +23,6 @@ public class UserCommunicationService {
     }
 
     public static Color[] chooseColor() {
-        Scanner scanner = new Scanner(System.in, Charset.defaultCharset().name());
         while (true) {
             System.out.println("choose color of player1");
             char userInput = scanner.next().charAt(0);
@@ -45,7 +49,6 @@ public class UserCommunicationService {
     public static GameSession getGameSessionInfo() {
         // С начальной страницы получить тип игры
         System.out.println("Game opened...");
-        Scanner scanner = new Scanner(System.in, Charset.defaultCharset().name());
 
         char inputType = 'c';
 
@@ -65,7 +68,38 @@ public class UserCommunicationService {
         } else {
             System.out.println("Invalid input. Ending...");
             System.exit(0);
+            return null;
         }
-        return null;
+    }
+
+    public static Piece selectPiece(List<Piece> possiblePiecesToMove) {
+        Piece selectedPiece = null;
+
+        while (selectedPiece == null) {
+            System.out.println("choose piece (its number) which you want to move:");
+            for (int i = 0; i < possiblePiecesToMove.size(); i++) {
+                System.out.println("(" + i + ") " + possiblePiecesToMove.get(i).getColor().name() + " "
+                        + possiblePiecesToMove.get(i).getClass().getSimpleName()
+                        +" at x:" + possiblePiecesToMove.get(i).getCoordinates().getX()
+                        + " y:" + possiblePiecesToMove.get(i).getCoordinates().getY());
+            }
+            selectedPiece = possiblePiecesToMove.get(scanner.nextInt());
+        }
+        return selectedPiece;
+    }
+
+    public static Coordinates selectCoordinates(List<Coordinates> availableMoves) {
+        Coordinates moveCoordinates = null;
+
+        while (moveCoordinates == null) {
+            System.out.println("choose coordinates in which you want to move your piece:");
+            for (int i = 0; i < availableMoves.size(); i++) {
+                System.out.println("(" + i + ") x: " + availableMoves.get(i).getX()
+                        + " y: " + availableMoves.get(i).getY());
+            }
+
+            moveCoordinates = availableMoves.get(scanner.nextInt());
+        }
+        return moveCoordinates;
     }
 }
