@@ -33,44 +33,42 @@ public class Pawn extends Piece{
 
     @Override
     public boolean canMoveAt(Coordinates coordinates, Board board) {
-        if (coordinates.getX() < 0 || coordinates.getY() < 0 || coordinates.getY() >= 8 || coordinates.getX() >= 8) {
+        if (coordinates.getX() < 0 || coordinates.getY() < 0 || coordinates.getX() >= 8 || coordinates.getY() >= 8) {
             return false;
         }
-        if (this.getCoordinates().getX() == coordinates.getX() && this.getCoordinates().getY() == coordinates.getY()) {
-            return false;
-        }
-        if (board.getBoard()[coordinates.getX()][coordinates.getY()].getColor().equals(getColor())) { // фигура того же цвета
-            return false;
-        }
-        if (Math.abs(coordinates.getX() - this.getCoordinates().getX()) == Math.abs(coordinates.getY() - this.getCoordinates().getY())) {
+        if (this.getCoordinates().getX() == coordinates.getX() && this.getCoordinates().getY() == coordinates.getY()){
             return false;
         }
 
         int xDirection = Integer.compare(coordinates.getX(), this.getCoordinates().getX());
         int yDirection = Integer.compare(coordinates.getY(), this.getCoordinates().getY());
 
-        int currentX = this.getCoordinates().getX() + xDirection;
-        int currentY = this.getCoordinates().getY() + yDirection;
+        int distanceX = Math.abs(coordinates.getX() - this.getCoordinates().getX());
+        int distanceY = Math.abs(coordinates.getY() - this.getCoordinates().getY());
 
-        int distance = Math.abs(coordinates.getY() - this.getCoordinates().getY());
-        if (!board.getBoard()[currentX][currentY].getColor().equals(Color.EMPTY)) { // если не пустая, на пути стоит фигура другого цвета
-            return false;
-        }
-        if ((coordinates.getY() == 1 && board.getPiece(coordinates).getColor() == Color.WHITE) || (coordinates.getY() == 6 && board.getPiece(coordinates).getColor() == Color.BLACK)) {
-            if (distance == 2) {
-                return true;
-            }
-        }
-        if (this.getCoordinates().getX() == coordinates.getX() && this.getCoordinates().getY() + yDirection == coordinates.getY() && board.getPiece(coordinates).getColor().equals(Color.EMPTY) && distance == 1) {
+        // добавляем условие для атаки
+        if (distanceX == 1 && distanceY == 1 && board.getPiece(coordinates) != null && board.getPiece(coordinates).getColor() != this.getColor()) {
             return true;
         }
-        if (Math.abs(this.getCoordinates().getX() - coordinates.getX()) == 1 && this.getCoordinates().getY() + yDirection == coordinates.getY()) {
-            if (!board.getBoard()[coordinates.getX()][coordinates.getY()].getColor().equals(Color.EMPTY)) {
-                return true;
-            }
+        if (distanceX > 1 || distanceY > 2) {
+            return false;
         }
-        currentX += xDirection;
-        currentY += yDirection;
+
+        if (distanceX == 0 && distanceY <= 1 && board.getBoard()[coordinates.getX()][coordinates.getY()].getColor() == Color.EMPTY) {
+            return true;
+        }
+
+        if (distanceX == 1 && distanceY == 1 && board.getBoard()[coordinates.getX()][coordinates.getY()].getColor() == getColor().opposite()) {
+            return true;
+        }
+
+        if (distanceX == 0 && distanceY == 2 && ((this.getCoordinates().getY() == 1 && getColor() == Color.WHITE) || (this.getCoordinates().getY() == 6 && getColor() == Color.BLACK))) {
+            if (board.getBoard()[this.getCoordinates().getX()][this.getCoordinates().getY() + yDirection].getColor() != Color.EMPTY) {
+                return false;
+            }
+            return true;
+        }
+
         return false;
     }
 
