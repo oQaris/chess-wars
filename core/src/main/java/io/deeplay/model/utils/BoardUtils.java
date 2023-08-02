@@ -19,30 +19,6 @@ public class BoardUtils {
 
     public void render(Board board, Piece pieceToMove) {
         List<Coordinates> availableMoveSquares = new ArrayList<>();
-        switch(pieceToMove.getClass().getSimpleName()){
-            case "Pawn":
-                pieceToMove = new Pawn(pieceToMove.getCoordinates(), pieceToMove.getColor());
-                break;
-            case "Knight":
-                pieceToMove = new Knight(pieceToMove.getCoordinates(), pieceToMove.getColor());
-                break;
-            case "Bishop":
-                pieceToMove = new Bishop(pieceToMove.getCoordinates(), pieceToMove.getColor());
-                break;
-            case "Rook":
-                pieceToMove = new Rook(pieceToMove.getCoordinates(), pieceToMove.getColor());
-                break;
-            case "Queen":
-                pieceToMove = new Queen(pieceToMove.getCoordinates(), pieceToMove.getColor());
-                break;
-            case "King":
-                pieceToMove = new King(pieceToMove.getCoordinates(), pieceToMove.getColor());
-                break;
-            case "Empty":
-                pieceToMove = new Empty(pieceToMove.getCoordinates(), pieceToMove.getColor());
-                break;
-        }
-
         if (pieceToMove != null) {
             availableMoveSquares.addAll(pieceToMove.getPossibleMoves(board));
         }
@@ -51,11 +27,11 @@ public class BoardUtils {
             String line = "";
             for (int j = 0; j < 8; j++) {
                 assert availableMoveSquares != null;
-                boolean isHighlight = availableMoveSquares.contains(new Coordinates(i, j));
-                if (isSquareEmpty(board, new Coordinates(i, j))) {
-                    line += "   " + getSpriteForEmptySquare(new Coordinates(i,j), isHighlight);
+                boolean isHighlight = availableMoveSquares.contains(new Coordinates(j, i));
+                if (isSquareEmpty(board, new Coordinates(j, i))) {
+                    line += getSpriteForEmptySquare(new Coordinates(j, i), isHighlight);
                 } else {
-                    line += getPieceSprite(board.getPiece(new Coordinates(i,j)), isHighlight);
+                    line += getPieceSprite(board.getPiece(new Coordinates(j, i)), isHighlight);
                 }
             }
             line += ANSI_RESET;
@@ -66,16 +42,12 @@ public class BoardUtils {
         System.out.println("------------------------------------------------------------------------");
     }
 
-    public void render(Board board) {
-        render(board, null);
-    }
-
     private static String colorizeSprite(String sprite, Color pieceColor, boolean isSquareDark, boolean isHighlight) {
         // format = background color + font color + text
         String result = sprite;
         if (pieceColor == Color.WHITE) {
             result = ANSI_WHITE_PIECE_COLOR + result;
-        } else {
+        } else if (pieceColor == Color.BLACK) {
             result = ANSI_BLACK_PIECE_COLOR + result;
         }
         if (isHighlight) {
@@ -89,7 +61,7 @@ public class BoardUtils {
     }
 
     private String getSpriteForEmptySquare(Coordinates coordinates, boolean isHighlight) {
-        return colorizeSprite("  ", Color.WHITE, isSquareDark(coordinates), isHighlight);
+        return colorizeSprite("\u2002" + "\u2005\u205F" +  "\u2005\u2005", Color.EMPTY, isSquareDark(coordinates), isHighlight);
     }
 
     private static boolean isSquareDark(Coordinates coordinates) {
@@ -97,7 +69,7 @@ public class BoardUtils {
     }
 
     private boolean isSquareEmpty(Board board, Coordinates coordinates) {
-        return board.getPiece(coordinates) == null;
+        return board.getPiece(coordinates) instanceof Empty;
     }
 
     private static String selectUnicodeSpriteForPiece(Piece piece) {
@@ -114,7 +86,7 @@ public class BoardUtils {
 
     private static String getPieceSprite(Piece piece, boolean isHighlight) {
         return colorizeSprite(
-                " " + selectUnicodeSpriteForPiece(piece) + "  ", piece.getColor(), isSquareDark(piece.getCoordinates()),
+                 "\u2005" + selectUnicodeSpriteForPiece(piece) + "\u2005", piece.getColor(), isSquareDark(piece.getCoordinates()),
                 isHighlight
         );
     }
