@@ -7,10 +7,13 @@ import io.deeplay.model.piece.Piece;
 import io.deeplay.model.utils.BoardUtils;
 import io.deeplay.service.UserCommunicationService;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+
 public class Main {
     public static void main(String[] args) {
 //        System.out.println("Hello world!");
-//
+        System.setOut(new java.io.PrintStream(System.out, true, StandardCharsets.UTF_8));
         Board board = new Board();
         BoardUtils utils = new BoardUtils();
 //

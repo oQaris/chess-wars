@@ -3,10 +3,12 @@ package io.deeplay.model.piece;
 import io.deeplay.domain.Color;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
+import io.deeplay.model.utils.BoardUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,6 +20,7 @@ class PawnTest {
 
     @BeforeEach
     void setUp() {
+        System.setOut(new java.io.PrintStream(System.out, true, StandardCharsets.UTF_8));
         board = new Board();
         pawn = board.getPiece(new Coordinates(0, 1));
     }
@@ -28,8 +31,9 @@ class PawnTest {
         assertEquals(Color.BLACK, board.getPiece(new Coordinates(0, 6)).getColor());
     }
 
-  /*  @Test
+    @Test
     void getPossibleMovesFromStartBoard() {
+        System.setOut(new java.io.PrintStream(System.out, true, StandardCharsets.UTF_8));
         List<Coordinates> possibleMoves = pawn.getPossibleMoves(board);
 
         Assertions.assertEquals(2, possibleMoves.size());
@@ -45,7 +49,7 @@ class PawnTest {
         assertTrue(pawn.canMoveAt(new Coordinates(0, 3), board));
     }
 
-   */
+
 
     @Test
     void canMoveToCellWithAllyPiece() {
@@ -63,12 +67,16 @@ class PawnTest {
 
     @Test
     void canAttackEnemyPieceBlack() {
-        Coordinates coordinates = new Coordinates(1, 5);
+        System.setOut(new java.io.PrintStream(System.out, true, StandardCharsets.UTF_8));
+        BoardUtils boardUtils = new BoardUtils();
+        Coordinates coordinates = new Coordinates(2, 6);
         board.setPiece(coordinates, new Pawn(coordinates, Color.BLACK));
-        assertTrue(board.getPiece(new Coordinates(0, 6)).canMoveAt(coordinates, board));
+        boardUtils.render(board, board.getPiece(coordinates));
+        boardUtils.render(board, board.getPiece(new Coordinates(1, 5)));
+        assertTrue(board.getPiece(new Coordinates(1, 5)).canMoveAt(coordinates, board));
     }
 
-   /* @Test
+    @Test
     void canMoveOffTheBoard() {
         assertFalse(pawn.canMoveAt(new Coordinates(-1, 2), board));
     }
@@ -77,7 +85,6 @@ class PawnTest {
     void canMoveOnCurrent() {
         assertFalse(pawn.canMoveAt(new Coordinates(0, 1), board));
     }
-    */
 
     @Test
     public void toStringTest() {
