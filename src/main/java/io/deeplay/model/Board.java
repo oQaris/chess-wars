@@ -2,7 +2,7 @@ package io.deeplay.model;
 
 import io.deeplay.domain.Color;
 import io.deeplay.model.move.Move;
-import io.deeplay.model.move.MoveType;
+import io.deeplay.domain.MoveType;
 import io.deeplay.model.piece.*;
 
 public class Board {

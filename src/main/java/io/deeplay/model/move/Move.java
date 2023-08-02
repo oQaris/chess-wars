@@ -1,5 +1,6 @@
 package io.deeplay.model.move;
 
+import io.deeplay.domain.MoveType;
 import io.deeplay.model.Coordinates;
 
 public class Move {

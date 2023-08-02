@@ -2,7 +2,7 @@ package io.deeplay.service;
 
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
-import io.deeplay.model.move.MoveType;
+import io.deeplay.domain.MoveType;
 import io.deeplay.model.piece.Piece;
 
 public class MoveTypeService {
