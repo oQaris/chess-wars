@@ -1,4 +1,4 @@
-package io.deeplay.model.move;
+package io.deeplay.domain;
 
 public enum MoveType {
     ORDINARY,
