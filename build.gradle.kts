@@ -12,6 +12,7 @@ version = "1.0-SNAPSHOT"
 
 allprojects {
     apply(plugin = "net.ltgt.errorprone")
+    apply(plugin = "java")
 
     java {
         sourceCompatibility = JavaVersion.VERSION_17
