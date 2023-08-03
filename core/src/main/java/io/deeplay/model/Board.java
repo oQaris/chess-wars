@@ -4,6 +4,7 @@ import io.deeplay.domain.Color;
 import io.deeplay.model.move.Move;
 import io.deeplay.domain.MoveType;
 import io.deeplay.model.piece.*;
+import io.deeplay.model.utils.BoardUtils;
 
 public class Board {
     private static Piece[][] board;
@@ -47,6 +48,14 @@ public class Board {
         }
 
         return board;
+    }
+    public static void printBoard(Board board){
+        BoardUtils boardUtils = new BoardUtils();
+        for (int i = 0; i < 8; i ++) {
+            for (int j = 0; j < 8; j ++){
+                boardUtils.render(board, board.getPiece(new Coordinates(i,j)));
+            }
+        }
     }
 
     public Piece getPiece(Coordinates coordinates) {

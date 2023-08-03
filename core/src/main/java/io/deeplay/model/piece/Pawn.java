@@ -47,10 +47,10 @@ public class Pawn extends Piece{
         int distanceY = Math.abs(coordinates.getY() - this.getCoordinates().getY());
 
         // добавляем условие для атаки
-        if (distanceX == 1 && distanceY == 1 && board.getPiece(coordinates) != null && board.getPiece(coordinates).getColor() != this.getColor()) {
+        if (distanceX == 1 && distanceY == 1 && board.getPiece(coordinates) != null && board.getPiece(coordinates).getColor() != getColor()) {
             return true;
         }
-        if (distanceX > 1 || distanceY > 2) {
+        if (distanceX > 1 && distanceY > 2) {
             return false;
         }
 
@@ -58,7 +58,7 @@ public class Pawn extends Piece{
             return true;
         }
 
-        if (distanceX == 1 && distanceY == 1 && board.getBoard()[coordinates.getX()][coordinates.getY()].getColor() == getColor().opposite()) {
+        if (distanceX == 1 && distanceY == 1 && board.getPiece(coordinates) != null && board.getPiece(coordinates).getColor() != getColor()) {
             return true;
         }
 
