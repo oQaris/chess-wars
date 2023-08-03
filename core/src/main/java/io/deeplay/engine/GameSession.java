@@ -15,6 +15,8 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Scanner;
 
+
+
 public class GameSession {
 
     private final Player player1;
