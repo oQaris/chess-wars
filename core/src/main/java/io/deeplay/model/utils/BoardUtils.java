@@ -42,6 +42,24 @@ public class BoardUtils {
         System.out.println("------------------------------------------------------------------------");
     }
 
+    public void render(Board board) {
+        for (int i = 7; i >= 0; i--) {
+            String line = "";
+            for (int j = 0; j < 8; j++) {
+                if (isSquareEmpty(board, new Coordinates(j, i))) {
+                    line += getSpriteForEmptySquare(new Coordinates(j, i), false);
+                } else {
+                    line += getPieceSprite(board.getPiece(new Coordinates(j, i)), false);
+                }
+            }
+            line += ANSI_RESET;
+            System.out.println(line);
+        }
+        System.out.println("------------------------------------------------------------------------");
+        System.out.println("------------------------------------------------------------------------");
+        System.out.println("------------------------------------------------------------------------");
+    }
+
     private static String colorizeSprite(String sprite, Color pieceColor, boolean isSquareDark, boolean isHighlight) {
         // format = background color + font color + text
         String result = sprite;

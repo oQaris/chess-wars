@@ -7,7 +7,7 @@ import io.deeplay.model.Coordinates;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Pawn extends Piece{
+public class Pawn extends Piece {
     public Pawn(Coordinates coordinates, Color color) {
         super(coordinates, color);
     }
@@ -31,45 +31,64 @@ public class Pawn extends Piece{
         return possibleMoves;
     }
 
-    @Override
     public boolean canMoveAt(Coordinates coordinates, Board board) {
-        if (coordinates.getX() < 0 || coordinates.getY() < 0 || coordinates.getX() >= 8 || coordinates.getY() >= 8) {
-            return false;
-        }
-        if (this.getCoordinates().getX() == coordinates.getX() && this.getCoordinates().getY() == coordinates.getY()){
-            return false;
-        }
+        int currentX = getCoordinates().getX();
+        int currentY = getCoordinates().getY();
+        int targetX = coordinates.getX();
+        int targetY = coordinates.getY();
 
-        int xDirection = Integer.compare(coordinates.getX(), this.getCoordinates().getX());
-        int yDirection = Integer.compare(coordinates.getY(), this.getCoordinates().getY());
-
-        int distanceX = Math.abs(coordinates.getX() - this.getCoordinates().getX());
-        int distanceY = Math.abs(coordinates.getY() - this.getCoordinates().getY());
-
-        // добавляем условие для атаки
-        if (distanceX == 1 && distanceY == 1 && board.getPiece(coordinates) != null && board.getPiece(coordinates).getColor() != getColor()) {
-            return true;
-        }
-        if (distanceX > 1 && distanceY > 2) {
+        if (targetX < 0 || targetY < 0 || targetY >= 8 || targetX >= 8) {
             return false;
         }
 
-        if (distanceX == 0 && distanceY <= 1 && board.getBoard()[coordinates.getX()][coordinates.getY()].getColor() == Color.EMPTY) {
-            return true;
+        if ((currentX == targetX) && (currentY == targetY)) {
+            return false;
         }
 
-        if (distanceX == 1 && distanceY == 1 && board.getPiece(coordinates) != null && board.getPiece(coordinates).getColor() != getColor()) {
-            return true;
+        if (board.getBoard()[targetX][targetY].getColor().equals(getColor())) { // фигура того же цвета
+            return false;
         }
 
-        if (distanceX == 0 && distanceY == 2 && ((this.getCoordinates().getY() == 1 && getColor() == Color.WHITE) || (this.getCoordinates().getY() == 6 && getColor() == Color.BLACK))) {
-            if (board.getBoard()[this.getCoordinates().getX()][this.getCoordinates().getY() + yDirection].getColor() != Color.EMPTY) {
-                return false;
+        if (Math.abs(targetY - currentY) > 2 || Math.abs(targetX - currentX) > 1) {
+            return false;
+        }
+
+        if ((getColor() == Color.WHITE) && targetY <= currentY) { // только вперед хотьба
+            return false;
+        }
+
+        if ((getColor() == Color.BLACK) && targetY >= currentY) {
+            return false;
+        }
+
+        if (Math.abs(targetY - currentY) == 2 && isStartPosition() && currentX == targetX) { // только из стартовой позиции
+            if (board.getBoard()[currentX][currentY + 1].getColor().equals(Color.EMPTY)
+                    || board.getBoard()[currentX][currentY - 1].getColor().equals(Color.EMPTY)) {
+                return true;
             }
+
+            return false;
+        }
+
+        if (targetX == currentX && Math.abs(targetY - currentY) == 1
+                && board.getBoard()[targetX][targetY].getColor().equals(Color.EMPTY)) {
             return true;
+        }
+
+        if (Math.abs(targetY - currentY) == 1 && Math.abs(targetX - currentX) == 1) {
+            if (!board.getBoard()[targetX][targetY].getColor().equals(Color.EMPTY)) {
+                return true;
+            }
+
+            return false;
         }
 
         return false;
+    }
+
+    private boolean isStartPosition() {
+        return (getColor() == Color.WHITE && getCoordinates().getY() == 1)
+                || (getColor() == Color.BLACK && getCoordinates().getY() == 6);
     }
 
     @Override

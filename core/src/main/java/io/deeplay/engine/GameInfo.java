@@ -6,6 +6,9 @@ import io.deeplay.model.move.Move;
 import io.deeplay.model.move.MoveHistory;
 import io.deeplay.model.player.Player;
 
+import static io.deeplay.model.Board.printBoard;
+import static io.deeplay.model.Board.printBoardOnce;
+
 public class GameInfo {
 
     private Player player1;
@@ -35,6 +38,7 @@ public class GameInfo {
         moveHistory.addMove(move);
         if (currentMoveColor == Color.WHITE) currentMoveColor = Color.BLACK;
         else currentMoveColor = Color.WHITE;
+        printBoardOnce(currentBoard);
     }
 
     public Color getCurrentMoveColor() {
