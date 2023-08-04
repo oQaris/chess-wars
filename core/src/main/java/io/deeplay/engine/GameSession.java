@@ -15,7 +15,8 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Scanner;
 
-
+import static io.deeplay.model.Board.printBoard;
+import static io.deeplay.model.Board.printBoardOnce;
 
 public class GameSession {
 
@@ -31,7 +32,7 @@ public class GameSession {
 
     public void startGameSession() {
         GameInfo gameInfo = new GameInfo(player1, player2);
-
+        printBoardOnce(gameInfo.getCurrentBoard());
         while(true) {
             Color currentColor = gameInfo.getCurrentMoveColor();
             System.out.println(currentColor);

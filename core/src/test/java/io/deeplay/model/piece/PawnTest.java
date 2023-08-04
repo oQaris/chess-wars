@@ -3,7 +3,7 @@ package io.deeplay.model.piece;
 import io.deeplay.domain.Color;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
-import io.deeplay.model.utils.BoardUtils;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import static io.deeplay.model.Board.printBoard;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PawnTest {
@@ -35,7 +36,7 @@ class PawnTest {
     void getPossibleMovesFromStartBoard() {
         System.setOut(new java.io.PrintStream(System.out, true, StandardCharsets.UTF_8));
         List<Coordinates> possibleMoves = pawn.getPossibleMoves(board);
-
+        printBoard(board, pawn);
         Assertions.assertEquals(2, possibleMoves.size());
     }
 
@@ -67,13 +68,16 @@ class PawnTest {
 
     @Test
     void canAttackEnemyPieceBlack() {
-        System.setOut(new java.io.PrintStream(System.out, true, StandardCharsets.UTF_8));
-        BoardUtils boardUtils = new BoardUtils();
-        Coordinates coordinates = new Coordinates(2, 6);
+        Coordinates coordinates = new Coordinates(2, 2);
         board.setPiece(coordinates, new Pawn(coordinates, Color.BLACK));
-        boardUtils.render(board, board.getPiece(coordinates));
-        boardUtils.render(board, board.getPiece(new Coordinates(1, 5)));
-        assertTrue(board.getPiece(new Coordinates(1, 5)).canMoveAt(coordinates, board));
+        printBoard(board, board.getPiece(coordinates));
+        assertTrue(board.getPiece(new Coordinates(1, 1)).canMoveAt(coordinates, board));
+    }
+
+    @Test
+    void canMoveBlackPawn() {
+        printBoard(board, board.getPiece(new Coordinates(1, 6)));
+        assertEquals(2, board.getPiece(new Coordinates(1, 6)).getPossibleMoves(board).size());
     }
 
     @Test
