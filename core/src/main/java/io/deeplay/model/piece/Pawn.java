@@ -6,6 +6,7 @@ import io.deeplay.model.Coordinates;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Pawn extends Piece {
     public Pawn(Coordinates coordinates, Color color) {
@@ -90,6 +91,15 @@ public class Pawn extends Piece {
     private boolean isStartPosition() {
         return (getColor() == Color.WHITE && getCoordinates().getY() == 1)
                 || (getColor() == Color.BLACK && getCoordinates().getY() == 6);
+    }
+
+    public boolean isPromotion(Coordinates coordinates, Board board) {
+        if ((coordinates.getY() == 0 && getColor().equals(Color.BLACK))
+                || (coordinates.getY() == 7 && getColor().equals(Color.WHITE))) {
+            return this.canMoveAt(coordinates, board);
+        }
+
+        return false;
     }
 
     @Override
