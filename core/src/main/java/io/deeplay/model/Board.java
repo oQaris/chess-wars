@@ -6,6 +6,8 @@ import io.deeplay.domain.MoveType;
 import io.deeplay.model.piece.*;
 import io.deeplay.model.utils.BoardUtils;
 
+import java.util.Scanner;
+
 public class Board {
     private static Piece[][] board;
     private int blackPiecesNumber = 16;
@@ -49,20 +51,22 @@ public class Board {
 
         return board;
     }
-    public static void printBoard(Board board){
+
+    public static void printBoard(Board board) {
         BoardUtils boardUtils = new BoardUtils();
-        for (int i = 0; i < 8; i ++) {
-            for (int j = 0; j < 8; j ++){
-                boardUtils.render(board, board.getPiece(new Coordinates(i,j)));
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                boardUtils.render(board, board.getPiece(new Coordinates(i, j)));
             }
         }
     }
 
-    public static void printBoard(Board board,Piece piece){
+    public static void printBoard(Board board, Piece piece) {
         BoardUtils boardUtils = new BoardUtils();
         boardUtils.render(board, board.getPiece(piece.getCoordinates()));
     }
-    public static void printBoardOnce(Board board){
+
+    public static void printBoardOnce(Board board) {
         BoardUtils boardUtils = new BoardUtils();
         boardUtils.render(board);
     }
@@ -122,8 +126,37 @@ public class Board {
         } else if (moveType == MoveType.EN_PASSANT) {
             // обработка взятия на проходе
         } else if (moveType == MoveType.PROMOTION) {
-            // обработка promotion
+            Piece newPiece = choosePromotionPiece(end, pieceToMove);
+
+            if (!pieceToRemoveColor.equals(Color.EMPTY)) {   // сруб фигуры (подсчет оставшихся фигур??)
+                if (pieceToRemoveColor.equals(Color.BLACK)) {
+                    blackPiecesNumber--;
+                } else {
+                    whitePiecesNumber--;
+                }
+            }
+
+            board[end.getX()][end.getY()] = newPiece;
+            board[start.getX()][start.getY()] = new Empty(start, Color.EMPTY);
         }
+    }
+
+    public Piece choosePromotionPiece(Coordinates endCoordinates, Piece pieceToMove) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Выберите новую фигуру: ");
+        System.out.println("1. Queen");
+        System.out.println("2. Rook");
+        System.out.println("3. Bishop");
+        System.out.println("4. Knight");
+        int choice = scanner.nextInt();
+
+        return switch (choice) {
+            case 1 -> new Queen(endCoordinates, pieceToMove.getColor());
+            case 2 -> new Rook(endCoordinates, pieceToMove.getColor());
+            case 3 -> new Bishop(endCoordinates, pieceToMove.getColor());
+            case 4 -> new Knight(endCoordinates, pieceToMove.getColor());
+            default -> throw new IllegalArgumentException("Invalid choice: " + choice);
+        };
     }
 
     public Piece[][] getBoard() {
