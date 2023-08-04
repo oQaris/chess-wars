@@ -1,11 +1,27 @@
 package io.deeplay.server;
 
-import io.deeplay.engine.GameSession;
-import io.deeplay.service.UserCommunicationService;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
 
 public class Server {
+    private int port;
+
+    public Server(int port) {
+        this.port = port;
+    }
+
     public static void main(String[] args) {
-        GameSession gameSession = UserCommunicationService.getGameSessionInfo();
-        gameSession.startGameSession();
+        int port = 8888;
+        Server server = new Server(port);
+        try {
+            server.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void start() {
+        EventLoopGroup bossGroup = new NioEventLoopGroup();
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
     }
 }
