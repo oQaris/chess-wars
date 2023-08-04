@@ -7,6 +7,7 @@ import io.deeplay.model.piece.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 
 public class BoardUtils {
@@ -44,15 +45,15 @@ public class BoardUtils {
 
     public void render(Board board) {
         for (int i = 7; i >= 0; i--) {
-            String line = "";
+            StringBuilder line = new StringBuilder();
             for (int j = 0; j < 8; j++) {
                 if (isSquareEmpty(board, new Coordinates(j, i))) {
-                    line += getSpriteForEmptySquare(new Coordinates(j, i), false);
+                    line.append(getSpriteForEmptySquare(new Coordinates(j, i), false));
                 } else {
-                    line += getPieceSprite(board.getPiece(new Coordinates(j, i)), false);
+                    line.append(getPieceSprite(board.getPiece(new Coordinates(j, i)), false));
                 }
             }
-            line += ANSI_RESET;
+            line.append(ANSI_RESET);
             System.out.println(line);
         }
         System.out.println("------------------------------------------------------------------------");
