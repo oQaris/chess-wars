@@ -5,7 +5,7 @@ import javax.swing.*;
 public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            ChessGUI chessGUI = new ChessGUI();
+            MainMenuGUI chessGUI = new MainMenuGUI();
             chessGUI.setVisible(true);
         });
     }
