@@ -1,4 +1,8 @@
-package io.deeplay.gui;
+package gui;
+
+import gui.service.BoardService;
+import io.deeplay.model.piece.Empty;
+import io.deeplay.model.piece.Piece;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,12 +31,17 @@ public class ChessGUI extends JFrame {
 
         chessBoardSquares = new JButton[BOARD_SIZE][BOARD_SIZE];
         boolean isLightSquare = true;
+        Piece[][] board = BoardService.getBoard();
 
         for (int row = 0; row < BOARD_SIZE; row++) {
             isLightSquare = !isLightSquare;
             for (int col = 0; col < BOARD_SIZE; col++) {
                 chessBoardSquares[row][col] = new JButton();
                 chessBoardSquares[row][col].setPreferredSize(new Dimension(60, 60));
+
+                if (board[col][row].getClass() != Empty.class) {
+                    chessBoardSquares[row][col].setText(String.valueOf(board[col][row].getClass().getSimpleName().charAt(0)));
+                }
 
                 if (isLightSquare) {
                     chessBoardSquares[row][col].setBackground(LIGHT_SQUARE_COLOR);
