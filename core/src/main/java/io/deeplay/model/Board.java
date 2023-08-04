@@ -58,6 +58,15 @@ public class Board {
         }
     }
 
+    public static void printBoard(Board board,Piece piece){
+        BoardUtils boardUtils = new BoardUtils();
+        boardUtils.render(board, board.getPiece(piece.getCoordinates()));
+    }
+    public static void printBoardOnce(Board board){
+        BoardUtils boardUtils = new BoardUtils();
+        boardUtils.render(board);
+    }
+
     public Piece getPiece(Coordinates coordinates) {
         return board[coordinates.getX()][coordinates.getY()];
     }
