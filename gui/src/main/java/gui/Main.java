@@ -1,4 +1,4 @@
-package io.deeplay.gui;
+package gui;
 
 import javax.swing.*;
 
