@@ -1,11 +1,14 @@
 package io.deeplay.model;
 
 import io.deeplay.domain.Color;
+import io.deeplay.engine.GameInfo;
 import io.deeplay.model.move.Move;
 import io.deeplay.domain.MoveType;
+import io.deeplay.model.move.MoveHistory;
 import io.deeplay.model.piece.*;
 import io.deeplay.model.utils.BoardUtils;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Board {

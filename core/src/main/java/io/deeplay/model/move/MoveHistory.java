@@ -1,9 +1,7 @@
 package io.deeplay.model.move;
 
-
-import io.deeplay.model.move.Move;
-
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 public class MoveHistory {
     private ArrayList<Move> moveHistory;
@@ -20,6 +18,14 @@ public class MoveHistory {
         if (!moveHistory.isEmpty()) {
             moveHistory.remove(moveHistory.size() - 1);
         }
+    }
+
+    public Move getLastMove() throws NoSuchElementException {
+        if (moveHistory.size() > 0) {
+            return moveHistory.get(moveHistory.size() - 1);
+        }
+
+        throw new NoSuchElementException("Ходов еще не было");
     }
 
     public void clearHistory() {
