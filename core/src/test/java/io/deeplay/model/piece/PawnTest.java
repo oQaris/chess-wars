@@ -11,6 +11,7 @@ import io.deeplay.model.player.Bot;
 import io.deeplay.model.player.Human;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
@@ -223,27 +224,27 @@ class PawnTest {
         assertFalse(testRightBlackPawn.canMoveAt(rightBlackCoordinates, board));
     }
 
-    // Пока не работает из-за отсутствия функционала для этого теста
+    // @Disabled до того момента, пока не будет готов функционал "взятия на проходе"
+    @Test
+    @Disabled
+    void testTakeOnThePass() {
+        Coordinates whitePieceCoordinates = new Coordinates(2,4);
+        Coordinates blackPieceCoordinates = new Coordinates(1,6);
+        Coordinates blackPieceMoveCoordinates = new Coordinates(1,4);
 
-//    @Test
-//    void testTakeOnThePass() {
-//        Coordinates whitePieceCoordinates = new Coordinates(2,4);
-//        Coordinates blackPieceCoordinates = new Coordinates(1,6);
-//        Coordinates blackPieceMoveCoordinates = new Coordinates(1,4);
-//
-//        board.setPiece(whitePieceCoordinates, new Pawn(whitePieceCoordinates, Color.WHITE));
-//        board.move(new Move(blackPieceCoordinates, blackPieceMoveCoordinates, MoveType.ORDINARY, '\0'));
-//
-//        Piece whitePiece = board.getPiece(whitePieceCoordinates);
-//        assertTrue(whitePiece.canMoveAt(new Coordinates(1, 5), board));
-//
-//        board.move(new Move(new Coordinates(5,1), new Coordinates(5, 3), MoveType.ORDINARY, '\0'));
-//        board.move(new Move(new Coordinates(6,6), new Coordinates(6, 5), MoveType.ORDINARY, '\0'));
-//
-//        assertFalse(whitePiece.canMoveAt(new Coordinates(1, 5), board));
-//
-//        printBoardOnce(board);
-//    }
+        board.setPiece(whitePieceCoordinates, new Pawn(whitePieceCoordinates, Color.WHITE));
+        board.move(new Move(blackPieceCoordinates, blackPieceMoveCoordinates, MoveType.ORDINARY, '\0'));
+
+        Piece whitePiece = board.getPiece(whitePieceCoordinates);
+        assertTrue(whitePiece.canMoveAt(new Coordinates(1, 5), board));
+
+        board.move(new Move(new Coordinates(5,1), new Coordinates(5, 3), MoveType.ORDINARY, '\0'));
+        board.move(new Move(new Coordinates(6,6), new Coordinates(6, 5), MoveType.ORDINARY, '\0'));
+
+        assertFalse(whitePiece.canMoveAt(new Coordinates(1, 5), board));
+
+        printBoardOnce(board);
+    }
 
     @Test
     void testPromotion() {
