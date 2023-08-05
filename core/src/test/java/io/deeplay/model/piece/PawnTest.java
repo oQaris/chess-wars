@@ -244,6 +244,30 @@ class PawnTest {
     }
 
     @Test
+    void testPromotion() {
+        Coordinates whitePieceCoordinatesToMove = new Coordinates(2,7);
+        Coordinates blackPieceCoordinatesToMove = new Coordinates(5,0);
+        Coordinates whitePieceCoordinates = new Coordinates(2,6);
+        Coordinates blackPieceCoordinates = new Coordinates(5,1);
+
+        Pawn whitePawnPromotion = new Pawn(whitePieceCoordinates, Color.WHITE);
+        Pawn blackPawnPromotion = new Pawn(blackPieceCoordinates, Color.BLACK);
+
+        board.setPiece(new Coordinates(2, 7), new Empty(new Coordinates(2, 7), Color.EMPTY));
+        board.setPiece(new Coordinates(2, 6), new Empty(new Coordinates(2, 6), Color.EMPTY));
+        board.setPiece(new Coordinates(5, 1), new Empty(new Coordinates(5, 1), Color.EMPTY));
+        board.setPiece(new Coordinates(5, 0), new Empty(new Coordinates(5, 0), Color.EMPTY));
+
+        board.setPiece(whitePieceCoordinates, whitePawnPromotion);
+        board.setPiece(blackPieceCoordinates, blackPawnPromotion);
+
+        printBoardOnce(board);
+
+        assertTrue(whitePawnPromotion.isPromotion(whitePieceCoordinatesToMove, board));
+        assertTrue(blackPawnPromotion.isPromotion(blackPieceCoordinatesToMove, board));
+    }
+
+    @Test
     public void toStringTest() {
         assertEquals("Pawn: x = 0, y = 1", pawn.toString());
     }
