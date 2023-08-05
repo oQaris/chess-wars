@@ -41,6 +41,10 @@ public class MoveHistory {
         return moveHistory;
     }
 
+    public void setMovesWithoutTake(int movesWithoutTake) {
+        this.movesWithoutTake = movesWithoutTake;
+    }
+
     public int getMovesWithoutTake() {
         return movesWithoutTake;
     }
