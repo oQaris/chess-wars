@@ -3,6 +3,7 @@ package io.deeplay.service;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 import io.deeplay.domain.MoveType;
+import io.deeplay.model.piece.Empty;
 import io.deeplay.model.piece.Pawn;
 import io.deeplay.model.piece.Piece;
 
@@ -12,6 +13,10 @@ public class MoveTypeService {
             if (((Pawn) selectedPiece).isPromotion(moveCoordinates, board)) {
                 return MoveType.PROMOTION;
             }
+        }
+
+        if (!(board.getPiece(moveCoordinates) instanceof Empty)) {
+            return MoveType.TAKE;
         }
 
         return MoveType.ORDINARY;

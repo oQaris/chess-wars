@@ -112,7 +112,7 @@ public class Board {
 
         Color pieceToRemoveColor = pieceToRemove.getColor();
 
-        if (moveType == MoveType.ORDINARY) {
+        if (moveType == MoveType.ORDINARY || moveType == MoveType.TAKE) {
             if (!pieceToRemoveColor.equals(Color.EMPTY)) {   // сруб фигуры (подсчет оставшихся фигур??)
                 if (pieceToRemoveColor.equals(Color.BLACK)) {
                     blackPiecesNumber--;
