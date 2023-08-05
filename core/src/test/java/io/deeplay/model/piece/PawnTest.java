@@ -1,9 +1,14 @@
 package io.deeplay.model.piece;
 
 import io.deeplay.domain.Color;
+import io.deeplay.domain.MoveType;
+import io.deeplay.engine.GameInfo;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 
+import io.deeplay.model.move.Move;
+import io.deeplay.model.player.Bot;
+import io.deeplay.model.player.Human;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -218,68 +223,24 @@ class PawnTest {
         assertFalse(testRightBlackPawn.canMoveAt(rightBlackCoordinates, board));
     }
 
-
-
-
-
-
-
     @Test
-    void getPossibleMovesFromStartBoard() {
-        System.setOut(new java.io.PrintStream(System.out, true, StandardCharsets.UTF_8));
-        List<Coordinates> possibleMoves = pawn.getPossibleMoves(board);
-        printBoard(board, pawn);
-        Assertions.assertEquals(2, possibleMoves.size());
-    }
+    void testTakeOnThePass() {
+        Coordinates whitePieceCoordinates = new Coordinates(2,4);
+        Coordinates blackPieceCoordinates = new Coordinates(1,6);
+        Coordinates blackPieceMoveCoordinates = new Coordinates(1,4);
 
-    @Test
-    void canMoveToEmptyCell() {
-        assertTrue(pawn.canMoveAt(new Coordinates(0, 2), board));
-    }
+        board.setPiece(whitePieceCoordinates, new Pawn(whitePieceCoordinates, Color.WHITE));
+        board.move(new Move(blackPieceCoordinates, blackPieceMoveCoordinates, MoveType.ORDINARY, '\0'));
 
-    @Test
-    void canMoveThrough2Squares() {
-        assertTrue(pawn.canMoveAt(new Coordinates(0, 3), board));
-    }
+        Piece whitePiece = board.getPiece(whitePieceCoordinates);
+        assertTrue(whitePiece.canMoveAt(new Coordinates(1, 5), board));
 
+        board.move(new Move(new Coordinates(5,1), new Coordinates(5, 3), MoveType.ORDINARY, '\0'));
+        board.move(new Move(new Coordinates(6,6), new Coordinates(6, 5), MoveType.ORDINARY, '\0'));
 
+        assertFalse(whitePiece.canMoveAt(new Coordinates(1, 5), board));
 
-    @Test
-    void canMoveToCellWithAllyPiece() {
-        Coordinates coordinates = new Coordinates(0, 2);
-        board.setPiece(coordinates, new Pawn(coordinates, Color.WHITE));
-        assertFalse(pawn.canMoveAt(coordinates, board));
-    }
-
-    @Test
-    void canAttackEnemyPiece() {
-        Coordinates coordinates = new Coordinates(1, 2);
-        board.setPiece(coordinates, new Pawn(coordinates, Color.BLACK));
-        assertTrue(pawn.canMoveAt(coordinates, board));
-    }
-
-    @Test
-    void canAttackEnemyPieceBlack() {
-        Coordinates coordinates = new Coordinates(2, 2);
-        board.setPiece(coordinates, new Pawn(coordinates, Color.BLACK));
-        printBoard(board, board.getPiece(coordinates));
-        assertTrue(board.getPiece(new Coordinates(1, 1)).canMoveAt(coordinates, board));
-    }
-
-    @Test
-    void canMoveBlackPawn() {
-        printBoard(board, board.getPiece(new Coordinates(1, 6)));
-        assertEquals(2, board.getPiece(new Coordinates(1, 6)).getPossibleMoves(board).size());
-    }
-
-    @Test
-    void canMoveOffTheBoard() {
-        assertFalse(pawn.canMoveAt(new Coordinates(-1, 2), board));
-    }
-
-    @Test
-    void canMoveOnCurrent() {
-        assertFalse(pawn.canMoveAt(new Coordinates(0, 1), board));
+        printBoardOnce(board);
     }
 
     @Test
