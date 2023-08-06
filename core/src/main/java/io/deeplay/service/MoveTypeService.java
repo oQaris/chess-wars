@@ -15,6 +15,12 @@ public class MoveTypeService {
             }
         }
 
+        if (selectedPiece instanceof Pawn) {
+            if (((Pawn) selectedPiece).isEnPassant(moveCoordinates, board)) {
+                return MoveType.EN_PASSANT;
+            }
+        }
+
         if (!(board.getPiece(moveCoordinates) instanceof Empty)) {
             return MoveType.TAKE;
         }

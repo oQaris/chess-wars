@@ -3,6 +3,8 @@ package io.deeplay.model.piece;
 import io.deeplay.domain.Color;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
+import io.deeplay.model.move.Move;
+import io.deeplay.model.move.MoveHistory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,13 +64,13 @@ public class Pawn extends Piece {
             return false;
         }
 
-        if (Math.abs(targetY - currentY) == 2 && isStartPosition() && currentX == targetX) { // только из стартовой позиции
-            if (board.getBoard()[currentX][currentY + 1].getColor().equals(Color.EMPTY)
-                    || board.getBoard()[currentX][currentY - 1].getColor().equals(Color.EMPTY)) {
-                return true;
-            }
+        if (isEnPassant(coordinates, board)) { // взятие на проходе
+            return true;
+        }
 
-            return false;
+        if (Math.abs(targetY - currentY) == 2 && isStartPosition() && currentX == targetX) { // только из стартовой позиции
+            return board.getBoard()[currentX][currentY + 1].getColor().equals(Color.EMPTY)
+                    || board.getBoard()[currentX][currentY - 1].getColor().equals(Color.EMPTY);
         }
 
         if (targetX == currentX && Math.abs(targetY - currentY) == 1
@@ -77,11 +79,7 @@ public class Pawn extends Piece {
         }
 
         if (Math.abs(targetY - currentY) == 1 && Math.abs(targetX - currentX) == 1) {
-            if (!board.getBoard()[targetX][targetY].getColor().equals(Color.EMPTY)) {
-                return true;
-            }
-
-            return false;
+            return !board.getBoard()[targetX][targetY].getColor().equals(Color.EMPTY);
         }
 
         return false;
@@ -99,6 +97,39 @@ public class Pawn extends Piece {
         }
 
         return false;
+    }
+
+    public boolean isEnPassant(Coordinates coordinates, Board board) {
+        int currentX = this.getCoordinates().getX();
+        int currentY = this.getCoordinates().getY();
+
+        if (!(getColor().equals(Color.WHITE) && currentY == 4)
+                && !(getColor().equals(Color.BLACK) && currentY == 3)) { // стартовая позиция верная
+            return false;
+        }
+
+        int targetX = coordinates.getX();
+        int targetY = coordinates.getY();
+
+        if (!(Math.abs(targetY - currentY) == 1 && Math.abs(targetX - currentX) == 1)) { // движение по диагонали
+            return false;
+        }
+
+        if (!board.getBoard()[targetX][targetY].getColor().equals(Color.EMPTY)) { // целевая клетка пустая
+            return false;
+        }
+
+        Move lastMove = MoveHistory.getLastMove();
+        System.out.println("Last move = " + lastMove);
+        Piece piece = board.getPiece(new Coordinates(lastMove.getEndPosition().getX(),
+                lastMove.getEndPosition().getY()));
+
+        if (!(piece instanceof Pawn)) { // не пешка
+            return false;
+        }
+
+        return (lastMove.getStartPosition().getX() == lastMove.getEndPosition().getX())
+                && (Math.abs(lastMove.getEndPosition().getY() - lastMove.getStartPosition().getY()) == 2);
     }
 
     @Override
