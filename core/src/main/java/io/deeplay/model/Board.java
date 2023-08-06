@@ -113,7 +113,7 @@ public class Board {
         Color pieceToRemoveColor = pieceToRemove.getColor();
 
         if (moveType == MoveType.ORDINARY || moveType == MoveType.TAKE) {
-            if (!pieceToRemoveColor.equals(Color.EMPTY)) {   // сруб фигуры (подсчет оставшихся фигур??)
+            if (!pieceToRemoveColor.equals(Color.EMPTY)) {
                 if (pieceToRemoveColor.equals(Color.BLACK)) {
                     blackPiecesNumber--;
                 } else {
@@ -127,11 +127,19 @@ public class Board {
         } else if (moveType == MoveType.CASTLING) {
             // обработка рокировки
         } else if (moveType == MoveType.EN_PASSANT) {
-            // обработка взятия на проходе
+            if (pieceToMove.getColor() == Color.WHITE) {
+                blackPiecesNumber--;
+            } else {
+                whitePiecesNumber--;
+            }
+
+            board[end.getX()][start.getY()] = new Empty(new Coordinates(end.getX(), end.getY()), Color.EMPTY);
+            board[end.getX()][end.getY()] = pieceToMove;
+            board[start.getX()][start.getY()] = new Empty(start, Color.EMPTY);
         } else if (moveType == MoveType.PROMOTION) {
             Piece newPiece = choosePromotionPiece(end, pieceToMove);
 
-            if (!pieceToRemoveColor.equals(Color.EMPTY)) {   // сруб фигуры (подсчет оставшихся фигур??)
+            if (!pieceToRemoveColor.equals(Color.EMPTY)) {
                 if (pieceToRemoveColor.equals(Color.BLACK)) {
                     blackPiecesNumber--;
                 } else {

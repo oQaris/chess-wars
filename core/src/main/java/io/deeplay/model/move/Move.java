@@ -31,4 +31,9 @@ public class Move {
     public MoveType getMoveType() {
         return moveType;
     }
+
+    @Override
+    public String toString() {
+        return "Start position = " + startPosition + " end position + " + endPosition;
+    }
 }
