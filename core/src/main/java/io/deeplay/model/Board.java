@@ -131,21 +131,21 @@ public class Board {
             if (moveSide == 2) {
                 rookToMove = getPiece(new Coordinates(0, start.getY()));
                 board[3][start.getY()] = rookToMove;
-                board[0][start.getY()] = new Empty(rookToMove.getCoordinates(), Color.EMPTY);
+                board[0][start.getY()] = new Empty(rookToMove.getCoordinates());
                 rookToMove.setCoordinates(new Coordinates(3, start.getY()));
 
                 board[end.getX()][end.getY()] = pieceToMove;
-                board[start.getX()][start.getY()] = new Empty(start, Color.EMPTY);
+                board[start.getX()][start.getY()] = new Empty(start);
                 pieceToMove.setCoordinates(end);
             }
             if (moveSide == -2) {
                 rookToMove = getPiece(new Coordinates(7, start.getY()));
                 board[5][start.getY()] = rookToMove;
-                board[7][start.getY()] = new Empty(rookToMove.getCoordinates(), Color.EMPTY);
+                board[7][start.getY()] = new Empty(rookToMove.getCoordinates());
                 rookToMove.setCoordinates(new Coordinates(5, start.getY()));
 
                 board[end.getX()][end.getY()] = pieceToMove;
-                board[start.getX()][start.getY()] = new Empty(start, Color.EMPTY);
+                board[start.getX()][start.getY()] = new Empty(start);
                 pieceToMove.setCoordinates(end);
             }
         } else if (moveType == MoveType.EN_PASSANT) {
