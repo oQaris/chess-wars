@@ -9,6 +9,6 @@ public class MoveService {
 
     public static Move createMove(Piece selectedPiece, Coordinates moveCoordinates, Board board) {
         return new Move(selectedPiece.getCoordinates(), moveCoordinates,
-                MoveTypeService.getType(selectedPiece, moveCoordinates, board), '\0');
+                MoveTypeService.getType(selectedPiece, moveCoordinates, board));
     }
 }

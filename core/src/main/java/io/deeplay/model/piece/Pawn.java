@@ -69,8 +69,10 @@ public class Pawn extends Piece {
         }
 
         if (Math.abs(targetY - currentY) == 2 && isStartPosition() && currentX == targetX) { // только из стартовой позиции
-            return board.getBoard()[currentX][currentY + 1].getColor().equals(Color.EMPTY)
-                    || board.getBoard()[currentX][currentY - 1].getColor().equals(Color.EMPTY);
+            if (board.getBoard()[targetX][targetY].getColor().equals(Color.EMPTY)) {
+                return board.getBoard()[currentX][currentY + 1].getColor().equals(Color.EMPTY)
+                        || board.getBoard()[currentX][currentY - 1].getColor().equals(Color.EMPTY);
+            }
         }
 
         if (targetX == currentX && Math.abs(targetY - currentY) == 1
@@ -120,11 +122,11 @@ public class Pawn extends Piece {
         }
 
         Move lastMove = MoveHistory.getLastMove();
-        System.out.println("Last move = " + lastMove);
-        Piece piece = board.getPiece(new Coordinates(lastMove.getEndPosition().getX(),
+
+        Piece pieceMadeLastMove = board.getPiece(new Coordinates(lastMove.getEndPosition().getX(),
                 lastMove.getEndPosition().getY()));
 
-        if (!(piece instanceof Pawn)) { // не пешка
+        if (!(pieceMadeLastMove instanceof Pawn)) {
             return false;
         }
 
