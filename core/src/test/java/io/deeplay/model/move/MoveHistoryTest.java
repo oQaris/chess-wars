@@ -1,7 +1,9 @@
 package io.deeplay.model.move;
 
+import io.deeplay.domain.Color;
 import io.deeplay.domain.MoveType;
 import io.deeplay.model.Coordinates;
+import io.deeplay.model.piece.Rook;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,8 +17,8 @@ class MoveHistoryTest {
     void initialize() {
         Coordinates coordinates1 = new Coordinates(1, 2);
         Coordinates coordinates2 = new Coordinates(2, 4);
-        move1 = new Move(coordinates1, coordinates2, MoveType.ORDINARY);
-        move2 = new Move(coordinates2, coordinates1, MoveType.ORDINARY);
+        move1 = new Move(coordinates1, coordinates2, new Rook(coordinates1, Color.WHITE), MoveType.ORDINARY);
+        move2 = new Move(coordinates2, coordinates1, new Rook(coordinates2, Color.WHITE), MoveType.ORDINARY);
     }
 
     @Test
