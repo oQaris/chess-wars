@@ -102,14 +102,6 @@ public class Board {
         Piece pieceToMove = board[start.getX()][start.getY()];
         Piece pieceToRemove = board[end.getX()][end.getY()];
 
-        if (pieceToMove.getColor().equals(Color.EMPTY)) {
-            return;
-        }
-
-        if (!pieceToMove.canMoveAt(end, this)) {
-            return;
-        }
-
         Color pieceToRemoveColor = pieceToRemove.getColor();
 
         if (moveType == MoveType.ORDINARY || moveType == MoveType.TAKE) {
@@ -152,7 +144,7 @@ public class Board {
         }
     }
 
-    public Piece choosePromotionPiece(Coordinates endCoordinates, Piece pieceToMove) {
+    private Piece choosePromotionPiece(Coordinates endCoordinates, Piece pieceToMove) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Выберите новую фигуру: ");
         System.out.println("1. Queen");
