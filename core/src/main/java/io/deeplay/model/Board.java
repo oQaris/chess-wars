@@ -10,11 +10,13 @@ import java.util.Scanner;
 
 public class Board {
     private static Piece[][] board;
+    private boolean[][] pieceMoved;
     private int blackPiecesNumber = 16;
     private int whitePiecesNumber = 16;
 
     public Board() {
         board = getStartBoard();
+        pieceMoved = new boolean[8][8];
     }
 
     public static Piece[][] getStartBoard() {
@@ -99,6 +101,16 @@ public class Board {
         Piece pieceToMove = board[start.getX()][start.getY()];
         Piece pieceToRemove = board[end.getX()][end.getY()];
 
+        if (pieceToMove instanceof King || pieceToMove instanceof Rook) pieceMoved[start.getX()][start.getY()] = true;
+
+        if (pieceToMove.getColor().equals(Color.EMPTY)) {
+            return;
+        }
+
+        if (!pieceToMove.canMoveAt(end, this) && moveType != MoveType.CASTLING) {
+            return;
+        }
+
         Color pieceToRemoveColor = pieceToRemove.getColor();
 
         if (moveType == MoveType.ORDINARY || moveType == MoveType.TAKE) {
@@ -114,7 +126,28 @@ public class Board {
             board[start.getX()][start.getY()] = new Empty(start);
             pieceToMove.setCoordinates(end);
         } else if (moveType == MoveType.CASTLING) {
-            // обработка рокировки
+            Piece rookToMove = null;
+            int moveSide = start.getX() - end.getX();
+            if (moveSide == 2) {
+                rookToMove = getPiece(new Coordinates(0, start.getY()));
+                board[3][start.getY()] = rookToMove;
+                board[0][start.getY()] = new Empty(rookToMove.getCoordinates(), Color.EMPTY);
+                rookToMove.setCoordinates(new Coordinates(3, start.getY()));
+
+                board[end.getX()][end.getY()] = pieceToMove;
+                board[start.getX()][start.getY()] = new Empty(start, Color.EMPTY);
+                pieceToMove.setCoordinates(end);
+            }
+            if (moveSide == -2) {
+                rookToMove = getPiece(new Coordinates(7, start.getY()));
+                board[5][start.getY()] = rookToMove;
+                board[7][start.getY()] = new Empty(rookToMove.getCoordinates(), Color.EMPTY);
+                rookToMove.setCoordinates(new Coordinates(5, start.getY()));
+
+                board[end.getX()][end.getY()] = pieceToMove;
+                board[start.getX()][start.getY()] = new Empty(start, Color.EMPTY);
+                pieceToMove.setCoordinates(end);
+            }
         } else if (moveType == MoveType.EN_PASSANT) {
             if (pieceToMove.getColor() == Color.WHITE) {
                 blackPiecesNumber--;
@@ -173,5 +206,9 @@ public class Board {
 
     public int getWhitePiecesNumber() {
         return whitePiecesNumber;
+    }
+
+    public boolean[][] getPieceMoved() {
+        return pieceMoved;
     }
 }
