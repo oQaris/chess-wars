@@ -2,20 +2,15 @@ package io.deeplay.model.piece;
 
 import io.deeplay.domain.Color;
 import io.deeplay.domain.MoveType;
-import io.deeplay.engine.GameInfo;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 
 import io.deeplay.model.move.Move;
-import io.deeplay.model.player.Bot;
-import io.deeplay.model.player.Human;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 import static io.deeplay.model.Board.printBoard;
 import static io.deeplay.model.Board.printBoardOnce;
@@ -256,10 +251,10 @@ class PawnTest {
         Pawn whitePawnPromotion = new Pawn(whitePieceCoordinates, Color.WHITE);
         Pawn blackPawnPromotion = new Pawn(blackPieceCoordinates, Color.BLACK);
 
-        board.setPiece(new Coordinates(2, 7), new Empty(new Coordinates(2, 7), Color.EMPTY));
-        board.setPiece(new Coordinates(2, 6), new Empty(new Coordinates(2, 6), Color.EMPTY));
-        board.setPiece(new Coordinates(5, 1), new Empty(new Coordinates(5, 1), Color.EMPTY));
-        board.setPiece(new Coordinates(5, 0), new Empty(new Coordinates(5, 0), Color.EMPTY));
+        board.setPiece(new Coordinates(2, 7), new Empty(new Coordinates(2, 7)));
+        board.setPiece(new Coordinates(2, 6), new Empty(new Coordinates(2, 6)));
+        board.setPiece(new Coordinates(5, 1), new Empty(new Coordinates(5, 1)));
+        board.setPiece(new Coordinates(5, 0), new Empty(new Coordinates(5, 0)));
 
         board.setPiece(whitePieceCoordinates, whitePawnPromotion);
         board.setPiece(blackPieceCoordinates, blackPawnPromotion);

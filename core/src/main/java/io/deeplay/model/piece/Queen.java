@@ -14,11 +14,8 @@ public class Queen extends Piece {
 
     @Override
     public List<Coordinates> getPossibleMoves(Board board) {
-        List<Coordinates> possibleMoves = new ArrayList<>();
-
-        // Add possible moves for Rook
-        Rook rook = new Rook(getCoordinates(), getColor());
-        possibleMoves.addAll(rook.getPossibleMoves(board));
+        Rook rook = new Rook(getCoordinates(), getColor()); // Add possible moves for Rook
+        List<Coordinates> possibleMoves = new ArrayList<>(rook.getPossibleMoves(board));
 
         // Add possible moves for Bishop
         Bishop bishop = new Bishop(getCoordinates(), getColor());
