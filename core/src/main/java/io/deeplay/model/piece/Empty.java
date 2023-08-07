@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Empty extends Piece {
-    public Empty(Coordinates coordinates, Color color) {
+    public Empty(Coordinates coordinates) {
         super(coordinates, Color.EMPTY);
     }
 

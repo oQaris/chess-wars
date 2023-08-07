@@ -15,8 +15,12 @@ public class MoveHistory {
 
     public void addMove(Move move) {
         moveHistory.add(move);
-        if (move.getMoveType() != MoveType.TAKE) movesWithoutTake++;
-        else movesWithoutTake = 0;
+
+        if (move.moveType() != MoveType.TAKE) {
+            movesWithoutTake++;
+        } else {
+            movesWithoutTake = 0;
+        }
     }
 
     public void removeLastMove() {

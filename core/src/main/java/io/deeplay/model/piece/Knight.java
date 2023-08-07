@@ -44,11 +44,7 @@ public class Knight extends Piece {
         int xDifference = Math.abs(coordinates.getX() - this.getCoordinates().getX());
         int yDifference = Math.abs(coordinates.getY() - this.getCoordinates().getY());
 
-        if ((xDifference == 1 && yDifference == 2) || (xDifference == 2 && yDifference == 1)) {
-            return true;
-        }
-
-        return false;
+        return (xDifference == 1 && yDifference == 2) || (xDifference == 2 && yDifference == 1);
     }
 
     @Override

@@ -38,7 +38,7 @@ class EmptyTest {
 
     @Test
     public void toStringTest() {
-        Empty empty = new Empty(new Coordinates(3, 3), Color.EMPTY);
+        Empty empty = new Empty(new Coordinates(3, 3));
         assertEquals("Empty: x = 3 y = 3", empty.toString());
     }
 }

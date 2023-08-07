@@ -1,14 +1,11 @@
 package io.deeplay.model;
 
 import io.deeplay.domain.Color;
-import io.deeplay.engine.GameInfo;
 import io.deeplay.model.move.Move;
 import io.deeplay.domain.MoveType;
-import io.deeplay.model.move.MoveHistory;
 import io.deeplay.model.piece.*;
 import io.deeplay.model.utils.BoardUtils;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Board {
@@ -48,7 +45,7 @@ public class Board {
 
         for (int i = 2; i < 6; i++) {
             for (int j = 0; j < 8; j++) {
-                board[j][i] = new Empty(new Coordinates(j, i), Color.EMPTY);
+                board[j][i] = new Empty(new Coordinates(j, i));
             }
         }
 
@@ -87,7 +84,7 @@ public class Board {
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                board[i][j] = new Empty(new Coordinates(i, j), Color.EMPTY);
+                board[i][j] = new Empty(new Coordinates(i, j));
             }
         }
 
@@ -95,9 +92,9 @@ public class Board {
     }
 
     public void move(Move move) {
-        Coordinates start = move.getStartPosition();
-        Coordinates end = move.getEndPosition();
-        MoveType moveType = move.getMoveType();
+        Coordinates start = move.startPosition();
+        Coordinates end = move.endPosition();
+        MoveType moveType = move.moveType();
 
         Piece pieceToMove = board[start.getX()][start.getY()];
         Piece pieceToRemove = board[end.getX()][end.getY()];
@@ -114,7 +111,7 @@ public class Board {
             }
 
             board[end.getX()][end.getY()] = pieceToMove;
-            board[start.getX()][start.getY()] = new Empty(start, Color.EMPTY);
+            board[start.getX()][start.getY()] = new Empty(start);
             pieceToMove.setCoordinates(end);
         } else if (moveType == MoveType.CASTLING) {
             // обработка рокировки
@@ -125,9 +122,9 @@ public class Board {
                 whitePiecesNumber--;
             }
 
-            board[end.getX()][start.getY()] = new Empty(new Coordinates(end.getX(), end.getY()), Color.EMPTY);
+            board[end.getX()][start.getY()] = new Empty(new Coordinates(end.getX(), end.getY()));
             board[end.getX()][end.getY()] = pieceToMove;
-            board[start.getX()][start.getY()] = new Empty(start, Color.EMPTY);
+            board[start.getX()][start.getY()] = new Empty(start);
         } else if (moveType == MoveType.PROMOTION) {
             Piece newPiece = choosePromotionPiece(end, pieceToMove);
 
@@ -140,7 +137,7 @@ public class Board {
             }
 
             board[end.getX()][end.getY()] = newPiece;
-            board[start.getX()][start.getY()] = new Empty(start, Color.EMPTY);
+            board[start.getX()][start.getY()] = new Empty(start);
         }
     }
 
@@ -168,5 +165,13 @@ public class Board {
 
     public void setBoard(Piece[][] board) {
         this.board = board;
+    }
+
+    public int getBlackPiecesNumber() {
+        return blackPiecesNumber;
+    }
+
+    public int getWhitePiecesNumber() {
+        return whitePiecesNumber;
     }
 }
