@@ -8,7 +8,7 @@ import io.deeplay.model.piece.Piece;
 public class MoveService {
 
     public static Move createMove(Piece selectedPiece, Coordinates moveCoordinates, Board board) {
-        return new Move(selectedPiece.getCoordinates(), moveCoordinates,
+        return new Move(selectedPiece.getCoordinates(), moveCoordinates, selectedPiece,
                 MoveTypeService.getType(selectedPiece, moveCoordinates, board));
     }
 }
