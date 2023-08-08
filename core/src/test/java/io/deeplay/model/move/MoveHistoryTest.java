@@ -17,8 +17,8 @@ class MoveHistoryTest {
     void initialize() {
         Coordinates coordinates1 = new Coordinates(1, 2);
         Coordinates coordinates2 = new Coordinates(2, 4);
-        move1 = new Move(coordinates1, coordinates2, new Rook(coordinates1, Color.WHITE), MoveType.ORDINARY);
-        move2 = new Move(coordinates2, coordinates1, new Rook(coordinates2, Color.WHITE), MoveType.ORDINARY);
+        move1 = new Move(coordinates1, coordinates2, MoveType.ORDINARY);
+        move2 = new Move(coordinates2, coordinates1, MoveType.ORDINARY);
     }
 
     @Test

@@ -228,13 +228,13 @@ class PawnTest {
         Coordinates blackPieceMoveCoordinates = new Coordinates(1,4);
 
         board.setPiece(whitePieceCoordinates, new Pawn(whitePieceCoordinates, Color.WHITE));
-        board.move(new Move(blackPieceCoordinates, blackPieceMoveCoordinates, new Pawn(whitePieceCoordinates, Color.WHITE), MoveType.ORDINARY));
+        board.move(new Move(blackPieceCoordinates, blackPieceMoveCoordinates, MoveType.ORDINARY));
 
         Piece whitePiece = board.getPiece(whitePieceCoordinates);
         assertTrue(whitePiece.canMoveAt(new Coordinates(1, 5), board));
 
-        board.move(new Move(new Coordinates(5,1), new Coordinates(5, 3), board.getPiece(new Coordinates(5,1)), MoveType.ORDINARY));
-        board.move(new Move(new Coordinates(6,6), new Coordinates(6, 5), board.getPiece(new Coordinates(6,6)), MoveType.ORDINARY));
+        board.move(new Move(new Coordinates(5,1), new Coordinates(5, 3), MoveType.ORDINARY));
+        board.move(new Move(new Coordinates(6,6), new Coordinates(6, 5), MoveType.ORDINARY));
 
         assertFalse(whitePiece.canMoveAt(new Coordinates(1, 5), board));
 
