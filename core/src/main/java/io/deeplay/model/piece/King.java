@@ -27,17 +27,15 @@ public class King extends Piece {
     @Override
     public List<Coordinates> getPossibleMoves(Board board) {
         List<Coordinates> possibleMoves = new ArrayList<>();
-
         List<Coordinates> rookCoordinates = new ArrayList<>();
-        Coordinates[] defaultKings = {new Coordinates(4,0), new Coordinates(4, 7)};
-        Coordinates[] defaultBottomRooks = {new Coordinates(0,0), new Coordinates(7, 0)};
-        Coordinates[] defaultUpRooks = {new Coordinates(0,7), new Coordinates(7, 7)};
 
         int x = this.getCoordinates().getX();
         int y = this.getCoordinates().getY();
 
         if (this.getColor() == Color.WHITE) {
-            if (!board.getPieceMoved()[defaultKings[0].getX()][defaultKings[0].getY()]) { // двигался ли король
+            Coordinates defaultKing = new Coordinates(4,0);
+            Coordinates[] defaultBottomRooks = {new Coordinates(0,0), new Coordinates(7, 0)};
+            if (!board.getPieceMoved()[defaultKing.getX()][defaultKing.getY()]) { // двигался ли король
                 for (Coordinates rookCoordinate : defaultBottomRooks) { // проход по башням
                     if (!board.getPieceMoved()[rookCoordinate.getX()][rookCoordinate.getY()])
                         rookCoordinates.add(rookCoordinate);
@@ -46,7 +44,9 @@ public class King extends Piece {
                     possibleMoves.addAll(getWhiteCastleMoves(new Coordinates(x, y), rookCoordinates, board));
             }
         } else {
-            if (!board.getPieceMoved()[defaultKings[1].getX()][defaultKings[1].getY()]) {
+            Coordinates defaultKing = new Coordinates(4, 7);
+            Coordinates[] defaultUpRooks = {new Coordinates(0,7), new Coordinates(7, 7)};
+            if (!board.getPieceMoved()[defaultKing.getX()][defaultKing.getY()]) {
                 for (Coordinates rookCoordinate : defaultUpRooks) {
                     if (!board.getPieceMoved()[rookCoordinate.getX()][rookCoordinate.getY()])
                         rookCoordinates.add(rookCoordinate);
