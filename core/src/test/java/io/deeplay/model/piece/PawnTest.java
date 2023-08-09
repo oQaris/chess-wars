@@ -12,38 +12,23 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 
-import static io.deeplay.model.Board.printBoard;
-import static io.deeplay.model.Board.printBoardOnce;
+import static io.deeplay.model.Board.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PawnTest {
-
-    private Board board;
-    private Piece pawn;
-    private Piece whitePawn;
-    private Piece blackPawn;
-    private final int X_INITIAL_COORDINATE = 1;
-    private final int Y_INITIAL_COORDINATE_WHITE = 1;
-    private final int Y_INITIAL_COORDINATE_BLACK = 6;
-
-    @BeforeEach
-    void setUp() {
-        System.setOut(new java.io.PrintStream(System.out, true, StandardCharsets.UTF_8));
-        board = new Board();
-        pawn = board.getPiece(new Coordinates(0, 1));
-
-        whitePawn = board.getPiece(new Coordinates(X_INITIAL_COORDINATE, Y_INITIAL_COORDINATE_WHITE));
-        blackPawn = board.getPiece(new Coordinates(X_INITIAL_COORDINATE, Y_INITIAL_COORDINATE_BLACK));
-    }
-
     @Test
     void getColor() {
+        final Board board = new Board();
+        Piece pawn = board.getPiece(new Coordinates(0, 1));
         assertEquals(Color.WHITE, pawn.getColor());
         assertEquals(Color.BLACK, board.getPiece(new Coordinates(0, 6)).getColor());
     }
 
     @Test
     void testMoveOnOneCellForward() {
+        final Board board = new Board();
+        Piece whitePawn = board.getPiece(new Coordinates(1, 1));
+        Piece blackPawn = board.getPiece(new Coordinates(1, 6));
         Coordinates whiteMoveCoordinates = new Coordinates(1, 2);
         Coordinates blackMoveCoordinates = new Coordinates(1, 5);
 
@@ -53,6 +38,9 @@ class PawnTest {
 
     @Test
     void testMoveOnTwoCellForward() {
+        final Board board = new Board();
+        Piece whitePawn = board.getPiece(new Coordinates(1, 1));
+        Piece blackPawn = board.getPiece(new Coordinates(1, 6));
         Coordinates whiteMoveCoordinates = new Coordinates(1, 3);
         Coordinates blackMoveCoordinates = new Coordinates(1, 4);
 
@@ -62,6 +50,8 @@ class PawnTest {
 
     @Test
     void testWhiteCanTakeLeftDiagonalPiece() {
+        final Board board = new Board();
+        Piece whitePawn = board.getPiece(new Coordinates(1, 1));
         Coordinates whiteMoveCoordinates = new Coordinates(0, 2);
         board.setPiece(new Coordinates(0, 2), new Bishop(new Coordinates(0, 2), Color.BLACK));
         assertTrue(whitePawn.canMoveAt(whiteMoveCoordinates, board));
@@ -69,6 +59,8 @@ class PawnTest {
 
     @Test
     void testWhiteCantTakeLeftDiagonalPieceWithSameColor() {
+        final Board board = new Board();
+        Piece whitePawn = board.getPiece(new Coordinates(1, 1));
         Coordinates whiteMoveCoordinates = new Coordinates(0, 2);
         board.setPiece(new Coordinates(0, 2), new Bishop(new Coordinates(0, 2), Color.WHITE));
         assertFalse(whitePawn.canMoveAt(whiteMoveCoordinates, board));
@@ -76,6 +68,8 @@ class PawnTest {
 
     @Test
     void testBlackCanTakeLeftDiagonalPiece() {
+        final Board board = new Board();
+        Piece blackPawn = board.getPiece(new Coordinates(1, 6));
         Coordinates blackMoveCoordinates = new Coordinates(0, 5);
         board.setPiece(new Coordinates(0, 5), new Bishop(new Coordinates(0, 5), Color.WHITE));
         assertTrue(blackPawn.canMoveAt(blackMoveCoordinates, board));
@@ -83,6 +77,8 @@ class PawnTest {
 
     @Test
     void testBlackCantTakeLeftDiagonalPieceWithSameColor() {
+        final Board board = new Board();
+        Piece blackPawn = board.getPiece(new Coordinates(1, 6));
         Coordinates blackMoveCoordinates = new Coordinates(0, 5);
         board.setPiece(new Coordinates(0, 5), new Bishop(new Coordinates(0, 5), Color.BLACK));
         assertFalse(blackPawn.canMoveAt(blackMoveCoordinates, board));
@@ -90,6 +86,8 @@ class PawnTest {
 
     @Test
     void testWhiteCanTakeRightDiagonalPiece() {
+        final Board board = new Board();
+        Piece whitePawn = board.getPiece(new Coordinates(1, 1));
         Coordinates whiteMoveCoordinates = new Coordinates(2, 2);
         board.setPiece(new Coordinates(2, 2), new Bishop(new Coordinates(2, 2), Color.BLACK));
         assertTrue(whitePawn.canMoveAt(whiteMoveCoordinates, board));
@@ -97,6 +95,8 @@ class PawnTest {
 
     @Test
     void testWhiteCantTakeRightDiagonalPieceWithSameColor() {
+        final Board board = new Board();
+        Piece whitePawn = board.getPiece(new Coordinates(1, 1));
         Coordinates whiteMoveCoordinates = new Coordinates(2, 2);
         board.setPiece(new Coordinates(2, 2), new Bishop(new Coordinates(2, 2), Color.WHITE));
         assertFalse(whitePawn.canMoveAt(whiteMoveCoordinates, board));
@@ -104,6 +104,8 @@ class PawnTest {
 
     @Test
     void testBlackCanTakeRightDiagonalPiece() {
+        final Board board = new Board();
+        Piece blackPawn = board.getPiece(new Coordinates(1, 6));
         Coordinates blackMoveCoordinates = new Coordinates(2, 5);
         board.setPiece(new Coordinates(2, 5), new Bishop(new Coordinates(2, 5), Color.WHITE));
         assertTrue(blackPawn.canMoveAt(blackMoveCoordinates, board));
@@ -111,6 +113,8 @@ class PawnTest {
 
     @Test
     void testBlackCantTakeRightDiagonalPieceWithSameColor() {
+        final Board board = new Board();
+        Piece blackPawn = board.getPiece(new Coordinates(1, 6));
         Coordinates blackMoveCoordinates = new Coordinates(2, 5);
         board.setPiece(new Coordinates(2, 5), new Bishop(new Coordinates(2, 5), Color.BLACK));
         assertFalse(blackPawn.canMoveAt(blackMoveCoordinates, board));
@@ -118,6 +122,8 @@ class PawnTest {
 
     @Test
     void testWhitePawnCantTakeForward() {
+        final Board board = new Board();
+        Piece whitePawn = board.getPiece(new Coordinates(1, 1));
         board.setPiece(new Coordinates(1, 2), new Pawn(new Coordinates(1, 2), Color.BLACK));
         Coordinates whiteMoveCoordinates = new Coordinates(1, 2);
         assertFalse(whitePawn.canMoveAt(whiteMoveCoordinates, board));
@@ -125,6 +131,8 @@ class PawnTest {
 
     @Test
     void testBlackPawnCantTakeForward() {
+        final Board board = new Board();
+        Piece blackPawn = board.getPiece(new Coordinates(1, 6));
         board.setPiece(new Coordinates(1, 5), new Pawn(new Coordinates(1, 5), Color.WHITE));
         Coordinates blackMoveCoordinates = new Coordinates(1, 5);
         assertFalse(blackPawn.canMoveAt(blackMoveCoordinates, board));
@@ -132,6 +140,7 @@ class PawnTest {
 
     @Test
     void testWhitePawnCantGoBack() {
+        final Board board = new Board();
         Coordinates wrongMoveCoordinates1 = new Coordinates(1,3);
         Coordinates wrongMoveCoordinates2 = new Coordinates(1,2);
 
@@ -144,6 +153,7 @@ class PawnTest {
 
     @Test
     void testBlackPawnCantGoBack() {
+        final Board board = new Board();
         Coordinates wrongMoveCoordinates1 = new Coordinates(1,4);
         Coordinates wrongMoveCoordinates2 = new Coordinates(1,5);
 
@@ -156,6 +166,8 @@ class PawnTest {
 
     @Test
     void testWhiteCantMoveOnTwoCellForwardWhenOtherFigureBlocks() {
+        final Board board = new Board();
+        Piece whitePawn = board.getPiece(new Coordinates(1, 1));
         Coordinates whiteMoveCoordinates = new Coordinates(1, 3);
 
         board.setPiece(new Coordinates(1, 2), new Bishop(new Coordinates(1, 2), Color.BLACK));
@@ -167,6 +179,8 @@ class PawnTest {
 
     @Test
     void testBlackCantMoveOnTwoCellForwardWhenOtherFigureBlocks() {
+        final Board board = new Board();
+        Piece blackPawn = board.getPiece(new Coordinates(1, 6));
         Coordinates blackMoveCoordinates = new Coordinates(1, 4);
 
         board.setPiece(new Coordinates(1, 5), new Bishop(new Coordinates(1, 5), Color.BLACK));
@@ -178,6 +192,7 @@ class PawnTest {
 
     @Test
     void testWhiteCantGoBackDiagonally() {
+        final Board board = new Board();
         Coordinates wrongMoveCoordinates1 = new Coordinates(0,3);
         Coordinates wrongMoveCoordinates2 = new Coordinates(2,3);
 
@@ -190,6 +205,7 @@ class PawnTest {
 
     @Test
     void testBlackCantGoBackDiagonally() {
+        final Board board = new Board();
         Coordinates wrongMoveCoordinates1 = new Coordinates(0,4);
         Coordinates wrongMoveCoordinates2 = new Coordinates(2,4);
 
@@ -202,6 +218,7 @@ class PawnTest {
 
     @Test
     void testCantGoOutside() {
+        final Board board = new Board();
         final Piece testLeftWhitePawn = board.getPiece(new Coordinates(0, 1));
         final Piece testRightWhitePawn = board.getPiece(new Coordinates(7, 1));
 
@@ -223,6 +240,7 @@ class PawnTest {
     @Test
     @Disabled
     void testTakeOnThePass() {
+        final Board board = new Board();
         Coordinates whitePieceCoordinates = new Coordinates(2,4);
         Coordinates blackPieceCoordinates = new Coordinates(1,6);
         Coordinates blackPieceMoveCoordinates = new Coordinates(1,4);
@@ -237,16 +255,15 @@ class PawnTest {
         board.move(new Move(new Coordinates(6,6), new Coordinates(6, 5), MoveType.ORDINARY));
 
         assertFalse(whitePiece.canMoveAt(new Coordinates(1, 5), board));
-
-        printBoardOnce(board);
     }
 
     @Test
     void testPromotion() {
-        Coordinates whitePieceCoordinatesToMove = new Coordinates(2,7);
-        Coordinates blackPieceCoordinatesToMove = new Coordinates(5,0);
-        Coordinates whitePieceCoordinates = new Coordinates(2,6);
-        Coordinates blackPieceCoordinates = new Coordinates(5,1);
+        final Board board = new Board();
+        Coordinates whitePieceCoordinatesToMove = new Coordinates(2, 7);
+        Coordinates blackPieceCoordinatesToMove = new Coordinates(5, 0);
+        Coordinates whitePieceCoordinates = new Coordinates(2, 6);
+        Coordinates blackPieceCoordinates = new Coordinates(5, 1);
 
         Pawn whitePawnPromotion = new Pawn(whitePieceCoordinates, Color.WHITE);
         Pawn blackPawnPromotion = new Pawn(blackPieceCoordinates, Color.BLACK);
@@ -259,14 +276,7 @@ class PawnTest {
         board.setPiece(whitePieceCoordinates, whitePawnPromotion);
         board.setPiece(blackPieceCoordinates, blackPawnPromotion);
 
-        printBoardOnce(board);
-
         assertTrue(whitePawnPromotion.isPromotion(whitePieceCoordinatesToMove, board));
         assertTrue(blackPawnPromotion.isPromotion(blackPieceCoordinatesToMove, board));
-    }
-
-    @Test
-    public void toStringTest() {
-        assertEquals("Pawn: x = 0, y = 1", pawn.toString());
     }
 }

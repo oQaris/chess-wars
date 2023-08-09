@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class Board {
     private static Piece[][] board;
-    private boolean[][] pieceMoved;
+    private final boolean[][] pieceMoved;
     private int blackPiecesNumber = 16;
     private int whitePiecesNumber = 16;
 
@@ -102,14 +102,6 @@ public class Board {
         Piece pieceToRemove = board[end.getX()][end.getY()];
 
         if (pieceToMove instanceof King || pieceToMove instanceof Rook) pieceMoved[start.getX()][start.getY()] = true;
-
-        if (pieceToMove.getColor().equals(Color.EMPTY)) {
-            return;
-        }
-
-        if (!pieceToMove.canMoveAt(end, this) && moveType != MoveType.CASTLING) {
-            return;
-        }
 
         Color pieceToRemoveColor = pieceToRemove.getColor();
 
