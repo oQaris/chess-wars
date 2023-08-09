@@ -32,6 +32,10 @@ allprojects {
         implementation ("io.netty:netty-all:4.1.96.Final")
         implementation("org.slf4j:slf4j-api:2.0.7")
         compileOnly("org.projectlombok:lombok:1.18.28")
+
+        implementation ("com.fasterxml.jackson.core:jackson-core:2.15.1")
+        implementation ("com.fasterxml.jackson.core:jackson-databind:2.15.1")
+        implementation ("com.fasterxml.jackson.core:jackson-annotations:2.15.1")
     }
 
     tasks.test {
