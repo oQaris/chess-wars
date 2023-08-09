@@ -204,6 +204,7 @@ public class Board {
 
             logger.info("Игрок сделал promotion");
         }
+    }
 
         moveHistory.addMove(move);
     }
