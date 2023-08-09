@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 public class MoveHistory {
-    private static ArrayList<Move> moveHistory;
+    private final ArrayList<Move> moveHistory;
     private int movesWithoutTake;
 
     public MoveHistory() {
@@ -29,7 +29,7 @@ public class MoveHistory {
         }
     }
 
-    public static Move getLastMove() throws NoSuchElementException {
+    public Move getLastMove() throws NoSuchElementException {
         if (moveHistory.size() > 0) {
             return moveHistory.get(moveHistory.size() - 1);
         }

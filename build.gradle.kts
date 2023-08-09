@@ -30,6 +30,10 @@ allprojects {
         testImplementation(platform("org.junit:junit-bom:5.9.3"))
         testImplementation("org.junit.jupiter:junit-jupiter")
         implementation ("io.netty:netty-all:4.1.96.Final")
+
+        implementation ("com.fasterxml.jackson.core:jackson-core:2.15.1")
+        implementation ("com.fasterxml.jackson.core:jackson-databind:2.15.1")
+        implementation ("com.fasterxml.jackson.core:jackson-annotations:2.15.1")
     }
 
     tasks.test {

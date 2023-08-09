@@ -18,12 +18,14 @@ public class PieceService {
         for (int x = 0; x < BOARD_HEIGHT; x++) {
             for (int y = 0; y < BOARD_LENGTH; y++) {
                 Piece piece = board.getPiece(new Coordinates(x, y));
+
                 if (!piece.getColor().equals(Color.EMPTY) && piece.getColor().equals(color)
                         && !piece.getPossibleMoves(board).isEmpty()) {
                     movablePieces.add(piece);
                 }
             }
         }
+
         return movablePieces;
     }
 }

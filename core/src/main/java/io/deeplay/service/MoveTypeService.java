@@ -22,10 +22,14 @@ public class MoveTypeService {
             }
         }
 
-        if (!(board.getPiece(moveCoordinates) instanceof Empty)) return MoveType.TAKE;
+        if (!(board.getPiece(moveCoordinates) instanceof Empty)) {
+            return MoveType.TAKE;
+        }
 
         if (selectedPiece instanceof King) {
-            if (Math.abs(selectedPiece.getCoordinates().getX() - moveCoordinates.getX()) == 2) return MoveType.CASTLING;
+            if (Math.abs(selectedPiece.getCoordinates().getX() - moveCoordinates.getX()) == 2) {
+                return MoveType.CASTLING;
+            }
         }
 
         return MoveType.ORDINARY;

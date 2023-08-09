@@ -4,7 +4,6 @@ import io.deeplay.domain.Color;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
-import io.deeplay.model.move.MoveHistory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,15 @@ public class Pawn extends Piece {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (canMoveAt(new Coordinates(i, j), board)) {
-                    possibleMoves.add(new Coordinates(i, j));
+                    if (isPromotion(new Coordinates(i, j), board)) {
+                        //  get promotionChoices
+                        //  possibleMoves.add(new Coordinates(i, j));
+                        //  possibleMoves.add(new Coordinates(i, j));
+                        //  possibleMoves.add(new Coordinates(i, j));
+                        //  possibleMoves.add(new Coordinates(i, j));
+                    } else {
+                        possibleMoves.add(new Coordinates(i, j));
+                    }
                 }
             }
         }
@@ -121,7 +128,7 @@ public class Pawn extends Piece {
             return false;
         }
 
-        Move lastMove = MoveHistory.getLastMove();
+        Move lastMove = board.getMoveHistory().getLastMove();
 
         Piece pieceMadeLastMove = board.getPiece(new Coordinates(lastMove.endPosition().getX(),
                 lastMove.endPosition().getY()));

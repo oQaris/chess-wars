@@ -18,7 +18,6 @@ public class UserCommunicationService {
 
     public static int chooseBotLevel() {
         // Scanner или с помощью интерфейса вводить число от 1 до 3
-
         return 1;
     }
 
@@ -26,6 +25,7 @@ public class UserCommunicationService {
         while (true) {
             System.out.println("choose color of player1");
             char userInput = scanner.next().charAt(0);
+
             if (userInput == 'w') {
                 System.out.println("player1 color is set to white");
                 System.out.println("player2 color is set to black");
@@ -34,7 +34,7 @@ public class UserCommunicationService {
                 chosenColors[0] = Color.WHITE;
                 chosenColors[1] = Color.BLACK;
                 return chosenColors;
-            } else if (userInput == 'b'){
+            } else if (userInput == 'b') {
                 System.out.println("player1 color is set to black");
                 System.out.println("player2 color is set to white");
 
@@ -49,26 +49,33 @@ public class UserCommunicationService {
     public static GameSession getGameSessionInfo() {
         // С начальной страницы получить тип игры
         System.out.println("Game opened...");
-
-        char inputType = 'c';
-
         System.out.println("choose type of the game (bot-bot / human-human / human-bot)");
         String gameType = scanner.nextLine();
 
-        if (gameType.equals("bot-bot")) {
-            return new GameSession(new Bot(Color.WHITE, UserCommunicationService.chooseBotLevel()),
-                    new Bot(Color.BLACK, UserCommunicationService.chooseBotLevel()), GameType.BotVsBot);
-        } else if (gameType.equals("human-human")) {
-            Color[] userColor = UserCommunicationService.chooseColor();
-            return new GameSession(new Human(userColor[0]), new Human(userColor[1]), GameType.HumanVsHuman);
-        } else if (gameType.equals("human-bot")) {
-            Color[] userColor = UserCommunicationService.chooseColor();
-            return new GameSession(new Human(userColor[0]), new Bot(userColor[1],
-                    UserCommunicationService.chooseBotLevel()), GameType.HumanVsBot);
-        } else {
-            System.out.println("Invalid input. Ending...");
-            System.exit(0);
-            return null;
+        switch (gameType) {
+            case "bot-bot" -> {
+                return new GameSession(new Bot(Color.WHITE, UserCommunicationService.chooseBotLevel()),
+                        new Bot(Color.BLACK, UserCommunicationService.chooseBotLevel()), GameType.BotVsBot);
+            }
+
+            case "human-human" -> {
+                Color[] userColor = UserCommunicationService.chooseColor();
+
+                return new GameSession(new Human(userColor[0]), new Human(userColor[1]), GameType.HumanVsHuman);
+            }
+
+            case "human-bot" -> {
+                Color[] userColor = UserCommunicationService.chooseColor();
+
+                return new GameSession(new Human(userColor[0]), new Bot(userColor[1],
+                        UserCommunicationService.chooseBotLevel()), GameType.HumanVsBot);
+            }
+
+            default -> {
+                System.out.println("Invalid input. Ending...");
+                System.exit(0);
+                return null;
+            }
         }
     }
 
@@ -77,14 +84,17 @@ public class UserCommunicationService {
 
         while (selectedPiece == null) {
             System.out.println("choose piece (its number) which you want to move:");
+
             for (int i = 0; i < possiblePiecesToMove.size(); i++) {
                 System.out.println("(" + i + ") " + possiblePiecesToMove.get(i).getColor().name() + " "
                         + possiblePiecesToMove.get(i).getClass().getSimpleName()
-                        +" at x:" + possiblePiecesToMove.get(i).getCoordinates().getX()
+                        + " at x:" + possiblePiecesToMove.get(i).getCoordinates().getX()
                         + " y:" + possiblePiecesToMove.get(i).getCoordinates().getY());
             }
+
             selectedPiece = possiblePiecesToMove.get(scanner.nextInt());
         }
+
         return selectedPiece;
     }
 
@@ -93,6 +103,7 @@ public class UserCommunicationService {
 
         while (moveCoordinates == null) {
             System.out.println("choose coordinates in which you want to move your piece:");
+
             for (int i = 0; i < availableMoves.size(); i++) {
                 System.out.println("(" + i + ") x: " + availableMoves.get(i).getX()
                         + " y: " + availableMoves.get(i).getY());
@@ -100,6 +111,7 @@ public class UserCommunicationService {
 
             moveCoordinates = availableMoves.get(scanner.nextInt());
         }
+
         return moveCoordinates;
     }
 }

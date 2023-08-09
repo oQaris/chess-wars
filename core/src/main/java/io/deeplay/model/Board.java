@@ -3,6 +3,7 @@ package io.deeplay.model;
 import io.deeplay.domain.Color;
 import io.deeplay.model.move.Move;
 import io.deeplay.domain.MoveType;
+import io.deeplay.model.move.MoveHistory;
 import io.deeplay.model.piece.*;
 import io.deeplay.model.utils.BoardUtils;
 
@@ -13,6 +14,8 @@ public class Board {
     private boolean[][] pieceMoved;
     private int blackPiecesNumber = 16;
     private int whitePiecesNumber = 16;
+
+    private final MoveHistory moveHistory = new MoveHistory();
 
     public Board() {
         board = getStartBoard();
@@ -128,6 +131,7 @@ public class Board {
         } else if (moveType == MoveType.CASTLING) {
             Piece rookToMove = null;
             int moveSide = start.getX() - end.getX();
+
             if (moveSide == 2) {
                 rookToMove = getPiece(new Coordinates(0, start.getY()));
                 board[3][start.getY()] = rookToMove;
@@ -138,6 +142,7 @@ public class Board {
                 board[start.getX()][start.getY()] = new Empty(start);
                 pieceToMove.setCoordinates(end);
             }
+
             if (moveSide == -2) {
                 rookToMove = getPiece(new Coordinates(7, start.getY()));
                 board[5][start.getY()] = rookToMove;
@@ -172,6 +177,8 @@ public class Board {
             board[end.getX()][end.getY()] = newPiece;
             board[start.getX()][start.getY()] = new Empty(start);
         }
+
+        moveHistory.addMove(move);
     }
 
     private Piece choosePromotionPiece(Coordinates endCoordinates, Piece pieceToMove) {
@@ -210,5 +217,9 @@ public class Board {
 
     public boolean[][] getPieceMoved() {
         return pieceMoved;
+    }
+
+    public MoveHistory getMoveHistory() {
+        return moveHistory;
     }
 }

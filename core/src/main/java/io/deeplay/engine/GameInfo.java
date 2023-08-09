@@ -56,6 +56,4 @@ public class GameInfo {
     public MoveHistory getMoveHistory() {
         return moveHistory;
     }
-
-
 }
