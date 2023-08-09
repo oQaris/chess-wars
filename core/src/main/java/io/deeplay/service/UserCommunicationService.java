@@ -9,77 +9,55 @@ import io.deeplay.model.piece.*;
 import io.deeplay.model.player.Bot;
 import io.deeplay.model.player.Human;
 
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Scanner;
 
 public class UserCommunicationService {
 
-    private static final Scanner scanner = new Scanner(System.in, Charset.defaultCharset().name());
+    private Scanner scanner;
+    private PrintStream printStream;
 
-    public static int chooseBotLevel() {
-        // Scanner или с помощью интерфейса вводить число от 1 до 3
-
-        return 1;
+    public UserCommunicationService(InputStream inputStream, PrintStream printStream) {
+        this.scanner = new Scanner(inputStream, Charset.defaultCharset());
+        this.printStream = printStream;
     }
 
-    public static Color[] chooseColor() {
-        while (true) {
-            System.out.println("choose color of player1");
-            char userInput = scanner.next().charAt(0);
-            if (userInput == 'w') {
-                System.out.println("player1 color is set to white");
-                System.out.println("player2 color is set to black");
-
-                Color[] chosenColors = new Color[2];
-                chosenColors[0] = Color.WHITE;
-                chosenColors[1] = Color.BLACK;
-                return chosenColors;
-            } else if (userInput == 'b'){
-                System.out.println("player1 color is set to black");
-                System.out.println("player2 color is set to white");
-
-                Color[] chosenColors = new Color[2];
-                chosenColors[0] = Color.BLACK;
-                chosenColors[1] = Color.WHITE;
-                return chosenColors;
-            }
-        }
-    }
-
-    public static GameSession getGameSessionInfo() {
+    public GameSession getGameSessionInfo() {
         // С начальной страницы получить тип игры
-        System.out.println("Game opened...");
+        printStream.println("Game opened...");
 
         char inputType = 'c';
 
-        System.out.println("choose type of the game (bot-bot / human-human / human-bot)");
+        printStream.println("choose type of the game (bot-bot / human-human / human-bot)");
         String gameType = scanner.nextLine();
 
         if (gameType.equals("bot-bot")) {
-            return new GameSession(new Bot(Color.WHITE, UserCommunicationService.chooseBotLevel()),
-                    new Bot(Color.BLACK, UserCommunicationService.chooseBotLevel()), GameType.BotVsBot);
+            return new GameSession(new Bot(Color.WHITE, chooseBotLevel()),
+                    new Bot(Color.BLACK, chooseBotLevel()), GameType.BotVsBot);
         } else if (gameType.equals("human-human")) {
-            Color[] userColor = UserCommunicationService.chooseColor();
+            Color[] userColor = chooseColor();
             return new GameSession(new Human(userColor[0]), new Human(userColor[1]), GameType.HumanVsHuman);
         } else if (gameType.equals("human-bot")) {
-            Color[] userColor = UserCommunicationService.chooseColor();
+            Color[] userColor = chooseColor();
             return new GameSession(new Human(userColor[0]), new Bot(userColor[1],
-                    UserCommunicationService.chooseBotLevel()), GameType.HumanVsBot);
+                    chooseBotLevel()), GameType.HumanVsBot);
         } else {
-            System.out.println("Invalid input. Ending...");
+            printStream.println("Invalid input. Ending...");
             System.exit(0);
             return null;
         }
     }
 
-    public static Piece selectPiece(List<Piece> possiblePiecesToMove) {
+    public Piece selectPiece(List<Piece> possiblePiecesToMove) {
         Piece selectedPiece = null;
 
         while (selectedPiece == null) {
-            System.out.println("choose piece (its number) which you want to move:");
+            printStream.println("choose piece (its number) which you want to move:");
             for (int i = 0; i < possiblePiecesToMove.size(); i++) {
-                System.out.println("(" + i + ") " + possiblePiecesToMove.get(i).getColor().name() + " "
+                printStream.println("(" + i + ") " + possiblePiecesToMove.get(i).getColor().name() + " "
                         + possiblePiecesToMove.get(i).getClass().getSimpleName()
                         +" at x:" + possiblePiecesToMove.get(i).getCoordinates().getX()
                         + " y:" + possiblePiecesToMove.get(i).getCoordinates().getY());
@@ -89,13 +67,13 @@ public class UserCommunicationService {
         return selectedPiece;
     }
 
-    public static Coordinates selectCoordinates(List<Coordinates> availableMoves) {
+    public Coordinates selectCoordinates(List<Coordinates> availableMoves) {
         Coordinates moveCoordinates = null;
 
         while (moveCoordinates == null) {
-            System.out.println("choose coordinates in which you want to move your piece:");
+            printStream.println("choose coordinates in which you want to move your piece:");
             for (int i = 0; i < availableMoves.size(); i++) {
-                System.out.println("(" + i + ") x: " + availableMoves.get(i).getX()
+                printStream.println("(" + i + ") x: " + availableMoves.get(i).getX()
                         + " y: " + availableMoves.get(i).getY());
             }
 
@@ -104,13 +82,13 @@ public class UserCommunicationService {
         return moveCoordinates;
     }
 
-    public static SwitchPieceType selectSwitchPiece() {
+    public SwitchPieceType selectSwitchPiece() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Выберите новую фигуру: ");
-        System.out.println("1. Queen");
-        System.out.println("2. Rook");
-        System.out.println("3. Bishop");
-        System.out.println("4. Knight");
+        printStream.println("Выберите новую фигуру: ");
+        printStream.println("1. Queen");
+        printStream.println("2. Rook");
+        printStream.println("3. Bishop");
+        printStream.println("4. Knight");
         int choice = scanner.nextInt();
 
         return switch (choice) {
@@ -120,5 +98,35 @@ public class UserCommunicationService {
             case 4 -> SwitchPieceType.KNIGHT;
             default -> throw new IllegalArgumentException("Invalid choice: " + choice);
         };
+    }
+
+    public int chooseBotLevel() {
+        // Scanner или с помощью интерфейса вводить число от 1 до 3
+
+        return 1;
+    }
+
+    public Color[] chooseColor() {
+        while (true) {
+            printStream.println("choose color of player1");
+            char userInput = scanner.next().charAt(0);
+            if (userInput == 'w') {
+                printStream.println("player1 color is set to white");
+                printStream.println("player2 color is set to black");
+
+                Color[] chosenColors = new Color[2];
+                chosenColors[0] = Color.WHITE;
+                chosenColors[1] = Color.BLACK;
+                return chosenColors;
+            } else if (userInput == 'b'){
+                printStream.println("player1 color is set to black");
+                printStream.println("player2 color is set to white");
+
+                Color[] chosenColors = new Color[2];
+                chosenColors[0] = Color.BLACK;
+                chosenColors[1] = Color.WHITE;
+                return chosenColors;
+            }
+        }
     }
 }
