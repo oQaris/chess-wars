@@ -2,9 +2,10 @@ package io.deeplay.service;
 
 import io.deeplay.domain.Color;
 import io.deeplay.domain.GameType;
+import io.deeplay.domain.SwitchPieceType;
 import io.deeplay.engine.GameSession;
 import io.deeplay.model.Coordinates;
-import io.deeplay.model.piece.Piece;
+import io.deeplay.model.piece.*;
 import io.deeplay.model.player.Bot;
 import io.deeplay.model.player.Human;
 
@@ -101,5 +102,23 @@ public class UserCommunicationService {
             moveCoordinates = availableMoves.get(scanner.nextInt());
         }
         return moveCoordinates;
+    }
+
+    public static SwitchPieceType selectSwitchPiece() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Выберите новую фигуру: ");
+        System.out.println("1. Queen");
+        System.out.println("2. Rook");
+        System.out.println("3. Bishop");
+        System.out.println("4. Knight");
+        int choice = scanner.nextInt();
+
+        return switch (choice) {
+            case 1 -> SwitchPieceType.QUEEN;
+            case 2 -> SwitchPieceType.ROOK;
+            case 3 -> SwitchPieceType.BISHOP;
+            case 4 -> SwitchPieceType.KNIGHT;
+            default -> throw new IllegalArgumentException("Invalid choice: " + choice);
+        };
     }
 }
