@@ -13,8 +13,9 @@ import java.nio.charset.StandardCharsets;
 public class Main {
     public static void main(String[] args) {
         System.setOut(new java.io.PrintStream(System.out, true, StandardCharsets.UTF_8));
-        Board board = new Board();
-        GameSession gameSession = UserCommunicationService.getGameSessionInfo();
+
+        UserCommunicationService userCommunicationService = new UserCommunicationService(System.in, System.out);
+        GameSession gameSession = userCommunicationService.getGameSessionInfo();
         gameSession.startGameSession();
     }
 }

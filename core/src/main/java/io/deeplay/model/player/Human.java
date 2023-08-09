@@ -18,13 +18,14 @@ public class Human extends Player {
 
     @Override
     public Move getMove(List<Piece> possiblePiecesToMove, Board board) {
-        Piece selectedPiece = UserCommunicationService.selectPiece(possiblePiecesToMove);
+        UserCommunicationService userCommunicationService = new UserCommunicationService(System.in, System.out);
+        Piece selectedPiece = userCommunicationService.selectPiece(possiblePiecesToMove);
         List<Coordinates> availableMoves = selectedPiece.getPossibleMoves(board);
-        Coordinates moveCoordinates = UserCommunicationService.selectCoordinates(availableMoves);
+        Coordinates moveCoordinates = userCommunicationService.selectCoordinates(availableMoves);
         MoveType moveType = getType(selectedPiece, moveCoordinates, board);
 
         SwitchPieceType selectedSwitchPiece = SwitchPieceType.NULL;
-        if (moveType == MoveType.PROMOTION) selectedSwitchPiece = UserCommunicationService.selectSwitchPiece();
+        if (moveType == MoveType.PROMOTION) selectedSwitchPiece = userCommunicationService.selectSwitchPiece();
 
         System.out.println("You selected " + selectedPiece.getColor().name() + " "
                 + selectedPiece.getClass().getSimpleName() + " to move to coordinates x:" + moveCoordinates.getX()
