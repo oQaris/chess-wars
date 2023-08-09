@@ -3,7 +3,6 @@ package io.deeplay.model.piece;
 import io.deeplay.domain.Color;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
-import io.deeplay.service.KingService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,28 +31,27 @@ public class King extends Piece {
         int x = this.getCoordinates().getX();
         int y = this.getCoordinates().getY();
 
+        Coordinates defaultKing = null;
+        Coordinates[] defaultRooks = null;
+        Color enemyColor;
         if (this.getColor() == Color.WHITE) {
-            Coordinates defaultKing = new Coordinates(4,0);
-            Coordinates[] defaultBottomRooks = {new Coordinates(0,0), new Coordinates(7, 0)};
-            if (!board.getPieceMoved()[defaultKing.getX()][defaultKing.getY()]) { // двигался ли король
-                for (Coordinates rookCoordinate : defaultBottomRooks) { // проход по башням
-                    if (!board.getPieceMoved()[rookCoordinate.getX()][rookCoordinate.getY()])
-                        rookCoordinates.add(rookCoordinate);
-                }
-                if (!rookCoordinates.isEmpty())
-                    possibleMoves.addAll(getWhiteCastleMoves(new Coordinates(x, y), rookCoordinates, board));
-            }
+            defaultKing = new Coordinates(4,0);
+            defaultRooks = new Coordinates[]{new Coordinates(0, 0), new Coordinates(7, 0)};
+            enemyColor = Color.BLACK;
         } else {
-            Coordinates defaultKing = new Coordinates(4, 7);
-            Coordinates[] defaultUpRooks = {new Coordinates(0,7), new Coordinates(7, 7)};
-            if (!board.getPieceMoved()[defaultKing.getX()][defaultKing.getY()]) {
-                for (Coordinates rookCoordinate : defaultUpRooks) {
-                    if (!board.getPieceMoved()[rookCoordinate.getX()][rookCoordinate.getY()])
-                        rookCoordinates.add(rookCoordinate);
-                }
-                if (!rookCoordinates.isEmpty())
-                    possibleMoves.addAll(getBlackCastleMoves(new Coordinates(x, y), rookCoordinates, board));
+            defaultKing = new Coordinates(4, 7);
+            defaultRooks = new Coordinates[]{new Coordinates(0, 7), new Coordinates(7, 7)};
+            enemyColor = Color.WHITE;
+        }
+
+        if (!board.getPieceMoved()[defaultKing.getX()][defaultKing.getY()]) { // двигался ли король
+            for (Coordinates rookCoordinate : defaultRooks) { // проход по башням
+                if (!board.getPieceMoved()[rookCoordinate.getX()][rookCoordinate.getY()])
+                    rookCoordinates.add(rookCoordinate);
             }
+            if (!rookCoordinates.isEmpty())
+                possibleMoves.addAll(getCastleMoves(enemyColor, defaultKing.getY(),
+                        new Coordinates(x, y), rookCoordinates, board));
         }
 
         for (int i = x - 1; i <= x + 1; i++) {
@@ -90,37 +88,37 @@ public class King extends Piece {
         return distanceX <= 1 && distanceY <= 1;
     }
 
-    List<Coordinates> getWhiteCastleMoves(Coordinates kingCoordinates, List<Coordinates> rookCoordinates, Board board) {
+    List<Coordinates> getCastleMoves(Color enemyColor, int y_coordinate, Coordinates kingCoordinates, List<Coordinates> rookCoordinates, Board board) {
         List<Coordinates> checkedAvailableCoordinates = new ArrayList<>();
 
         for (Coordinates coordinates : rookCoordinates) {
-            if (coordinates.getX() == 0 && coordinates.getY() == 0) {
+            if (coordinates.getX() == 0 && coordinates.getY() == y_coordinate) {
                 List<Coordinates> tempCoordinates = new ArrayList<>();
 
-                if (board.getPiece(new Coordinates(1, 0)) instanceof Empty &&
-                        board.getPiece(new Coordinates(2, 0)) instanceof Empty &&
-                        board.getPiece(new Coordinates(3, 0)) instanceof Empty) {
-                    tempCoordinates.add(new Coordinates(2, 0));
-                    tempCoordinates.add(new Coordinates(3, 0));
+                if (board.getPiece(new Coordinates(1, y_coordinate)) instanceof Empty &&
+                        board.getPiece(new Coordinates(2, y_coordinate)) instanceof Empty &&
+                        board.getPiece(new Coordinates(3, y_coordinate)) instanceof Empty) {
+                    tempCoordinates.add(new Coordinates(2, y_coordinate));
+                    tempCoordinates.add(new Coordinates(3, y_coordinate));
 
-                    if (KingService.isPossibleToCastle(kingCoordinates,
-                            tempCoordinates, board, Color.BLACK)) {
-                        checkedAvailableCoordinates.add(new Coordinates(2,0));
+                    if (isPossibleToCastle(kingCoordinates,
+                            tempCoordinates, board, enemyColor)) {
+                        checkedAvailableCoordinates.add(new Coordinates(2,y_coordinate));
                     }
                 }
             }
 
-            if (coordinates.getX() == 7 && coordinates.getY() == 0) {
+            if (coordinates.getX() == 7 && coordinates.getY() == y_coordinate) {
                 List<Coordinates> tempCoordinates = new ArrayList<>();
 
-                if (board.getPiece(new Coordinates(5, 0)) instanceof Empty &&
-                        board.getPiece(new Coordinates(6, 0)) instanceof Empty) {
-                    tempCoordinates.add(new Coordinates(5, 0));
-                    tempCoordinates.add(new Coordinates(6, 0));
+                if (board.getPiece(new Coordinates(5, y_coordinate)) instanceof Empty &&
+                        board.getPiece(new Coordinates(6, y_coordinate)) instanceof Empty) {
+                    tempCoordinates.add(new Coordinates(5, y_coordinate));
+                    tempCoordinates.add(new Coordinates(6, y_coordinate));
 
-                    if (KingService.isPossibleToCastle(kingCoordinates,
-                            tempCoordinates, board, Color.BLACK)) {
-                        checkedAvailableCoordinates.add(new Coordinates(6,0));
+                    if (isPossibleToCastle(kingCoordinates,
+                            tempCoordinates, board, enemyColor)) {
+                        checkedAvailableCoordinates.add(new Coordinates(6,y_coordinate));
                     }
                 }
             }
@@ -129,43 +127,23 @@ public class King extends Piece {
         return checkedAvailableCoordinates;
     }
 
-    List<Coordinates> getBlackCastleMoves(Coordinates kingCoordinates, List<Coordinates> rookCoordinates, Board board) {
-        List<Coordinates> checkedAvailableCoordinates = new ArrayList<>();
+    boolean isPossibleToCastle(Coordinates kingCoordinates, List<Coordinates> potentialCoordinates,
+                                             Board board, Color enemyColor) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (board.getPiece(new Coordinates(i,j)).getColor().equals(enemyColor)) {
+                    Piece piece = board.getPiece(new Coordinates(i,j));
 
-        for (Coordinates coordinates : rookCoordinates) {
-            if (coordinates.getX() == 0 && coordinates.getY() == 7) {
-                List<Coordinates> tempCoordinates = new ArrayList<>();
+                    if (piece.canMoveAt(kingCoordinates, board)) return false;
 
-                if (board.getPiece(new Coordinates(1, 7)) instanceof Empty &&
-                        board.getPiece(new Coordinates(2, 7)) instanceof Empty &&
-                        board.getPiece(new Coordinates(3, 7)) instanceof Empty) {
-                    tempCoordinates.add(new Coordinates(2, 7));
-                    tempCoordinates.add(new Coordinates(3, 7));
-
-                    if (KingService.isPossibleToCastle(kingCoordinates,
-                            tempCoordinates, board, Color.WHITE)) {
-                        checkedAvailableCoordinates.add(new Coordinates(2,7));
-                    }
-                }
-            }
-
-            if (coordinates.getX() == 7 && coordinates.getY() == 7) {
-                List<Coordinates> tempCoordinates = new ArrayList<>();
-
-                if (board.getPiece(new Coordinates(5, 7)) instanceof Empty &&
-                        board.getPiece(new Coordinates(6, 7)) instanceof Empty) {
-                    tempCoordinates.add(new Coordinates(5, 7));
-                    tempCoordinates.add(new Coordinates(6, 7));
-
-                    if (KingService.isPossibleToCastle(kingCoordinates,
-                            tempCoordinates, board, Color.WHITE)) {
-                        checkedAvailableCoordinates.add(new Coordinates(6,7));
+                    for (Coordinates potentialCoordinate : potentialCoordinates) {
+                        if (piece.canMoveAt(potentialCoordinate, board))
+                            return false;
                     }
                 }
             }
         }
-
-        return checkedAvailableCoordinates;
+        return true;
     }
 
     @Override
