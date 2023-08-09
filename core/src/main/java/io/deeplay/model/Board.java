@@ -1,6 +1,7 @@
 package io.deeplay.model;
 
 import io.deeplay.domain.Color;
+import io.deeplay.domain.SwitchPieceType;
 import io.deeplay.model.move.Move;
 import io.deeplay.domain.MoveType;
 import io.deeplay.model.piece.*;
@@ -151,7 +152,14 @@ public class Board {
             board[end.getX()][end.getY()] = pieceToMove;
             board[start.getX()][start.getY()] = new Empty(start);
         } else if (moveType == MoveType.PROMOTION) {
-            Piece newPiece = choosePromotionPiece(end, pieceToMove);
+            Piece newPiece = null;
+            switch (move.switchPieceType()) {
+                case BISHOP -> newPiece = new Bishop(end, pieceToMove.getColor());
+                case KNIGHT -> newPiece = new Knight(end, pieceToMove.getColor());
+                case QUEEN -> newPiece = new Queen(end, pieceToMove.getColor());
+                case ROOK -> newPiece = new Rook(end, pieceToMove.getColor());
+                default -> throw new IllegalArgumentException("Invalid choice");
+            }
 
             if (!pieceToRemoveColor.equals(Color.EMPTY)) {
                 if (pieceToRemoveColor.equals(Color.BLACK)) {
@@ -160,28 +168,9 @@ public class Board {
                     whitePiecesNumber--;
                 }
             }
-
             board[end.getX()][end.getY()] = newPiece;
             board[start.getX()][start.getY()] = new Empty(start);
         }
-    }
-
-    private Piece choosePromotionPiece(Coordinates endCoordinates, Piece pieceToMove) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Выберите новую фигуру: ");
-        System.out.println("1. Queen");
-        System.out.println("2. Rook");
-        System.out.println("3. Bishop");
-        System.out.println("4. Knight");
-        int choice = scanner.nextInt();
-
-        return switch (choice) {
-            case 1 -> new Queen(endCoordinates, pieceToMove.getColor());
-            case 2 -> new Rook(endCoordinates, pieceToMove.getColor());
-            case 3 -> new Bishop(endCoordinates, pieceToMove.getColor());
-            case 4 -> new Knight(endCoordinates, pieceToMove.getColor());
-            default -> throw new IllegalArgumentException("Invalid choice: " + choice);
-        };
     }
 
     public Piece[][] getBoard() {

@@ -1,10 +1,10 @@
 package io.deeplay.model.move;
 
 import io.deeplay.domain.MoveType;
+import io.deeplay.domain.SwitchPieceType;
 import io.deeplay.model.Coordinates;
-import io.deeplay.model.piece.Piece;
 
-public record Move(Coordinates startPosition, Coordinates endPosition, MoveType moveType) {
+public record Move(Coordinates startPosition, Coordinates endPosition, MoveType moveType, SwitchPieceType switchPieceType) {
 
     @Override
     public String toString() {
