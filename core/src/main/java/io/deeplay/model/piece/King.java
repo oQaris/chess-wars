@@ -88,7 +88,8 @@ public class King extends Piece {
         return distanceX <= 1 && distanceY <= 1;
     }
 
-    List<Coordinates> getCastleMoves(Color enemyColor, int y_coordinate, Coordinates kingCoordinates, List<Coordinates> rookCoordinates, Board board) {
+    List<Coordinates> getCastleMoves(Color enemyColor, int y_coordinate, Coordinates kingCoordinates,
+                                     List<Coordinates> rookCoordinates, Board board) {
         List<Coordinates> checkedAvailableCoordinates = new ArrayList<>();
 
         for (Coordinates coordinates : rookCoordinates) {
