@@ -9,7 +9,6 @@ import io.deeplay.service.PieceService;
 
 import java.util.List;
 
-import static io.deeplay.model.Board.printBoard;
 import static io.deeplay.model.Board.printBoardOnce;
 
 public class GameSession {
@@ -25,7 +24,7 @@ public class GameSession {
     }
 
     public void startGameSession() {
-        GameInfo gameInfo = new GameInfo(player1, player2);
+        GameInfo gameInfo = new GameInfo();
         printBoardOnce(gameInfo.getCurrentBoard());
         while(true) {
             Color currentColor = gameInfo.getCurrentMoveColor();
@@ -37,6 +36,7 @@ public class GameSession {
             Move move = playerWhoMoves.getMove(possiblePiecesToMove, gameInfo.getCurrentBoard());
 
             gameInfo.move(move);
+            printBoardOnce(gameInfo.getCurrentBoard());
 
             boolean isFinished = GameState.check(gameInfo.getCurrentBoard());
             if (isFinished == true) endGame();
