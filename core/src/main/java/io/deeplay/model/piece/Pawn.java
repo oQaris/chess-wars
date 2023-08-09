@@ -31,7 +31,15 @@ public class Pawn extends Piece {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (canMoveAt(new Coordinates(i, j), board)) {
-                    possibleMoves.add(new Coordinates(i, j));
+                    if (isPromotion(new Coordinates(i, j), board)) {
+                        //  get promotionChoices
+                        //  possibleMoves.add(new Coordinates(i, j));
+                        //  possibleMoves.add(new Coordinates(i, j));
+                        //  possibleMoves.add(new Coordinates(i, j));
+                        //  possibleMoves.add(new Coordinates(i, j));
+                    } else {
+                        possibleMoves.add(new Coordinates(i, j));
+                    }
                 }
             }
         }
