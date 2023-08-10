@@ -55,9 +55,9 @@ public class Server {
         }
 
         // send startGame (всем игрокам)
-
+        UserCommunicationService userCommunicationService = new UserCommunicationService(System.in, System.out);
         // старт и логика
-        gameSession = UserCommunicationService.getGameSessionInfo();
+        gameSession = userCommunicationService.getGameSessionInfo();
         gameSession.startGameSession();
     }
 
