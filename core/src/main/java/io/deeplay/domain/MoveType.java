@@ -5,5 +5,14 @@ public enum MoveType {
     TAKE,
     EN_PASSANT,
     CASTLING,
-    PROMOTION
+    PROMOTION;
+
+    /**
+     * Method return the name of enum field name.
+     *
+     * @return enum field name
+     */
+    public String getMoveType() {
+        return this.name();
+    }
 }
