@@ -23,6 +23,13 @@ public class King extends Piece {
     // 3) Проверка на то, что король не под шахом *
     // 4) Проверка на то, что король не будет под шахом на полях слева или справа *
     // 5) Проверка на то, что король не будет под шахом на поле, на которое он встанет, слева или справа *
+
+    /**
+     * Метод просчитывает все возможные ходы короля и возвращает их в виде листа
+     *
+     * @param board текущее состояние доски
+     * @return лист с возможными ходами королем
+     */
     @Override
     public List<Coordinates> getPossibleMoves(Board board) {
         List<Coordinates> possibleMoves = new ArrayList<>();
@@ -68,6 +75,13 @@ public class King extends Piece {
         return possibleMoves;
     }
 
+    /**
+     * Метод берет координаты определенной клетки и проверяет, может ли король походить на нее из его позиции на доске
+     *
+     * @param coordinates координаты потенциально возможного хода
+     * @param board текущее состояние доски
+     * @return true - если может походить, false - если не может
+     */
     @Override
     public boolean canMoveAt(Coordinates coordinates, Board board) {
         if (coordinates.getX() < 0 || coordinates.getY() < 0 || coordinates.getY() >= 8 || coordinates.getX() >= 8) {
@@ -88,6 +102,16 @@ public class King extends Piece {
         return distanceX <= 1 && distanceY <= 1;
     }
 
+    /**
+     * Метод проверяет, можно ли сделать рокировку королем.
+     *
+     * @param enemyColor цвет противника
+     * @param y_coordinate координата проверки, на котором стоит король
+     * @param kingCoordinates координаты короля
+     * @param rookCoordinates лист из координат ладей
+     * @param board текущее состояние доски
+     * @return лист из координат, куда можно сделать рокировку
+     */
     List<Coordinates> getCastleMoves(Color enemyColor, int y_coordinate, Coordinates kingCoordinates,
                                      List<Coordinates> rookCoordinates, Board board) {
         List<Coordinates> checkedAvailableCoordinates = new ArrayList<>();
@@ -128,6 +152,15 @@ public class King extends Piece {
         return checkedAvailableCoordinates;
     }
 
+    /**
+     * Проверяет, может ли король сделать рокировку на определенную ладью
+     *
+     * @param kingCoordinates текущие координаты короля
+     * @param potentialCoordinates возможные координаты на рокировку
+     * @param board текущее состояние доски
+     * @param enemyColor цвет противника
+     * @return true - если может рокироваться, false - если не может
+     */
     boolean isPossibleToCastle(Coordinates kingCoordinates, List<Coordinates> potentialCoordinates,
                                              Board board, Color enemyColor) {
         for (int i = 0; i < 8; i++) {

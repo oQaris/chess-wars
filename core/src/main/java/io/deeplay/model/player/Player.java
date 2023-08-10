@@ -25,6 +25,13 @@ public abstract class Player {
 
     public abstract Move getMove(Board board, Color currentColor);
 
+    /**
+     * Метод возвращает все возможные фигуры, которыми можно походить
+     *
+     * @param board текущее состояние доски
+     * @param color цвет текущего хода
+     * @return лист из фигур
+     */
     public List<Piece> getPiecesPossibleToMove(Board board, Color color) {
         List<Piece> movablePieces = new ArrayList<>();
 
@@ -40,6 +47,14 @@ public abstract class Player {
         return movablePieces;
     }
 
+    /**
+     * Метод возвращает тип хода
+     *
+     * @param selectedPiece выбранная фигура для хода
+     * @param moveCoordinates координаты выбранной фигуры
+     * @param board текущее состояние доски
+     * @return тип хода
+     */
     protected MoveType getType(Piece selectedPiece, Coordinates moveCoordinates, Board board) {
         if (selectedPiece instanceof Pawn) {
             if (((Pawn) selectedPiece).isPromotion(moveCoordinates, board)) {
@@ -62,6 +77,10 @@ public abstract class Player {
         return MoveType.ORDINARY;
     }
 
+    /**
+     * Возвращает цвет игрока
+     * @return цвет игрока
+     */
     public Color getColor() {
         return color;
     }

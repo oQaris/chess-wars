@@ -20,6 +20,14 @@ public class Bot extends Player {
         this.difficultyLevel = difficultyLevel;
     }
 
+    /**
+     * Возвращает созданный объект класса Move с заданными параметрами. Метод рандомно выбирает параметры из листов
+     * possiblePiecesToMove и availableMoves.
+     *
+     * @param board текущее состояние доски
+     * @param currentColor цвет текущего хода
+     * @return новый объект класса Move
+     */
     @Override
     public Move getMove(Board board, Color currentColor) {
         Random random = new Random();
