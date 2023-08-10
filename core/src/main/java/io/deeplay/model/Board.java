@@ -12,6 +12,8 @@ import java.util.Scanner;
 public class Board {
     private static Piece[][] board;
     private final boolean[][] pieceMoved;
+    public static final int BOARD_LENGTH = 8;
+    public static final int BOARD_HEIGHT = 8;
     private int blackPiecesNumber = 16;
     private int whitePiecesNumber = 16;
 

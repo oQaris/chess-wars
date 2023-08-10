@@ -2,12 +2,8 @@ package io.deeplay.engine;
 
 import io.deeplay.domain.Color;
 import io.deeplay.domain.GameType;
-import io.deeplay.model.piece.Piece;
 import io.deeplay.model.move.Move;
 import io.deeplay.model.player.Player;
-import io.deeplay.service.PieceService;
-
-import java.util.List;
 
 import static io.deeplay.model.Board.printBoardOnce;
 
@@ -29,11 +25,13 @@ public class GameSession {
         while(true) {
             Color currentColor = gameInfo.getCurrentMoveColor();
             System.out.println(currentColor);
+
             Player playerWhoMoves = choosePlayer(currentColor);
             System.out.println("current player: " + playerWhoMoves.getClass().getSimpleName());
-            List<Piece> possiblePiecesToMove = PieceService.getPiecesPossibleToMove(gameInfo.getCurrentBoard(), currentColor);
-            System.out.println("Number of Pieces you can move: " + possiblePiecesToMove.size());
-            Move move = playerWhoMoves.getMove(possiblePiecesToMove, gameInfo.getCurrentBoard());
+
+//            List<Piece> possiblePiecesToMove = PieceService.getPiecesPossibleToMove(gameInfo.getCurrentBoard(), currentColor);
+
+            Move move = playerWhoMoves.getMove(gameInfo.getCurrentBoard(), currentColor);
 
             gameInfo.move(move);
             printBoardOnce(gameInfo.getCurrentBoard());

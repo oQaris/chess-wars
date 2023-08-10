@@ -9,7 +9,11 @@ import io.deeplay.model.move.Move;
 import io.deeplay.model.piece.Piece;
 import io.deeplay.service.UserCommunicationService;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static io.deeplay.model.Board.BOARD_HEIGHT;
+import static io.deeplay.model.Board.BOARD_LENGTH;
 
 public class Human extends Player {
     public Human(Color color) {
@@ -17,8 +21,9 @@ public class Human extends Player {
     }
 
     @Override
-    public Move getMove(List<Piece> possiblePiecesToMove, Board board) {
+    public Move getMove(Board board, Color currentColor) {
         UserCommunicationService userCommunicationService = new UserCommunicationService(System.in, System.out);
+        List<Piece> possiblePiecesToMove = getPiecesPossibleToMove(board, currentColor);
         Piece selectedPiece = userCommunicationService.selectPiece(possiblePiecesToMove);
         List<Coordinates> availableMoves = selectedPiece.getPossibleMoves(board);
         Coordinates moveCoordinates = userCommunicationService.selectCoordinates(availableMoves);

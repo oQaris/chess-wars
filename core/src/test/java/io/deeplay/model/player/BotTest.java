@@ -29,7 +29,7 @@ class BotTest {
     @Test
     void testRandomMove() {
         final Bot bot = new Bot(Color.WHITE, 1);
-        Move result = bot.getMove(possiblePiecesToMove, board);
+        Move result = bot.getMove(board, bot.getColor());
 
         Assertions.assertNotNull(result);
     }
@@ -39,9 +39,9 @@ class BotTest {
         final Bot bot = new Bot(Color.WHITE, 1);
         possiblePiecesToMove.remove(1);
 
-        Assertions.assertDoesNotThrow(() -> bot.getMove(possiblePiecesToMove, board));
+        Assertions.assertDoesNotThrow(() -> bot.getMove(board, bot.getColor()));
 
-        Move result = bot.getMove(possiblePiecesToMove, board);
+        Move result = bot.getMove(board, bot.getColor());
         Assertions.assertNotNull(result);
     }
 }
