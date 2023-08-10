@@ -26,6 +26,11 @@ public class UserCommunicationService {
         this.printStream = printStream;
     }
 
+    /**
+     * Метод дает пользователю вариант выбора типа игры и возвращает новый объект игровой сессии.
+     *
+     * @return новый объект игровой сессии
+     */
     public GameSession getGameSessionInfo() {
         // С начальной страницы получить тип игры
         printStream.println("Game opened...");
@@ -52,6 +57,13 @@ public class UserCommunicationService {
         }
     }
 
+    /**
+     * Метод дает пользователю выбрать фигуру, которой он хочет походить, из доступных для хода,
+     * и возвращает выбранную фигуру.
+     *
+     * @param possiblePiecesToMove лист из фигур, которыми можно походить
+     * @return выбранную игроком фигуру
+     */
     public Piece selectPiece(List<Piece> possiblePiecesToMove) {
         Piece selectedPiece = null;
 
@@ -78,6 +90,12 @@ public class UserCommunicationService {
         return selectedPiece;
     }
 
+    /**
+     * Метод дает пользователю выбрать координаты фигуры из доступных для хода и возвращает выбранные координаты.
+     *
+     * @param availableMoves доступные координаты фигуры для хода
+     * @return выбранные игроком координаты
+     */
     public Coordinates selectCoordinates(List<Coordinates> availableMoves) {
         Coordinates moveCoordinates = null;
 
@@ -101,6 +119,11 @@ public class UserCommunicationService {
         return moveCoordinates;
     }
 
+    /**
+     * Метод дает игроку выбрать тип фигуры для promotion и возвращает выбранный тип.
+     *
+     * @return тип фигуры на promotion
+     */
     public SwitchPieceType selectSwitchPiece() {
         printStream.println("Выберите новую фигуру: ");
         printStream.println("(1) Queen");
@@ -118,12 +141,23 @@ public class UserCommunicationService {
         };
     }
 
+    /**
+     * Метод возвращает выбранный уровень сложности бота
+     *
+     * @return число - сложность бота
+     */
     public int chooseBotLevel() {
         // Scanner или с помощью интерфейса вводить число от 1 до 3
 
         return 1;
     }
 
+    /**
+     * Метод дает игроку выбрать цвет фигур и возвращает выбранные цвета в виде массива.
+     * 0 элемент массива - player1, 1 элемент массива - player2
+     *
+     * @return массив из выбранных пользователем цветов фигур игроков
+     */
     public Color[] chooseColor() {
         printStream.println("choose color of player1 (w/b):");
         char userInput = scanner.next().charAt(0);

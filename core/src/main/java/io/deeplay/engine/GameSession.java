@@ -19,6 +19,11 @@ public class GameSession {
         this.gameType = gameType;
     }
 
+    /**
+     * Метод для создания текущей сессии игры. Отвечает за получение текущего хода;
+     * выбора игрока, который должен ходить, исходя из текущего цвета игры; получение выбранного хода от игрока
+     * и передача его в GameInfo. Также отвечает за завершение игры.
+     */
     public void startGameSession() {
         GameInfo gameInfo = new GameInfo();
         printBoardOnce(gameInfo.getCurrentBoard());
@@ -39,7 +44,12 @@ public class GameSession {
         }
     }
 
-    // метод выбирает, кто ходит в данный момент
+    /**
+     * Метод возвращает игрока, который должен ходить в текущем ходе
+     *
+     * @param movingColor текущий цвет хода
+     * @return игрока, который ходит
+     */
     public Player choosePlayer(Color movingColor) {
         if (player1.getColor() == movingColor) return player1;
         else return player2;

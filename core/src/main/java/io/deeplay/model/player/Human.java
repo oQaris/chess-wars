@@ -20,6 +20,13 @@ public class Human extends Player {
         super(color);
     }
 
+    /**
+     * Возвращает созданный объект класса Move с заданными параметрами. Получает параметры из ввода пользователя
+     *
+     * @param board текущее состояние доски
+     * @param currentColor цвет текущего хода
+     * @return новый объект класса Move
+     */
     @Override
     public Move getMove(Board board, Color currentColor) {
         UserCommunicationService userCommunicationService = new UserCommunicationService(System.in, System.out);
@@ -39,6 +46,9 @@ public class Human extends Player {
         return new Move(selectedPiece.getCoordinates(), moveCoordinates, moveType, selectedSwitchPiece);
     }
 
+    /**
+     * Метод для запроса на проигрыш
+     */
     public void lose() {
         // surrender
     }

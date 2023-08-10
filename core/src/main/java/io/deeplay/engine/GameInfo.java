@@ -16,6 +16,12 @@ public class GameInfo {
         this.moveHistory = new MoveHistory();
     }
 
+    /**
+     * Метод делает движение, путем обновления текущего состояния доски, добавления хода в MoveHistory. Также
+     * меняет цвет текущего хода
+     *
+     * @param move ход игрока
+     */
     public void move(Move move) {
         currentBoard.move(move);
         moveHistory.addMove(move);
