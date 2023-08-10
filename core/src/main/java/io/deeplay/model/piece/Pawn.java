@@ -122,15 +122,15 @@ public class Pawn extends Piece {
 
         Move lastMove = board.getMoveHistory().getLastMove();
 
-        Piece pieceMadeLastMove = board.getPiece(new Coordinates(lastMove.endPosition().getX(),
-                lastMove.endPosition().getY()));
+        Piece pieceMadeLastMove = board.getPiece(new Coordinates(lastMove.getEndPosition().getX(),
+                lastMove.getEndPosition().getY()));
 
         if (!(pieceMadeLastMove instanceof Pawn)) {
             return false;
         }
 
-        return (lastMove.startPosition().getX() == lastMove.endPosition().getX())
-                && (Math.abs(lastMove.endPosition().getY() - lastMove.startPosition().getY()) == 2);
+        return (lastMove.getStartPosition().getX() == lastMove.getEndPosition().getX())
+                && (Math.abs(lastMove.getEndPosition().getY() - lastMove.getStartPosition().getY()) == 2);
     }
 
     @Override

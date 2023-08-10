@@ -16,7 +16,7 @@ public class MoveHistory {
     public void addMove(Move move) {
         moveHistory.add(move);
 
-        if (move.moveType() != MoveType.TAKE) {
+        if (move.getMoveType() != MoveType.TAKE) {
             movesWithoutTake++;
         } else {
             movesWithoutTake = 0;
