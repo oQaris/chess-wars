@@ -10,7 +10,11 @@ import io.deeplay.model.piece.King;
 import io.deeplay.model.piece.Pawn;
 import io.deeplay.model.piece.Piece;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static io.deeplay.model.Board.BOARD_HEIGHT;
+import static io.deeplay.model.Board.BOARD_LENGTH;
 
 public abstract class Player {
     protected Color color;
@@ -19,7 +23,22 @@ public abstract class Player {
         this.color = color;
     }
 
-    public abstract Move getMove(List<Piece> possiblePiecesToMove, Board board);
+    public abstract Move getMove(Board board, Color currentColor);
+
+    public List<Piece> getPiecesPossibleToMove(Board board, Color color) {
+        List<Piece> movablePieces = new ArrayList<>();
+
+        for (int x = 0; x < BOARD_HEIGHT; x++) {
+            for (int y = 0; y < BOARD_LENGTH; y++) {
+                Piece piece = board.getPiece(new Coordinates(x, y));
+                if (!piece.getColor().equals(Color.EMPTY) && piece.getColor().equals(color)
+                        && !piece.getPossibleMoves(board).isEmpty()) {
+                    movablePieces.add(piece);
+                }
+            }
+        }
+        return movablePieces;
+    }
 
     protected MoveType getType(Piece selectedPiece, Coordinates moveCoordinates, Board board) {
         if (selectedPiece instanceof Pawn) {

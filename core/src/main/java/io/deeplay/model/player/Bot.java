@@ -21,8 +21,10 @@ public class Bot extends Player {
     }
 
     @Override
-    public Move getMove(List<Piece> possiblePiecesToMove, Board board) {
+    public Move getMove(Board board, Color currentColor) {
         Random random = new Random();
+
+        List<Piece> possiblePiecesToMove = getPiecesPossibleToMove(board, currentColor);
 
         Piece randomPiece = null;
         if (possiblePiecesToMove.size() == 1) randomPiece = possiblePiecesToMove.get(0);
