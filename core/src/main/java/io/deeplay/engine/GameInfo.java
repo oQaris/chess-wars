@@ -6,7 +6,6 @@ import io.deeplay.model.move.Move;
 import io.deeplay.model.move.MoveHistory;
 import io.deeplay.model.player.Player;
 
-import static io.deeplay.model.Board.printBoard;
 import static io.deeplay.model.Board.printBoardOnce;
 
 public class GameInfo {
