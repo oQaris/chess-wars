@@ -29,8 +29,6 @@ public class GameSession {
             Player playerWhoMoves = choosePlayer(currentColor);
             System.out.println("current player: " + playerWhoMoves.getClass().getSimpleName());
 
-//            List<Piece> possiblePiecesToMove = PieceService.getPiecesPossibleToMove(gameInfo.getCurrentBoard(), currentColor);
-
             Move move = playerWhoMoves.getMove(gameInfo.getCurrentBoard(), currentColor);
 
             gameInfo.move(move);

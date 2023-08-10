@@ -12,42 +12,43 @@ import io.deeplay.model.player.Human;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 public class UserCommunicationService {
 
-    private Scanner scanner;
-    private PrintStream printStream;
+    private final Scanner scanner;
+    private final PrintStream printStream;
 
     public UserCommunicationService(InputStream inputStream, PrintStream printStream) {
-        this.scanner = new Scanner(inputStream, Charset.defaultCharset());
+        this.scanner = new Scanner(inputStream, Charset.defaultCharset().name());
         this.printStream = printStream;
     }
 
     public GameSession getGameSessionInfo() {
         // С начальной страницы получить тип игры
         printStream.println("Game opened...");
-
-        char inputType = 'c';
-
         printStream.println("choose type of the game (bot-bot / human-human / human-bot)");
         String gameType = scanner.nextLine();
 
-        if (gameType.equals("bot-bot")) {
-            return new GameSession(new Bot(Color.WHITE, chooseBotLevel()),
-                    new Bot(Color.BLACK, chooseBotLevel()), GameType.BotVsBot);
-        } else if (gameType.equals("human-human")) {
-            Color[] userColor = chooseColor();
-            return new GameSession(new Human(userColor[0]), new Human(userColor[1]), GameType.HumanVsHuman);
-        } else if (gameType.equals("human-bot")) {
-            Color[] userColor = chooseColor();
-            return new GameSession(new Human(userColor[0]), new Bot(userColor[1],
-                    chooseBotLevel()), GameType.HumanVsBot);
-        } else {
-            printStream.println("Invalid input. Ending...");
-            System.exit(0);
-            return null;
+        switch (gameType) {
+            case "bot-bot" -> {
+                return new GameSession(new Bot(Color.WHITE, chooseBotLevel()),
+                        new Bot(Color.BLACK, chooseBotLevel()), GameType.BotVsBot);
+            }
+            case "human-human" -> {
+                Color[] userColor = chooseColor();
+                return new GameSession(new Human(userColor[0]), new Human(userColor[1]), GameType.HumanVsHuman);
+            }
+            case "human-bot" -> {
+                Color[] userColor = chooseColor();
+                return new GameSession(new Human(userColor[0]), new Bot(userColor[1],
+                        chooseBotLevel()), GameType.HumanVsBot);
+            }
+            default -> {
+                throw new IllegalArgumentException("Invalid input. Ending...");
+            }
         }
     }
 
@@ -62,7 +63,17 @@ public class UserCommunicationService {
                         +" at x:" + possiblePiecesToMove.get(i).getCoordinates().getX()
                         + " y:" + possiblePiecesToMove.get(i).getCoordinates().getY());
             }
-            selectedPiece = possiblePiecesToMove.get(scanner.nextInt());
+
+            int selectedMove = 0;
+            try {
+                selectedMove = scanner.nextInt();
+            } catch(InputMismatchException ime){
+                System.out.println("Selection must be an integer! Please try again:");
+            }
+
+            if (selectedMove > possiblePiecesToMove.size() || selectedMove < 0)
+                throw new IllegalArgumentException("Invalid choice!");
+            else selectedPiece = possiblePiecesToMove.get(selectedMove);
         }
         return selectedPiece;
     }
@@ -76,19 +87,26 @@ public class UserCommunicationService {
                 printStream.println("(" + i + ") x: " + availableMoves.get(i).getX()
                         + " y: " + availableMoves.get(i).getY());
             }
+            int selectedMove = 0;
+            try {
+                selectedMove = scanner.nextInt();
+            } catch(InputMismatchException ime){
+                System.out.println("Selection must be an integer! Please try again:");
+            }
 
-            moveCoordinates = availableMoves.get(scanner.nextInt());
+            if (selectedMove > availableMoves.size() || selectedMove < 0)
+                throw new IllegalArgumentException("Invalid choice!");
+            else moveCoordinates = availableMoves.get(selectedMove);
         }
         return moveCoordinates;
     }
 
     public SwitchPieceType selectSwitchPiece() {
-        Scanner scanner = new Scanner(System.in);
         printStream.println("Выберите новую фигуру: ");
-        printStream.println("1. Queen");
-        printStream.println("2. Rook");
-        printStream.println("3. Bishop");
-        printStream.println("4. Knight");
+        printStream.println("(1) Queen");
+        printStream.println("(2) Rook");
+        printStream.println("(3) Bishop");
+        printStream.println("(4) Knight");
         int choice = scanner.nextInt();
 
         return switch (choice) {
@@ -96,7 +114,7 @@ public class UserCommunicationService {
             case 2 -> SwitchPieceType.ROOK;
             case 3 -> SwitchPieceType.BISHOP;
             case 4 -> SwitchPieceType.KNIGHT;
-            default -> throw new IllegalArgumentException("Invalid choice: " + choice);
+            default -> throw new IllegalArgumentException("Invalid choice!");
         };
     }
 
@@ -107,26 +125,26 @@ public class UserCommunicationService {
     }
 
     public Color[] chooseColor() {
-        while (true) {
-            printStream.println("choose color of player1");
-            char userInput = scanner.next().charAt(0);
-            if (userInput == 'w') {
-                printStream.println("player1 color is set to white");
-                printStream.println("player2 color is set to black");
+        printStream.println("choose color of player1 (w/b):");
+        char userInput = scanner.next().charAt(0);
+        if (userInput == 'w') {
+            printStream.println("player1 color is set to white");
+            printStream.println("player2 color is set to black");
 
-                Color[] chosenColors = new Color[2];
-                chosenColors[0] = Color.WHITE;
-                chosenColors[1] = Color.BLACK;
-                return chosenColors;
-            } else if (userInput == 'b'){
-                printStream.println("player1 color is set to black");
-                printStream.println("player2 color is set to white");
+            Color[] chosenColors = new Color[2];
+            chosenColors[0] = Color.WHITE;
+            chosenColors[1] = Color.BLACK;
+            return chosenColors;
+        } else if (userInput == 'b'){
+            printStream.println("player1 color is set to black");
+            printStream.println("player2 color is set to white");
 
-                Color[] chosenColors = new Color[2];
-                chosenColors[0] = Color.BLACK;
-                chosenColors[1] = Color.WHITE;
-                return chosenColors;
-            }
+            Color[] chosenColors = new Color[2];
+            chosenColors[0] = Color.BLACK;
+            chosenColors[1] = Color.WHITE;
+            return chosenColors;
+        } else {
+            throw new IllegalArgumentException("Invalid color choice!");
         }
     }
 }

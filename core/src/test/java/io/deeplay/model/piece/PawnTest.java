@@ -2,6 +2,7 @@ package io.deeplay.model.piece;
 
 import io.deeplay.domain.Color;
 import io.deeplay.domain.MoveType;
+import io.deeplay.domain.SwitchPieceType;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 
@@ -246,13 +247,13 @@ class PawnTest {
         Coordinates blackPieceMoveCoordinates = new Coordinates(1,4);
 
         board.setPiece(whitePieceCoordinates, new Pawn(whitePieceCoordinates, Color.WHITE));
-        board.move(new Move(blackPieceCoordinates, blackPieceMoveCoordinates, MoveType.ORDINARY));
+        board.move(new Move(blackPieceCoordinates, blackPieceMoveCoordinates, MoveType.ORDINARY, SwitchPieceType.NULL));
 
         Piece whitePiece = board.getPiece(whitePieceCoordinates);
         assertTrue(whitePiece.canMoveAt(new Coordinates(1, 5), board));
 
-        board.move(new Move(new Coordinates(5,1), new Coordinates(5, 3), MoveType.ORDINARY));
-        board.move(new Move(new Coordinates(6,6), new Coordinates(6, 5), MoveType.ORDINARY));
+        board.move(new Move(new Coordinates(5,1), new Coordinates(5, 3), MoveType.ORDINARY, SwitchPieceType.NULL));
+        board.move(new Move(new Coordinates(6,6), new Coordinates(6, 5), MoveType.ORDINARY, SwitchPieceType.NULL));
 
         assertFalse(whitePiece.canMoveAt(new Coordinates(1, 5), board));
     }
