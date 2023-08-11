@@ -4,4 +4,5 @@ dependencies{
 
 dependencies {
     implementation(project(mapOf("path" to ":core")))
+    implementation(project(mapOf("path" to ":communication")))
 }
