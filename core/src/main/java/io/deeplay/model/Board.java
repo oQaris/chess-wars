@@ -97,7 +97,7 @@ public class Board {
         board[coordinates.getX()][coordinates.getY()] = piece;
     }
 
-    public static Piece[][] getEmptyBoard() {
+    public Piece[][] getEmptyBoard() {
         Piece[][] newEmptyBoard = new Piece[8][8];
 
         for (int i = 0; i < 8; i++) {

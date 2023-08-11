@@ -109,8 +109,8 @@ public class ClientHandler implements Runnable {
     public void sendMessage(String message) {
         try {
             out.write(message);
-            out.flush();
             out.newLine();
+        out.flush();out.newLine();
         } catch (IOException e) {
             logger.error("Не получилось отправить сообщение ", e);
         }

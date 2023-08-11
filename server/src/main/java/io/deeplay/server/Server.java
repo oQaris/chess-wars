@@ -82,7 +82,16 @@ public class Server {
                     gameSession = new UserCommunicationService(System.in, System.out).getGameSessionInfo();
                     gameSession.startGameSession();
 
-                    // startGame(); ??
+                    String startMessage = "The game has started!";
+        broadcast(startMessage);
+
+        String whiteTurnMessage = "White pieces move";
+        broadcast(whiteTurnMessage);
+
+        broadcastMove(new MoveDTO(new Move(
+                new Coordinates(1, 1), new Coordinates(1, 3), MoveType.ORDINARY, SwitchPieceType.NULL)));
+
+        // startGame(); ??
                     break;
                 } else if (gameType == GameType.HumanVsBot) {
                     String startMessage = "Game human-bot has started";
@@ -110,7 +119,7 @@ public class Server {
 
     public void broadcastMove(MoveDTO move) {
         for (ClientHandler client : clients) {
-            String serializedMoveDTO = SerializationService.convertMoveDTOToJson(move);
+            String serializedMoveDTO = SerializationService.makeMoveDTOToJson(move);
             client.sendMove(serializedMoveDTO);
         }
     }
