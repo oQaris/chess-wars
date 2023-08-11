@@ -76,10 +76,11 @@ public class ClientHandler implements Runnable {
 
     public void sendMessage(String message) throws IOException {
         out.write(message);
+        out.newLine();
         out.flush();
     }
 
-    public void sendMove(Move move) throws IOException {
+    public void sendMove(String move) throws IOException {
         String jsonData = objectMapper.writeValueAsString(move);
         out.write(jsonData);
         out.flush();
