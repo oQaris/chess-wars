@@ -2,6 +2,7 @@ package service;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import dto.MoveDTO;
 
 public class DeserializationService {
     private static final Gson gson = new Gson();
@@ -13,5 +14,9 @@ public class DeserializationService {
         } catch (final JsonSyntaxException e) {
             throw new JsonSyntaxException("Something went wrong with deserialization of json - " + json);
         }
+    }
+
+    public static MoveDTO makeJsonToMoveDTO(final String json) {
+        return deserialize(json, MoveDTO.class);
     }
 }
