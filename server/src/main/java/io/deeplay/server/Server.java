@@ -1,9 +1,14 @@
 package io.deeplay.server;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dto.MoveDTO;
+import io.deeplay.domain.MoveType;
+import io.deeplay.domain.SwitchPieceType;
 import io.deeplay.engine.GameSession;
+import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
 import io.deeplay.service.UserCommunicationService;
+import service.SerializationService;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -54,6 +59,15 @@ public class Server {
             System.out.println("New client connected");
         }
 
+        String startMessage = "The game has started!";
+        broadcast(startMessage);
+
+        String whiteTurnMessage = "White pieces move";
+        broadcast(whiteTurnMessage);
+
+        broadcastMove(new MoveDTO(new Move(
+                new Coordinates(1, 1), new Coordinates(1, 3), MoveType.ORDINARY, SwitchPieceType.NULL)));
+
         // send startGame (всем игрокам)
         UserCommunicationService userCommunicationService = new UserCommunicationService(System.in, System.out);
         // старт и логика
@@ -66,9 +80,10 @@ public class Server {
         return response.toUpperCase();
     }
 
-    public void broadcastMove(Move move) throws IOException {
+    public void broadcastMove(MoveDTO move) throws IOException {
         for (ClientHandler client : clients) {
-            client.sendMove(move);
+            String serializedMoveDTO = SerializationService.makeMoveDTOToJson(move);
+            client.sendMove(serializedMoveDTO);
         }
     }
 

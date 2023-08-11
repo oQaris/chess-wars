@@ -2,6 +2,10 @@ package io.deeplay.model;
 
 import java.util.Objects;
 
+/**
+ * The Coordinates class represents a position on a two-dimensional grid.
+ */
+
 public class Coordinates {
     private int x;
     private int y;

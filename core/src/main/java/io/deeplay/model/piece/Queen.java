@@ -12,6 +12,12 @@ public class Queen extends Piece {
         super(coordinates, color);
     }
 
+    /**
+     * Метод для получения возможных ходов фигуры Queen (Ферзь) на доске.
+     *
+     * @param board доска, на которой находится фигура
+     * @return список возможных ходов фигуры
+     */
     @Override
     public List<Coordinates> getPossibleMoves(Board board) {
         Rook rook = new Rook(getCoordinates(), getColor()); // Add possible moves for Rook
@@ -24,6 +30,12 @@ public class Queen extends Piece {
         return possibleMoves;
     }
 
+    /**
+     * Проверяет, может ли данная фигура Queen (ферзь) сделать ход на заданные координаты на заданной доске.
+     * @param coordinates координаты для проверки возможности хода
+     * @param board доска для проверки возможности хода
+     * @return true, если ход возможен, false в противном случае
+     */
     @Override
     public boolean canMoveAt(Coordinates coordinates, Board board) {
         int dx = Math.abs(coordinates.getX() - getCoordinates().getX());
