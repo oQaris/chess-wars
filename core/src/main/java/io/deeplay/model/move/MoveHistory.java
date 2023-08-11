@@ -38,7 +38,7 @@ public class MoveHistory {
     }
 
     public Move getLastMove() throws NoSuchElementException {
-        if (moveHistory.size() > 0) {
+        if (!moveHistory.isEmpty()) {
             return moveHistory.get(moveHistory.size() - 1);
         }
 
