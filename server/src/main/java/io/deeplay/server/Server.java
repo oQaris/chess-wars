@@ -20,7 +20,6 @@ import java.util.List;
 public class Server {
     private static final int PORT = 8080;
     private ServerSocket serverSocket;
-    ;
     private boolean gameStarted;
     private boolean whiteTurn;
     private ObjectMapper mapper;
@@ -62,9 +61,6 @@ public class Server {
         String startMessage = "The game has started!";
         broadcast(startMessage);
 
-        String whiteTurnMessage = "White pieces move";
-        broadcast(whiteTurnMessage);
-
         broadcastMove(new MoveDTO(new Move(
                 new Coordinates(1, 1), new Coordinates(1, 3), MoveType.ORDINARY, SwitchPieceType.NULL)));
 
@@ -75,7 +71,7 @@ public class Server {
         gameSession.startGameSession();
     }
 
-    private static String getResponse(String response) { // дессериализует response
+    private static String getResponse(String response) { // десериализует response
         // в зависимости от внутренности выполняет определенные методы (switch)
         return response.toUpperCase();
     }
@@ -87,7 +83,7 @@ public class Server {
         }
     }
 
-    public void broadcast(String message) throws IOException {
+    public void broadcast(String message) throws IOException { // сообщения обоим игрокам
         for (ClientHandler client : clients) {
             client.sendMessage(message);
         }
