@@ -1,3 +1,5 @@
+package io.deeplay.client;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.deeplay.model.move.Move;
 
@@ -73,7 +75,7 @@ public class Client {
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Client client = new Client();
         client.connectToServer();
     }
