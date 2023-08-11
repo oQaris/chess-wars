@@ -18,6 +18,12 @@ public class Pawn extends Piece {
         return super.getColor();
     }
 
+    /**
+     * Метод для получения возможных ходов фигуры Pawn (пешка) на доске.
+     *
+     * @param board доска, на которой находится фигура
+     * @return список возможных ходов фигуры
+     */
     @Override
     public List<Coordinates> getPossibleMoves(Board board) {
         List<Coordinates> possibleMoves = new ArrayList<>();
@@ -33,6 +39,12 @@ public class Pawn extends Piece {
         return possibleMoves;
     }
 
+    /**
+     * Проверяет, может ли данная фигура Pawn (пешка) сделать ход на заданные координаты на заданной доске.
+     * @param coordinates координаты для проверки возможности хода
+     * @param board доска для проверки возможности хода
+     * @return true, если ход возможен, false в противном случае
+     */
     public boolean canMoveAt(Coordinates coordinates, Board board) {
         int currentX = getCoordinates().getX();
         int currentY = getCoordinates().getY();

@@ -3,10 +3,16 @@ package io.deeplay.model;
 import io.deeplay.domain.Color;
 import io.deeplay.model.move.Move;
 import io.deeplay.domain.MoveType;
+import io.deeplay.model.move.Move;
 import io.deeplay.model.move.MoveHistory;
 import io.deeplay.model.piece.*;
 import io.deeplay.model.utils.BoardUtils;
 
+/**
+ * Класс Board представляет шахматную доску.
+ * Он хранит состояние шахматной доски, включая положения фигур,
+ * количество оставшихся черных и белых фигур, и историю ходов.
+ */
 public class Board {
     private Piece[][] board;
     private final boolean[][] pieceMoved;
@@ -22,6 +28,11 @@ public class Board {
         pieceMoved = new boolean[8][8];
     }
 
+    /**
+     * Возвращает начальную конфигурацию шахматной доски.
+     *
+     * @return двумерный массив, представляющий начальную конфигурацию шахматной доски.
+     */
     public Piece[][] getStartBoard() {
         board = new Piece[8][8];
 
@@ -84,7 +95,7 @@ public class Board {
         board[coordinates.getX()][coordinates.getY()] = piece;
     }
 
-    public static Piece[][] getEmptyBoard() {
+    public Piece[][] getEmptyBoard() {
         Piece[][] newEmptyBoard = new Piece[8][8];
 
         for (int i = 0; i < 8; i++) {
@@ -96,6 +107,11 @@ public class Board {
         return newEmptyBoard;
     }
 
+    /**
+     * Метод для выполнения хода на доске.
+     *
+     * @param move ход, который нужно выполнить.
+     */
     public void move(Move move) {
         Coordinates start = move.startPosition();
         Coordinates end = move.endPosition();
