@@ -165,14 +165,15 @@ public class King extends Piece {
                                              Board board, Color enemyColor) {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (board.getPiece(new Coordinates(i,j)).getColor().equals(enemyColor)) {
-                    Piece piece = board.getPiece(new Coordinates(i,j));
+                Coordinates currentCoordinates = new Coordinates(i, j);
+                if (board.getPiece(currentCoordinates).getColor() == enemyColor &&
+                        !(board.getPiece(currentCoordinates) instanceof Empty)) {
+                    Piece piece = board.getPiece(currentCoordinates);
 
                     if (piece.canMoveAt(kingCoordinates, board)) return false;
 
                     for (Coordinates potentialCoordinate : potentialCoordinates) {
-                        if (piece.canMoveAt(potentialCoordinate, board))
-                            return false;
+                        if (piece.canMoveAt(potentialCoordinate, board)) return false;
                     }
                 }
             }
