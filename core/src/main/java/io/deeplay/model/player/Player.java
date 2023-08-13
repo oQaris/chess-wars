@@ -55,7 +55,7 @@ public abstract class Player {
      * @param board текущее состояние доски
      * @return тип хода
      */
-    protected MoveType getType(Piece selectedPiece, Coordinates moveCoordinates, Board board) {
+    public MoveType getType(Piece selectedPiece, Coordinates moveCoordinates, Board board) {
         if (selectedPiece instanceof Pawn) {
             if (((Pawn) selectedPiece).isPromotion(moveCoordinates, board)) {
                 return MoveType.PROMOTION;
