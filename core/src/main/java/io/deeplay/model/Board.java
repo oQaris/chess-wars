@@ -1,14 +1,11 @@
 package io.deeplay.model;
 
 import io.deeplay.domain.Color;
-import io.deeplay.domain.SwitchPieceType;
 import io.deeplay.model.move.Move;
 import io.deeplay.domain.MoveType;
 import io.deeplay.model.move.MoveHistory;
 import io.deeplay.model.piece.*;
 import io.deeplay.model.utils.BoardUtils;
-
-import java.util.Scanner;
 
 public class Board {
     private Piece[][] board;
@@ -87,16 +84,16 @@ public class Board {
         board[coordinates.getX()][coordinates.getY()] = piece;
     }
 
-    public Piece[][] getEmptyBoard() {
-        board = new Piece[8][8];
+    public static Piece[][] getEmptyBoard() {
+        Piece[][] newEmptyBoard = new Piece[8][8];
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                board[i][j] = new Empty(new Coordinates(i, j));
+                newEmptyBoard[i][j] = new Empty(new Coordinates(i, j));
             }
         }
 
-        return board;
+        return newEmptyBoard;
     }
 
     public void move(Move move) {

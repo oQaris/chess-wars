@@ -38,6 +38,7 @@ public class BoardUtils {
             line += ANSI_RESET;
             System.out.println(line);
         }
+        System.out.println();
     }
 
     public void render(Board board) {
@@ -53,6 +54,7 @@ public class BoardUtils {
             line.append(ANSI_RESET);
             System.out.println(line);
         }
+        System.out.println();
     }
 
     private static String colorizeSprite(String sprite, Color pieceColor, boolean isSquareDark, boolean isHighlight) {
