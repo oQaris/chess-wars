@@ -29,6 +29,14 @@ public class MoveHistory {
         }
     }
 
+    /**
+     * Метод создан исключительно для использования при создании дубликата Board.
+     * Для добавления Move использовать метод addMove()
+     */
+    public void setLastMove(Move move) {
+        moveHistory.add(move);
+    }
+
     public Move getLastMove() throws NoSuchElementException {
         if (moveHistory.size() > 0) {
             return moveHistory.get(moveHistory.size() - 1);

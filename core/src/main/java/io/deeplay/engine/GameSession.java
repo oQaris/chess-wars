@@ -1,6 +1,7 @@
 package io.deeplay.engine;
 
 import io.deeplay.domain.Color;
+import io.deeplay.domain.GameStates;
 import io.deeplay.domain.GameType;
 import io.deeplay.model.move.Move;
 import io.deeplay.model.player.Player;
@@ -29,7 +30,11 @@ public class GameSession {
         printBoardOnce(gameInfo.getCurrentBoard());
         while(true) {
             Color currentColor = gameInfo.getCurrentMoveColor();
+            Color enemyColor = gameInfo.getCurrentMoveColor().opposite();
             System.out.println(currentColor);
+
+            GameStates stateBeforeMove = GameStates.DEFAULT;
+            if (GameState.isCheck(gameInfo.getCurrentBoard(), currentColor)) stateBeforeMove = GameStates.CHECK;
 
             Player playerWhoMoves = choosePlayer(currentColor);
             System.out.println("current player: " + playerWhoMoves.getClass().getSimpleName());
@@ -39,8 +44,20 @@ public class GameSession {
             gameInfo.move(move);
             printBoardOnce(gameInfo.getCurrentBoard());
 
-            boolean isFinished = GameState.check(gameInfo.getCurrentBoard());
-            if (isFinished == true) endGame();
+            if (stateBeforeMove == GameStates.CHECK) {
+                if (GameState.isCheck(gameInfo.getCurrentBoard(), currentColor)) endGame("Game ended, because "
+                        + currentColor + " is in check and can't move");
+            }
+
+            if (GameState.isMate(gameInfo.getCurrentBoard(), currentColor)) {
+                endGame("MATE, " + currentColor + " won");
+            }
+            if (GameState.isStaleMate(gameInfo.getCurrentBoard(), currentColor)) {
+                endGame("STALEMATE");
+            }
+            if (GameState.drawWithGameWithoutTakingAndAdvancingPawns(gameInfo.getCurrentBoard())) {
+                endGame("DRAW!");
+            }
         }
     }
 
@@ -55,7 +72,8 @@ public class GameSession {
         else return player2;
     }
 
-    public void endGame() {
+    public void endGame(String textMessage) {
+        System.out.println("Game ended due to: " + textMessage);
         System.exit(0);
     }
 

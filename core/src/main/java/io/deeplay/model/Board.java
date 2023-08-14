@@ -11,7 +11,7 @@ import io.deeplay.model.utils.BoardUtils;
 import java.util.Scanner;
 
 public class Board {
-    private static Piece[][] board;
+    private Piece[][] board;
     private final boolean[][] pieceMoved;
     public static final int BOARD_LENGTH = 8;
     public static final int BOARD_HEIGHT = 8;
@@ -25,7 +25,7 @@ public class Board {
         pieceMoved = new boolean[8][8];
     }
 
-    public static Piece[][] getStartBoard() {
+    public Piece[][] getStartBoard() {
         board = new Piece[8][8];
 
         board[0][0] = new Rook(new Coordinates(0, 0), Color.WHITE);
@@ -87,7 +87,7 @@ public class Board {
         board[coordinates.getX()][coordinates.getY()] = piece;
     }
 
-    public static Piece[][] getEmptyBoard() {
+    public Piece[][] getEmptyBoard() {
         board = new Piece[8][8];
 
         for (int i = 0; i < 8; i++) {
