@@ -49,10 +49,10 @@ public class GameSession {
                         + currentColor + " is in check and can't move");
             }
 
-            if (GameState.isMate(gameInfo.getCurrentBoard(), currentColor)) {
+            if (GameState.isMate(gameInfo.getCurrentBoard(), enemyColor)) {
                 endGame("MATE, " + currentColor + " won");
             }
-            if (GameState.isStaleMate(gameInfo.getCurrentBoard(), currentColor)) {
+            if (GameState.isStaleMate(gameInfo.getCurrentBoard(), enemyColor)) {
                 endGame("STALEMATE");
             }
             if (GameState.drawWithGameWithoutTakingAndAdvancingPawns(gameInfo.getCurrentBoard())) {

@@ -12,9 +12,14 @@ import io.deeplay.model.piece.Piece;
 import io.deeplay.model.player.Human;
 import io.deeplay.service.BoardUtil;
 
-import java.util.List;
-
 public class GameState {
+    /**
+     * Метод проверяет шах при текущем состоянии доски
+     *
+     * @param board текущее состояние доски
+     * @param color цвет игрока, чьи фигуры проверяют на шах
+     * @return есть ли шах
+     */
     public static boolean isCheck(Board board, Color color) {
         Coordinates kingPosition = getKingPosition(board, color);
 
@@ -32,9 +37,15 @@ public class GameState {
         return false;
     }
 
-    public static boolean isMate(Board board, Color currentColor) {
-        Color enemyPlayerColor = currentColor == Color.WHITE ? Color.BLACK : Color.WHITE;
-        if (!isCheck(board, enemyPlayerColor)) {
+    /**
+     * Метод проверяет мат при текущем состоянии доски
+     *
+     * @param board текущее состояние доски
+     * @param color цвет игрока, которого проверяют
+     * @return есть ли мат
+     */
+    public static boolean isMate(Board board, Color color) {
+        if (!isCheck(board, color)) {
             return false;
         }
 
@@ -42,11 +53,11 @@ public class GameState {
             for (int y = 0; y < 8; y++) {
                 Piece piece = board.getPiece(new Coordinates(x, y));
 
-                if (!(piece instanceof Empty) && piece.getColor() == enemyPlayerColor) {
+                if (!(piece instanceof Empty) && piece.getColor() == color) {
                     for (Coordinates coordinates : piece.getPossibleMoves(board)) {
                         Board duplicateBoard = new Board();
                         BoardUtil.duplicateBoard(board).accept(duplicateBoard);
-                        Human tempHuman = new Human(enemyPlayerColor);
+                        Human tempHuman = new Human(color);
 
                         MoveType moveType = tempHuman.getType(piece, coordinates, duplicateBoard);
                         if (moveType == MoveType.PROMOTION) {
@@ -54,7 +65,7 @@ public class GameState {
                                 SwitchPieceType switchPieceType = SwitchPieceType.values()[i];
                                 duplicateBoard.move(new Move(piece.getCoordinates(), coordinates,
                                         moveType, switchPieceType));
-                                if (!isCheck(duplicateBoard, enemyPlayerColor)) {
+                                if (!isCheck(duplicateBoard, color)) {
                                     return false;
                                 }
                             }
@@ -62,7 +73,7 @@ public class GameState {
                             SwitchPieceType switchPieceType = SwitchPieceType.NULL;
                             duplicateBoard.move(new Move(piece.getCoordinates(), coordinates,
                                     moveType, switchPieceType));
-                            if (!isCheck(duplicateBoard, enemyPlayerColor)) {
+                            if (!isCheck(duplicateBoard, color)) {
                                 return false;
                             }
                         }
@@ -74,36 +85,40 @@ public class GameState {
         return true;
     }
 
+    /**
+     * Метод проверяет пат при текущем состоянии доски
+     *
+     * @param board текущее состояние доски
+     * @param color цвет игрока, которого проверяют
+     * @return есть ли мат
+     */
     public static boolean isStaleMate(Board board, Color color) {
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 Piece piece = board.getPiece(new Coordinates(x, y));
 
                 if (!(piece instanceof Empty) && piece.getColor() == color) {
-                    List<Coordinates> allMoves = piece.getPossibleMoves(board);
-                    if (!allMoves.isEmpty()) {
-                        for (Coordinates coordinates : allMoves) {
-                            Board duplicateBoard = new Board();
-                            BoardUtil.duplicateBoard(board).accept(duplicateBoard);
-                            Human tempHuman = new Human(color);
+                    for (Coordinates coordinates : piece.getPossibleMoves(board)) {
+                        Board duplicateBoard = new Board();
+                        BoardUtil.duplicateBoard(board).accept(duplicateBoard);
+                        Human tempHuman = new Human(color);
 
-                            MoveType moveType = tempHuman.getType(piece, coordinates, duplicateBoard);
-                            if (moveType == MoveType.PROMOTION) {
-                                for (int i = 0; i < SwitchPieceType.values().length; i++) {
-                                    SwitchPieceType switchPieceType = SwitchPieceType.values()[i];
-                                    duplicateBoard.move(new Move(piece.getCoordinates(), coordinates,
-                                            moveType, switchPieceType));
-                                    if (!isCheck(duplicateBoard, color)) {
-                                        return false;
-                                    }
-                                }
-                            } else {
-                                SwitchPieceType switchPieceType = SwitchPieceType.NULL;
+                        MoveType moveType = tempHuman.getType(piece, coordinates, duplicateBoard);
+                        if (moveType == MoveType.PROMOTION) {
+                            for (int i = 0; i < SwitchPieceType.values().length; i++) {
+                                SwitchPieceType switchPieceType = SwitchPieceType.values()[i];
                                 duplicateBoard.move(new Move(piece.getCoordinates(), coordinates,
                                         moveType, switchPieceType));
                                 if (!isCheck(duplicateBoard, color)) {
                                     return false;
                                 }
+                            }
+                        } else {
+                            SwitchPieceType switchPieceType = SwitchPieceType.NULL;
+                            duplicateBoard.move(new Move(piece.getCoordinates(), coordinates,
+                                    moveType, switchPieceType));
+                            if (!isCheck(duplicateBoard, color)) {
+                                return false;
                             }
                         }
                     }
@@ -114,10 +129,23 @@ public class GameState {
         return true;
     }
 
+    /**
+     * Метод проверяет, если ходов без изменения состояния больше 50, то это ничья
+     *
+     * @param board текущее состояние доски
+     * @return было ли 50 ходов без изменения положения на доске
+     */
     public static boolean drawWithGameWithoutTakingAndAdvancingPawns(Board board) {
         return board.getMoveHistory().getMovesWithoutTake() >= 50;
     }
 
+    /**
+     * Метод ищет короля заданного цвета и возвращает его координаты
+     *
+     * @param board текущее состояние доски
+     * @param kingColor цвет короля
+     * @return координаты короля
+     */
     private static Coordinates getKingPosition(Board board, Color kingColor) {
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {

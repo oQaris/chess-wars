@@ -16,6 +16,6 @@ public enum SwitchPieceType {
      */
     public static SwitchPieceType getRandomPiece() {
         Random random = new Random();
-        return values()[random.nextInt(values().length - 1)];
+        return values()[random.nextInt(values().length - 2)];
     }
 }
