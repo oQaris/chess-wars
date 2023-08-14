@@ -8,12 +8,10 @@ import io.deeplay.model.move.MoveHistory;
 public class GameInfo {
     private Color currentMoveColor;
     private final Board currentBoard;
-    private final MoveHistory moveHistory;
 
     public GameInfo() {
         this.currentMoveColor = Color.WHITE;
         this.currentBoard = new Board();
-        this.moveHistory = new MoveHistory();
     }
 
     /**
@@ -24,7 +22,6 @@ public class GameInfo {
      */
     public void move(Move move) {
         currentBoard.move(move);
-        moveHistory.addMove(move);
         if (currentMoveColor == Color.WHITE) currentMoveColor = Color.BLACK;
         else currentMoveColor = Color.WHITE;
     }
@@ -39,9 +36,5 @@ public class GameInfo {
 
     public Board getCurrentBoard() {
         return currentBoard;
-    }
-
-    public MoveHistory getMoveHistory() {
-        return moveHistory;
     }
 }

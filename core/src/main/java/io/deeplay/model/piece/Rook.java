@@ -36,6 +36,48 @@ public class Rook extends Piece {
         return possibleMoves;
     }
 
+//    @Override
+//    public boolean canMoveAt(Coordinates givenCoordinates, Board board) {
+//        int targetX = givenCoordinates.getX();
+//        int targetY = givenCoordinates.getY();
+//
+//        int x = this.getCoordinates().getX();
+//        int y = this.getCoordinates().getY();
+//
+//        // Проверяем, что клетка (targetX, targetY) находится на доске
+//        if (targetX < 0 || targetX >= 8 || targetY < 0 || targetY >= 8) {
+//            return false;
+//        }
+//
+//        if (x != targetX && y != targetY) return false;
+//
+//        // Проверяем, что на целевой клетке нет фигуры того же цвета
+//        if (!(board.getPiece(new Coordinates(targetX, targetY)) instanceof Empty) && board.getPiece(new Coordinates(targetX, targetY)).getColor() == this.getColor()) {
+//            return false;
+//        }
+//
+//        // Проверяем, что нет других фигур на пути
+//        if (x != targetX) {
+//            int minX = Math.min(x, targetX);
+//            int maxX = Math.max(x, targetX);
+//            for (int i = minX + 1; i < maxX; i++) {
+//                if (!(board.getPiece(new Coordinates(i, y)) instanceof Empty)) {
+//                    return false;
+//                }
+//            }
+//        } else {
+//            int minY = Math.min(y, targetY);
+//            int maxY = Math.max(y, targetY);
+//            for (int j = minY + 1; j < maxY; j++) {
+//                if (!(board.getPiece(new Coordinates(x, j)) instanceof Empty)) {
+//                    return false;
+//                }
+//            }
+//        }
+//
+//        return true;
+//    }
+
     @Override
     public boolean canMoveAt(Coordinates coordinates, Board board) {
         if (coordinates.getX() < 0 || coordinates.getY() < 0 || coordinates.getY() >= 8 || coordinates.getX() >= 8) {
