@@ -181,4 +181,17 @@ public class UserCommunicationService {
             throw new IllegalArgumentException("Invalid color choice!");
         }
     }
+
+    /**
+     * Метод дает выбор игроку - продолжать игру или нет
+     *
+     * @return продолжается игра или нет
+     */
+    public boolean continueToPlay() {
+        printStream.println("Do you want to continue playing? (yes/no)");
+        String userResponse = scanner.nextLine();
+        if (userResponse.equals("yes")) return true;
+        else if (userResponse.equals("no")) return false;
+        else throw new IllegalArgumentException("Invalid continuing game choice!");
+    }
 }

@@ -10,7 +10,11 @@ public class Main {
         System.setOut(new java.io.PrintStream(System.out, true, StandardCharsets.UTF_8));
 
         UserCommunicationService userCommunicationService = new UserCommunicationService(System.in, System.out);
-        GameSession gameSession = userCommunicationService.getGameSessionInfo();
-        gameSession.startGameSession();
+
+        while (true) {
+            GameSession gameSession = userCommunicationService.getGameSessionInfo();
+            gameSession.startGameSession();
+            if (!userCommunicationService.continueToPlay()) return;
+        }
     }
 }
