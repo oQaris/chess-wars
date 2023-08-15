@@ -2,11 +2,8 @@ package io.deeplay.server;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dto.MoveDTO;
-import io.deeplay.domain.MoveType;
-import io.deeplay.domain.SwitchPieceType;
 import io.deeplay.engine.GameSession;
-import io.deeplay.model.Coordinates;
-import io.deeplay.model.move.Move;
+import io.deeplay.model.Board;
 import io.deeplay.service.UserCommunicationService;
 import service.SerializationService;
 
@@ -20,12 +17,11 @@ import java.util.List;
 public class Server {
     private static final int PORT = 8080;
     private ServerSocket serverSocket;
-    private boolean gameStarted;
-    private boolean whiteTurn;
     private ObjectMapper mapper;
     private List<ClientHandler> clients = new ArrayList<>();
-    private int currentPlayer = 0;
     private GameSession gameSession;
+    private boolean isGameStarted;
+    private boolean gameStarted;
 
     public Server() {
         mapper = new ObjectMapper();
@@ -58,18 +54,21 @@ public class Server {
             System.out.println("New client connected");
         }
 
-        String startMessage = "The game has started!";
-        broadcast(startMessage);
+        if (clients.size() == 2) {
+            String startMessage = "The game has started!";
 
-        broadcastMove(new MoveDTO(new Move(
-                new Coordinates(1, 1), new Coordinates(1, 3), MoveType.ORDINARY, SwitchPieceType.NULL)));
+            broadcast(startMessage);
+            isGameStarted = true;
 
-        // send startGame (всем игрокам)
-        UserCommunicationService userCommunicationService = new UserCommunicationService(System.in, System.out);
-        // старт и логика
-        gameSession = userCommunicationService.getGameSessionInfo();
-        gameSession.startGameSession();
+            UserCommunicationService userCommunicationService = new UserCommunicationService(System.in, System.out);
+            gameSession = userCommunicationService.getGameSessionInfo();
+            gameSession.startGameSession();
+        }
+
+//        broadcastMove(new MoveDTO(new Move(
+//                new Coordinates(1, 1), new Coordinates(1, 3), MoveType.ORDINARY, SwitchPieceType.NULL)));
     }
+
 
     private static String getResponse(String response) { // десериализует response
         // в зависимости от внутренности выполняет определенные методы (switch)
@@ -83,17 +82,18 @@ public class Server {
         }
     }
 
-    public void broadcast(String message) throws IOException { // сообщения обоим игрокам
+    public synchronized void broadcast(String message) throws IOException { // сообщения обоим игрокам
         for (ClientHandler client : clients) {
             client.sendMessage(message);
         }
     }
 
-    private synchronized void startGame() throws IOException { //  synchronized (???)
-        gameStarted = true;
-
-        for (ClientHandler client : clients) {
-            client.sendMessage("{\"start\": true}");
+    private String receiveClientResponse(ClientHandler client) {
+        try {
+            return client.in.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
         }
     }
 
@@ -105,11 +105,19 @@ public class Server {
         }
     }
 
-    public int getCurrentPlayer() {
-        return currentPlayer;
+    public synchronized void removeClient(ClientHandler client) {
+        clients.remove(client);
     }
 
-    public void setCurrentPlayer(int currentPlayer) {
-        this.currentPlayer = currentPlayer;
+
+    public Board getBoardState() { 
+        return null;
+    }
+
+    public boolean isGameOver() {
+        return false;
+    }
+
+    public void resetGame() {
     }
 }
