@@ -1,7 +1,7 @@
-package service;
+package io.deeplay.communication.service;
 
 import com.google.gson.Gson;
-import dto.MoveDTO;
+import io.deeplay.communication.dto.MoveDTO;
 
 public class SerializationService {
     private static final Gson gson = new Gson();

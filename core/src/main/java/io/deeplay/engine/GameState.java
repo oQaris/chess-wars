@@ -3,6 +3,7 @@ package io.deeplay.engine;
 import io.deeplay.domain.Color;
 import io.deeplay.domain.MoveType;
 import io.deeplay.domain.SwitchPieceType;
+import io.deeplay.exception.GameLogicException;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
@@ -11,7 +12,9 @@ import io.deeplay.model.piece.King;
 import io.deeplay.model.piece.Piece;
 import io.deeplay.model.player.Human;
 import io.deeplay.service.BoardUtil;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class GameState {
     /**
      * Метод проверяет шах при текущем состоянии доски
@@ -150,9 +153,15 @@ public class GameState {
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 Piece piece = board.getPiece(new Coordinates(x, y));
-                if (piece.getColor() == kingColor && piece instanceof King) return new Coordinates(x, y);
+                if (!(piece instanceof Empty)) {
+                    if (piece.getColor() == kingColor && piece instanceof King) {
+                        log.info(kingColor + " king is on coordinates x=" + x + ", y=" + y);
+                        return new Coordinates(x, y);
+                    }
+                }
             }
         }
-        return null; //пробросить потом ошибку
+        log.error(kingColor + " king is not on the board. Throw GameLogicException...");
+        throw new GameLogicException(kingColor + " king is not on the board"); //пробросить потом ошибку
     }
 }

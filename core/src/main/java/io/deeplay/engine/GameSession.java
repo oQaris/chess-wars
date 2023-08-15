@@ -44,19 +44,23 @@ public class GameSession {
             gameInfo.move(move);
             printBoardOnce(gameInfo.getCurrentBoard());
 
-            if (stateBeforeMove == GameStates.CHECK) {
-                if (GameState.isCheck(gameInfo.getCurrentBoard(), currentColor)) endGame("Game ended, because "
-                        + currentColor + " is in check and can't move");
+            if (GameState.isCheck(gameInfo.getCurrentBoard(), currentColor)) {
+                    endGame("Game ended, because "
+                            + currentColor + " is in check and can't move");
+                    return;
             }
 
             if (GameState.isMate(gameInfo.getCurrentBoard(), enemyColor)) {
                 endGame("MATE, " + currentColor + " won");
+                return;
             }
             if (GameState.isStaleMate(gameInfo.getCurrentBoard(), enemyColor)) {
                 endGame("STALEMATE");
+                return;
             }
             if (GameState.drawWithGameWithoutTakingAndAdvancingPawns(gameInfo.getCurrentBoard())) {
                 endGame("DRAW!");
+                return;
             }
         }
     }
@@ -74,7 +78,6 @@ public class GameSession {
 
     public void endGame(String textMessage) {
         System.out.println("Game ended due to: " + textMessage);
-        System.exit(0);
     }
 
     public GameType getGameType() {

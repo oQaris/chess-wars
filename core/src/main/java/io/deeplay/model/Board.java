@@ -97,9 +97,9 @@ public class Board {
     }
 
     public void move(Move move) {
-        Coordinates start = move.getStartPosition();
-        Coordinates end = move.getEndPosition();
-        MoveType moveType = move.getMoveType();
+        Coordinates start = move.startPosition();
+        Coordinates end = move.endPosition();
+        MoveType moveType = move.moveType();
 
         Piece pieceToMove = board[start.getX()][start.getY()];
         Piece pieceToRemove = board[end.getX()][end.getY()];
@@ -157,7 +157,7 @@ public class Board {
             board[start.getX()][start.getY()] = new Empty(start);
         } else if (moveType == MoveType.PROMOTION) {
             Piece newPiece = null;
-            switch (move.getSwitchPieceType()) {
+            switch (move.switchPieceType()) {
                 case BISHOP -> newPiece = new Bishop(end, pieceToMove.getColor());
                 case KNIGHT -> newPiece = new Knight(end, pieceToMove.getColor());
                 case QUEEN -> newPiece = new Queen(end, pieceToMove.getColor());
