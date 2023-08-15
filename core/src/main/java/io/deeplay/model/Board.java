@@ -120,7 +120,9 @@ public class Board {
         Piece pieceToMove = board[start.getX()][start.getY()];
         Piece pieceToRemove = board[end.getX()][end.getY()];
 
-        if (pieceToMove instanceof King || pieceToMove instanceof Rook) pieceMoved[start.getX()][start.getY()] = true;
+        if (pieceToMove instanceof King || pieceToMove instanceof Rook) {
+            pieceMoved[start.getX()][start.getY()] = true;
+        }
 
         Color pieceToRemoveColor = pieceToRemove.getColor();
 
