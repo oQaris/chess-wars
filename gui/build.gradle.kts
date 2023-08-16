@@ -1,3 +1,4 @@
 dependencies {
-    implementation(project(mapOf("path" to ":core")))
+    implementation(project(":core"))
+    implementation("com.intellij:forms_rt:7.0.3")
 }
