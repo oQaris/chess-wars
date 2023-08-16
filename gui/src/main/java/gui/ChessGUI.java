@@ -44,9 +44,9 @@ public class ChessGUI extends JFrame {
                 }
 
                 if (isLightSquare) {
-                    chessBoardSquares[row][col].setBackground(LIGHT_SQUARE_COLOR);
+                    chessBoardSquares[row][col].setBackground(new Color(0xFF5E1700, true));
                 } else {
-                    chessBoardSquares[row][col].setBackground(DARK_SQUARE_COLOR);
+                    chessBoardSquares[row][col].setBackground(new Color(0xFFB74D00, true));
                 }
 
                 chessBoardPanel.add(chessBoardSquares[row][col]);
