@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.MainPage">
+  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="850" height="400"/>
+    </constraints>
+    <properties>
+      <background color="-1"/>
+    </properties>
+    <border type="empty"/>
+    <children>
+      <grid id="a538c" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-1"/>
+        </properties>
+        <border type="empty">
+          <size top="25" left="25" bottom="25" right="25"/>
+        </border>
+        <children>
+          <grid id="f28b0" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints/>
+            <properties>
+              <background color="-1"/>
+            </properties>
+            <border type="empty"/>
+            <children>
+              <grid id="ab0ec" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                </properties>
+                <border type="empty"/>
+                <children>
+                  <component id="e7018" class="javax.swing.JLabel">
+                    <constraints/>
+                    <properties>
+                      <foreground color="-16777216"/>
+                      <horizontalAlignment value="2"/>
+                      <text value="Выберите тип игры:"/>
+                    </properties>
+                  </component>
+                  <component id="21e62" class="javax.swing.JComboBox" binding="gameTypesBox" custom-create="true">
+                    <constraints/>
+                    <properties>
+                      <background color="-1"/>
+                      <foreground color="-16777216"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="60d66" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                  <enabled value="true"/>
+                </properties>
+                <border type="empty"/>
+                <children>
+                  <component id="a59f6" class="javax.swing.JLabel">
+                    <constraints/>
+                    <properties>
+                      <foreground color="-16777216"/>
+                      <text value="Выберите сложность бота:"/>
+                    </properties>
+                  </component>
+                  <component id="5740b" class="javax.swing.JComboBox" binding="botLevels" custom-create="true">
+                    <constraints/>
+                    <properties>
+                      <background color="-1"/>
+                      <enabled value="false"/>
+                      <foreground color="-16777216"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="6c098" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                  <enabled value="false"/>
+                </properties>
+                <border type="empty"/>
+                <children>
+                  <component id="18e7a" class="javax.swing.JLabel">
+                    <constraints/>
+                    <properties>
+                      <foreground color="-16777216"/>
+                      <text value="Выберите игрока с белым цветом"/>
+                    </properties>
+                  </component>
+                  <component id="ae435" class="javax.swing.JComboBox" binding="players" custom-create="true">
+                    <constraints/>
+                    <properties>
+                      <background color="-1"/>
+                      <foreground color="-16777216"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="d5668" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-1"/>
+        </properties>
+        <border type="empty">
+          <size top="25" left="25" bottom="25" right="25"/>
+        </border>
+        <children>
+          <component id="fe636" class="javax.swing.JButton" binding="startGameButton" custom-create="true">
+            <constraints/>
+            <properties>
+              <background color="-16777216"/>
+              <foreground color="-1"/>
+              <text value="Начать игру"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>
