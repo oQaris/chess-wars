@@ -2,7 +2,7 @@ package io.deeplay.communication.service;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import io.deeplay.communication.dto.MoveDTO;
+import io.deeplay.communication.dto.*;
 
 public class DeserializationService {
     private static final Gson gson = new Gson();
@@ -15,7 +15,23 @@ public class DeserializationService {
         }
     }
 
-    public static MoveDTO makeJsonToMoveDTO(final String json) {
+    public static MoveDTO convertJsonToMoveDTO(final String json) {
         return deserialize(json, MoveDTO.class);
+    }
+
+    public static StartGameDTO convertJsonToStartGameDTO(final String json) {
+        return deserialize(json, StartGameDTO.class);
+    }
+
+    public static EndGameDTO convertJsonToEndGameDTO(final String json) {
+        return deserialize(json, EndGameDTO.class);
+    }
+
+    public static MoveTransferDTO convertJsonToMoveTransferDTO(final String json) {
+        return deserialize(json, MoveTransferDTO.class);
+    }
+
+    public static ErrorResponseDTO convertJsonToErrorResponseDTO(final String json) {
+        return deserialize(json, ErrorResponseDTO.class);
     }
 }
