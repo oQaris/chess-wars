@@ -11,6 +11,7 @@ import java.util.function.Consumer;
 
 @Slf4j
 public class BoardUtil {
+    // private static final Logger logger = LogManager.getLogger(UserCommunicationService.class);
 
     public static Consumer<Board> duplicateBoard(Board board) {
         return duplicateBoard -> {
@@ -59,6 +60,7 @@ public class BoardUtil {
                 return new Empty(new Coordinates(sourcePiece.getCoordinates().getX(), sourcePiece.getCoordinates().getY()));
             } else throw new GameLogicException();
         } catch (GameLogicException e) {
+
             log.error("Can't define " + sourcePiece + " type in copyPiece");
             throw new GameLogicException("Can't define sourcePiece type" + e);
         }

@@ -2,14 +2,17 @@ package io.deeplay.server;
 
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import io.deeplay.communication.dto.EndGameDTO;
 import io.deeplay.communication.dto.MoveDTO;
+import io.deeplay.communication.dto.StartGameDTO;
+import io.deeplay.communication.model.GameType;
 import io.deeplay.communication.service.SerializationService;
-import io.deeplay.domain.Color;
 import io.deeplay.engine.GameSession;
 import io.deeplay.engine.GameState;
 import io.deeplay.model.Board;
-import io.deeplay.model.move.Move;
-import io.deeplay.model.move.MoveHistory;
+import io.deeplay.model.player.Player;
+import io.deeplay.service.UserCommunicationService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,11 +29,13 @@ public class Server {
     private ServerSocket serverSocket;
     private ObjectMapper mapper;
     private List<ClientHandler> clients = new ArrayList<>();
-    private int currentPlayer = 0;
     private GameSession gameSession;
     private boolean isGameStarted;
     private boolean gameStarted = false;
     private DeserializationContext objectMapper;
+    private Player player1;
+    private Player player2;
+    private GameType gameType;
 
     public Server(int port) {
         mapper = new ObjectMapper();
@@ -39,10 +44,10 @@ public class Server {
     public static void main(String[] args) throws IOException {
         System.setOut(new java.io.PrintStream(System.out, true, StandardCharsets.UTF_8));
         Server server = new Server(PORT);
-        server.start(2);
+        server.start();
     }
 
-    public void start(int playersNumber) throws IOException {
+    public void start() throws IOException {
         try {
             serverSocket = new ServerSocket(PORT);
             logger.info("Server started on port " + PORT);
@@ -53,7 +58,7 @@ public class Server {
 
         logger.info("Ready to accept");
 
-        while (clients.size() < playersNumber) {
+        while (true) {
             Socket socket = serverSocket.accept();
             logger.info("Client {} connected", clients.size() + 1);
 
@@ -61,28 +66,46 @@ public class Server {
             clients.add(clientHandler);
             new Thread(clientHandler).start();
             logger.info("New client connected");
+
+            if (clients.size() == 1) {
+                gameType = clientHandler.getGameType();
+
+                if (gameType == GameType.HumanVsHuman) {
+                    String waitMessage = "Waiting for second player";
+                    broadcast(waitMessage);
+                    logger.info("Один игрок подключен, ожидание второго");
+                } else if (gameType == GameType.BotVsBot) {
+                    String startMessage = "Game bot-bot has started";
+                    broadcast(startMessage);
+                    isGameStarted = true;
+
+                    gameSession = new UserCommunicationService(System.in, System.out).getGameSessionInfo();
+                    gameSession.startGameSession();
+
+                    // startGame(); ??
+                    break;
+                } else if (gameType == GameType.HumanVsBot) {
+                    String startMessage = "Game human-bot has started";
+
+                    broadcast(startMessage);
+                    isGameStarted = true;
+                    startGame();
+                    break;
+                }
+            } else if (clients.size() == 2 && !isGameStarted) {
+                String startMessage = "Game human-human has started";
+                broadcast(startMessage);
+                isGameStarted = true;
+                gameSession.startGameSession();
+                startGame();
+                break;
+            }
         }
-
-        if (clients.size() == 2 && !isGameStarted) {
-            String startMessage = "The game has started!";
-
-            broadcast(startMessage);
-            isGameStarted = true;
-
-            startGame();
-//            UserCommunicationService userCommunicationService = new UserCommunicationService(System.in, System.out);
-//            gameSession = userCommunicationService.getGameSessionInfo();
-//            gameSession.startGameSession();
-        }
-
-//        broadcastMove(new MoveDTO(new Move(
-//                new Coordinates(1, 1), new Coordinates(1, 3), MoveType.ORDINARY, SwitchPieceType.NULL)));
     }
 
-
-    private static String getResponse(String response) { // десериализует response
-        // в зависимости от внутренности выполняет определенные методы (switch)
-        return response.toUpperCase();
+    private void startGame() {
+        // GameSession gameSession1 = new GameSession(player1, player2, gameType); // TODO: спросить Серёжу про gameType
+        // TODO: спросить про DTO и core
     }
 
     public void broadcastMove(MoveDTO move) {
@@ -92,7 +115,7 @@ public class Server {
         }
     }
 
-    public synchronized void broadcast(String message){ // сообщения обоим игрокам
+    public synchronized void broadcast(String message) { // сообщения обоим игрокам
         for (ClientHandler client : clients) {
             client.sendMessage(message);
         }
@@ -107,7 +130,7 @@ public class Server {
         }
     }
 
-    private synchronized void endGame() { //  synchronized (???)
+    private void endGame() {
         gameStarted = false;
 
         for (ClientHandler client : clients) {
@@ -115,10 +138,29 @@ public class Server {
         }
     }
 
-    public synchronized void removeClient(ClientHandler client) {
-        clients.remove(client);
+    public void createNewGame(StartGameDTO startGameDTO) {
+        // создание новой игры
+        // gameSession = new GameSession(); // TODO: передать Player ов и тип игры
+
+        // отправка сообщения о начале игры всем клиентам
+        String startGameMessage = "Game started!";
+        broadcast(startGameMessage);
     }
 
+    public void handleEndGame(ClientHandler clientHandler) {
+        // обработка конца игры
+        EndGameDTO endGameDto = new EndGameDTO();
+        Gson gson = new Gson();
+        String json = gson.toJson(endGameDto);
+
+        for (ClientHandler client : clients) {
+            client.sendMessageToClient(json);
+        }
+    }
+
+    public void removeClient(ClientHandler client) {
+        clients.remove(client);
+    }
 
     public Board getBoardState() {
         return null;
@@ -129,68 +171,6 @@ public class Server {
     }
 
     public void resetGame() {
-    }
-
-    void startGame() {
-        boolean isWhiteTurn = true;
-        for (ClientHandler client : clients) {
-            if (isWhiteTurn) {
-                client.sendMessageToClient("You are white");
-                client.sendMessageToClient("It's your turn!");
-            } else {
-                client.sendMessageToClient("You are black");
-                client.sendMessageToClient("Waiting for opponent's move");
-            }
-
-            isWhiteTurn = !isWhiteTurn;
-        }
-
-        // Игровой цикл
-        Board board = new Board();
-        MoveHistory history = new MoveHistory();
-
-        while (true) {
-            // Ожидание хода от игрока
-            ClientHandler currentPlayer = null;
-            ClientHandler opponentPlayer = null;
-            for (ClientHandler client : clients) {
-                if ((client.getPlayerColor() == Color.WHITE && isWhiteTurn) ||
-                        (client.getPlayerColor() == Color.BLACK && !isWhiteTurn)) {
-                    currentPlayer = client;
-                } else {
-                    opponentPlayer = client;
-                }
-            }
-
-            Move move = currentPlayer.receiveMoveFromClient();
-
-            // Проверка возможности совершения хода
-            if (!board.getPiece(move.startPosition()).canMoveAt(move.endPosition(), board)) {
-                currentPlayer.sendMessageToClient("Invalid move. Please try again.");
-                continue;
-            }
-
-            // Обновление доски и истории
-            board.move(move);
-            history.addMove(move);
-
-            // Проверка на завершение игры
-//            if () {
-//                for (ClientHandler client : clients) {
-//                    client.sendMessageToClient("Game over!");
-//                }
-//                System.exit(0);
-//            }
-
-            // Отправка хода оппоненту
-            String moveJson = objectMapper.toString();
-            opponentPlayer.sendMessageToClient(moveJson);
-
-            // Смена хода
-            isWhiteTurn = !isWhiteTurn;
-            currentPlayer.sendMessageToClient("Waiting for opponent's move");
-            opponentPlayer.sendMessageToClient("It's your turn!");
-        }
     }
 
     public void broadcastGameState(GameState gameState) {
