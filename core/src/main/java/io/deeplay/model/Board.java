@@ -1,12 +1,13 @@
 package io.deeplay.model;
 
 import io.deeplay.domain.Color;
-import io.deeplay.model.move.Move;
 import io.deeplay.domain.MoveType;
 import io.deeplay.model.move.Move;
 import io.deeplay.model.move.MoveHistory;
 import io.deeplay.model.piece.*;
 import io.deeplay.model.utils.BoardUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Класс Board представляет шахматную доску.
@@ -20,6 +21,7 @@ public class Board {
     public static final int BOARD_HEIGHT = 8;
     private int blackPiecesNumber = 16;
     private int whitePiecesNumber = 16;
+    private static final Logger logger = LogManager.getLogger(Board.class);
 
     private final MoveHistory moveHistory = new MoveHistory();
 
@@ -95,7 +97,7 @@ public class Board {
         board[coordinates.getX()][coordinates.getY()] = piece;
     }
 
-    public Piece[][] getEmptyBoard() {
+    public static Piece[][] getEmptyBoard() {
         Piece[][] newEmptyBoard = new Piece[8][8];
 
         for (int i = 0; i < 8; i++) {
@@ -138,6 +140,8 @@ public class Board {
             board[end.getX()][end.getY()] = pieceToMove;
             board[start.getX()][start.getY()] = new Empty(start);
             pieceToMove.setCoordinates(end);
+
+            logger.info("Игрок сделал обычный ход");
         } else if (moveType == MoveType.CASTLING) {
             Piece rookToMove = null;
             int moveSide = start.getX() - end.getX();
@@ -163,6 +167,8 @@ public class Board {
                 board[start.getX()][start.getY()] = new Empty(start);
                 pieceToMove.setCoordinates(end);
             }
+
+            logger.info("Игрок сделал рокировку");
         } else if (moveType == MoveType.EN_PASSANT) {
             if (pieceToMove.getColor() == Color.WHITE) {
                 blackPiecesNumber--;
@@ -173,6 +179,8 @@ public class Board {
             board[end.getX()][start.getY()] = new Empty(new Coordinates(end.getX(), end.getY()));
             board[end.getX()][end.getY()] = pieceToMove;
             board[start.getX()][start.getY()] = new Empty(start);
+
+            logger.info("Игрок сделал взятие на проходе");
         } else if (moveType == MoveType.PROMOTION) {
             Piece newPiece = null;
             switch (move.switchPieceType()) {
@@ -190,8 +198,11 @@ public class Board {
                     whitePiecesNumber--;
                 }
             }
+
             board[end.getX()][end.getY()] = newPiece;
             board[start.getX()][start.getY()] = new Empty(start);
+
+            logger.info("Игрок сделал promotion");
         }
 
         moveHistory.addMove(move);

@@ -7,17 +7,17 @@ import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
 import io.deeplay.model.piece.*;
-import io.deeplay.model.player.Human;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GameStateTest {
 
     @Test
     void isCheck() {
         final Board board = new Board();
-        board.setBoard(Board.getEmptyBoard());
+        //  board.setBoard(Board.getEmptyBoard());
         board.getPieceMoved()[0][0] = true;
         board.getPieceMoved()[4][0] = true;
         board.getPieceMoved()[7][0] = true;

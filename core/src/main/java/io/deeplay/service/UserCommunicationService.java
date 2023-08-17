@@ -5,9 +5,11 @@ import io.deeplay.domain.GameType;
 import io.deeplay.domain.SwitchPieceType;
 import io.deeplay.engine.GameSession;
 import io.deeplay.model.Coordinates;
-import io.deeplay.model.piece.*;
+import io.deeplay.model.piece.Piece;
 import io.deeplay.model.player.Bot;
 import io.deeplay.model.player.Human;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -20,6 +22,7 @@ public class UserCommunicationService {
 
     private final Scanner scanner;
     private final PrintStream printStream;
+    private static final Logger logger = LogManager.getLogger(UserCommunicationService.class);
 
     public UserCommunicationService(InputStream inputStream, PrintStream printStream) {
         this.scanner = new Scanner(inputStream, Charset.defaultCharset().name());
@@ -36,22 +39,27 @@ public class UserCommunicationService {
         printStream.println("Game opened...");
         printStream.println("choose type of the game (bot-bot / human-human / human-bot)");
         String gameType = scanner.nextLine();
+        logger.info("Выбран режим {}", gameType);
 
         switch (gameType) {
             case "bot-bot" -> {
                 return new GameSession(new Bot(Color.WHITE, chooseBotLevel()),
                         new Bot(Color.BLACK, chooseBotLevel()), GameType.BotVsBot);
             }
+
             case "human-human" -> {
                 Color[] userColor = chooseColor();
                 return new GameSession(new Human(userColor[0]), new Human(userColor[1]), GameType.HumanVsHuman);
             }
+
             case "human-bot" -> {
                 Color[] userColor = chooseColor();
                 return new GameSession(new Human(userColor[0]), new Bot(userColor[1],
                         chooseBotLevel()), GameType.HumanVsBot);
             }
+
             default -> {
+                logger.error("Ошибка ввода при выборе режима игры");
                 throw new IllegalArgumentException("Invalid input. Ending...");
             }
         }
@@ -72,21 +80,25 @@ public class UserCommunicationService {
             for (int i = 0; i < possiblePiecesToMove.size(); i++) {
                 printStream.println("(" + i + ") " + possiblePiecesToMove.get(i).getColor().name() + " "
                         + possiblePiecesToMove.get(i).getClass().getSimpleName()
-                        +" at x:" + possiblePiecesToMove.get(i).getCoordinates().getX()
+                        + " at x:" + possiblePiecesToMove.get(i).getCoordinates().getX()
                         + " y:" + possiblePiecesToMove.get(i).getCoordinates().getY());
             }
 
             int selectedMove = 0;
+
             try {
                 selectedMove = scanner.nextInt();
-            } catch(InputMismatchException ime){
-                System.out.println("Selection must be an integer! Please try again:");
+            } catch (InputMismatchException ime) {
+                logger.error("Ввод должен быть целочисленным числом");
             }
 
-            if (selectedMove > possiblePiecesToMove.size() || selectedMove < 0)
-                throw new IllegalArgumentException("Invalid choice!");
-            else selectedPiece = possiblePiecesToMove.get(selectedMove);
+            if (selectedMove > possiblePiecesToMove.size() || selectedMove < 0) {
+                logger.error("Ввод должен быть предложенным целочисленным числом");
+            } else {
+                selectedPiece = possiblePiecesToMove.get(selectedMove);
+            }
         }
+
         return selectedPiece;
     }
 
@@ -101,21 +113,27 @@ public class UserCommunicationService {
 
         while (moveCoordinates == null) {
             printStream.println("choose coordinates in which you want to move your piece:");
+
             for (int i = 0; i < availableMoves.size(); i++) {
                 printStream.println("(" + i + ") x: " + availableMoves.get(i).getX()
                         + " y: " + availableMoves.get(i).getY());
             }
+
             int selectedMove = 0;
+
             try {
                 selectedMove = scanner.nextInt();
-            } catch(InputMismatchException ime){
-                System.out.println("Selection must be an integer! Please try again:");
+            } catch (InputMismatchException ime) {
+                logger.error("Ввод должен быть целочисленным числом");
             }
 
-            if (selectedMove > availableMoves.size() || selectedMove < 0)
-                throw new IllegalArgumentException("Invalid choice!");
-            else moveCoordinates = availableMoves.get(selectedMove);
+            if (selectedMove > availableMoves.size() || selectedMove < 0) {
+                logger.error("Ввод должен быть предложенным целочисленным числом");
+            } else {
+                moveCoordinates = availableMoves.get(selectedMove);
+            }
         }
+
         return moveCoordinates;
     }
 
@@ -137,7 +155,8 @@ public class UserCommunicationService {
             case 2 -> SwitchPieceType.ROOK;
             case 3 -> SwitchPieceType.BISHOP;
             case 4 -> SwitchPieceType.KNIGHT;
-            default -> throw new IllegalArgumentException("Invalid choice!");
+            default -> throw new IllegalArgumentException("Ввод должен быть предложенным целочисленным числом");
+
         };
     }
 
@@ -169,7 +188,7 @@ public class UserCommunicationService {
             chosenColors[0] = Color.WHITE;
             chosenColors[1] = Color.BLACK;
             return chosenColors;
-        } else if (userInput == 'b'){
+        } else if (userInput == 'b') {
             printStream.println("player1 color is set to black");
             printStream.println("player2 color is set to white");
 
@@ -178,6 +197,7 @@ public class UserCommunicationService {
             chosenColors[1] = Color.WHITE;
             return chosenColors;
         } else {
+            logger.error("Неверный ввод при выборе цвета");
             throw new IllegalArgumentException("Invalid color choice!");
         }
     }
@@ -190,8 +210,13 @@ public class UserCommunicationService {
     public boolean continueToPlay() {
         printStream.println("Do you want to continue playing? (yes/no)");
         String userResponse = scanner.nextLine();
-        if (userResponse.equals("yes")) return true;
-        else if (userResponse.equals("no")) return false;
-        else throw new IllegalArgumentException("Invalid continuing game choice!");
+        if (userResponse.equals("yes")) {
+            return true;
+        } else if (userResponse.equals("no")) {
+            return false;
+        } else {
+            logger.error("Неверный ввод на создание новой игры");
+            throw new IllegalArgumentException("Invalid continuing game choice!");
+        }
     }
 }
