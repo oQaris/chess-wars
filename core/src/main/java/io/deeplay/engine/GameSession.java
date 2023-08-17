@@ -5,11 +5,11 @@ import io.deeplay.domain.GameStates;
 import io.deeplay.domain.GameType;
 import io.deeplay.model.move.Move;
 import io.deeplay.model.player.Player;
+import lombok.extern.slf4j.Slf4j;
 
 import static io.deeplay.model.Board.printBoardOnce;
-
+@Slf4j
 public class GameSession {
-
     private final Player player1;
     private final Player player2;
     private final GameType gameType;
@@ -28,12 +28,21 @@ public class GameSession {
     public void startGameSession() {
         GameInfo gameInfo = new GameInfo();
         printBoardOnce(gameInfo.getCurrentBoard());
-        while(true) {
+
+        while (true) {
             Color currentColor = gameInfo.getCurrentMoveColor();
             Color enemyColor = gameInfo.getCurrentMoveColor().opposite();
+            log.info("Ход {}", currentColor);
             System.out.println(currentColor);
 
+            GameStates stateBeforeMove = GameStates.DEFAULT;
+
+            if (GameState.isCheck(gameInfo.getCurrentBoard(), currentColor)) {
+                stateBeforeMove = GameStates.CHECK;
+            }
+
             Player playerWhoMoves = choosePlayer(currentColor);
+            log.info("Текущий игрок: {}", playerWhoMoves.getClass().getSimpleName());
             System.out.println("current player: " + playerWhoMoves.getClass().getSimpleName());
 
             Move move = playerWhoMoves.getMove(gameInfo.getCurrentBoard(), currentColor);
@@ -42,19 +51,22 @@ public class GameSession {
             printBoardOnce(gameInfo.getCurrentBoard());
 
             if (GameState.isCheck(gameInfo.getCurrentBoard(), currentColor)) {
-                    endGame("Game ended, because "
-                            + currentColor + " is in check and can't move");
-                    return;
+                log.info("Game ended {} win", currentColor.opposite());
+                endGame("Game ended, because "
+                        + currentColor + " is in check and can't move");
+                return;
             }
 
             if (GameState.isMate(gameInfo.getCurrentBoard(), enemyColor)) {
                 endGame("MATE, " + currentColor + " won");
                 return;
             }
+
             if (GameState.isStaleMate(gameInfo.getCurrentBoard(), enemyColor)) {
                 endGame("STALEMATE");
                 return;
             }
+
             if (GameState.drawWithGameWithoutTakingAndAdvancingPawns(gameInfo.getCurrentBoard())) {
                 endGame("DRAW!");
                 return;
@@ -69,11 +81,15 @@ public class GameSession {
      * @return игрока, который ходит
      */
     public Player choosePlayer(Color movingColor) {
-        if (player1.getColor() == movingColor) return player1;
-        else return player2;
+        if (player1.getColor() == movingColor) {
+            return player1;
+        } else {
+            return player2;
+        }
     }
 
     public void endGame(String textMessage) {
+        log.info("Игра окончена {}", textMessage);
         System.out.println("Game ended due to: " + textMessage);
     }
 
