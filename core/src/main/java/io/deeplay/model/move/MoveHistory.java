@@ -3,10 +3,11 @@ package io.deeplay.model.move;
 import io.deeplay.domain.MoveType;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class MoveHistory {
-    private final ArrayList<Move> moveHistory;
+    private final List<Move> moveHistory;
     private int movesWithoutTake;
 
     public MoveHistory() {
@@ -37,7 +38,7 @@ public class MoveHistory {
         moveHistory.add(move);
     }
 
-    public Move getLastMove() throws NoSuchElementException {
+    public Move getLastMove() {
         if (!moveHistory.isEmpty()) {
             return moveHistory.get(moveHistory.size() - 1);
         } else return new Move(null, null, null, null);
@@ -47,7 +48,7 @@ public class MoveHistory {
         moveHistory.clear();
     }
 
-    public ArrayList<Move> getMoveHistory() {
+    public List<Move> getMoveHistory() {
         return moveHistory;
     }
 

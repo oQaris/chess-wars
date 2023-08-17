@@ -2,7 +2,8 @@ package io.deeplay.server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.deeplay.domain.Color;
+import io.deeplay.communication.model.Color;
+import io.deeplay.communication.model.GameType;
 import io.deeplay.engine.GameSession;
 import io.deeplay.model.Board;
 import io.deeplay.model.move.Move;
@@ -22,30 +23,28 @@ public class ClientHandler implements Runnable {
     private String player;
     private GameSession gameSession;
     Board board;
+    GameType gameType;
 
-    public ClientHandler(Socket clientSocket, Server server) {
+    public ClientHandler(Socket clientSocket, Server server) throws IOException {
         this.clientSocket = clientSocket;
         this.server = server;
-        objectMapper = new ObjectMapper();
         board = new Board();
+        out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        gameType = startGame();
     }
 
     @Override
     public void run() {
         try {
             String clientInput;
-            out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
-            player = getPlayerName();
-            startGame();
-
-            server.broadcast("Player " + player + " had connected");
-
+            handleGameStart(gameType);
             // ожидание ходов от клиента
             while ((clientInput = in.readLine()) != null) {
                 handleClientInput(clientInput);
             }
+
         } catch (Exception e) {
             logger.error("Ошибка при подключении игрока: ", e);
         } finally {
@@ -94,7 +93,7 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    private String getPlayerName(){
+    private String getPlayerName() {
         sendMessageToClient("Enter your name:");
         String name = "";
 
@@ -154,6 +153,7 @@ public class ClientHandler implements Runnable {
     void sendMessageToClient(String message) {
         try {
             out.write(message);
+            out.newLine();
             out.flush();
         } catch (IOException e) {
             logger.error("Не получилось отправить сообщение клиенту: ", e);
@@ -170,6 +170,7 @@ public class ClientHandler implements Runnable {
      */
     private boolean validateMove(String moveString) {
         Move move = null;
+
         try {
             move = objectMapper.readValue(moveString, Move.class);
         } catch (JsonProcessingException e) {
@@ -184,17 +185,27 @@ public class ClientHandler implements Runnable {
         return board.getPiece(move.startPosition()).canMoveAt(move.endPosition(), board);
     }
 
-    private synchronized void startGame() throws IOException {
-        sendMessageToClient("Are you ready to start the game? (yes/no)");
+    private GameType startGame() throws IOException {
+        sendMessageToClient("Choose game type: bot-bot / human-bot / human-human");
         String response = in.readLine();
-        if (response.equalsIgnoreCase("yes")) {
-            // server.startGame();
-            sendMessageToClient("Welcome to the chess");
+
+        if (response.equalsIgnoreCase("bot-bot")) {
+            sendMessageToClient("Welcome to the chess bot-bot");
+            gameType = GameType.BotVsBot;
+        } else if (response.equalsIgnoreCase("human-bot")) {
+            sendMessageToClient("Welcome to the chess human-bot");
+            gameType = GameType.HumanVsBot;
+        } else if (response.equalsIgnoreCase("human-human")) {
+            sendMessageToClient("Waiting for player 2");
+            gameType = GameType.HumanVsHuman;
         } else {
-            sendMessageToClient("Okay, maybe next time.");
             logger.info("Игрок не согласился на игру");
-            throw new RuntimeException("Player " + player + " declined to start the game.");
         }
+
+        return gameType;
+    }
+
+    private void handleGameStart(GameType gameType) { // обработать запрос на старт игры
     }
 
     public Board getBoard() {
@@ -202,10 +213,14 @@ public class ClientHandler implements Runnable {
     }
 
     public Color getPlayerColor() {
-        return Color.EMPTY;
+        return null;
     }
 
     public Move receiveMoveFromClient() {
         return null;
+    }
+
+    public GameType getGameType() {
+        return gameType;
     }
 }

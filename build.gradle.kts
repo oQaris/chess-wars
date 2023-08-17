@@ -32,8 +32,11 @@ allprojects {
         testImplementation(platform("org.junit:junit-bom:5.9.3"))
         testImplementation("org.junit.jupiter:junit-jupiter")
 
-        implementation("org.slf4j:slf4j-api:2.0.7")
+        implementation("org.slf4j:slf4j-log4j12:2.0.7")
         implementation("com.google.code.gson:gson:2.10.1")
+
+        implementation("org.apache.logging.log4j:log4j-core:2.17.1")
+        implementation ("ch.qos.logback:logback-classic:1.2.9")
     }
 
     tasks.test {
