@@ -1,0 +1,1052 @@
+2023-08-16 16:49:59.000 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-16 16:49:59.003 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-16 16:50:12.959 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-16 16:50:12.963 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-16 16:50:29.180 [main] INFO  io.deeplay.server.Server - Client %d connected
+2023-08-16 16:50:29.188 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-16 16:50:37.358 [main] INFO  io.deeplay.server.Server - Client %d connected
+2023-08-16 16:50:37.360 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-16 16:51:04.768 [Thread-0] INFO  io.deeplay.server.ClientHandler - Игрок не согласился на игру
+2023-08-16 16:51:04.770 [Thread-0] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.RuntimeException: Player [A declined to start the game.
+	at io.deeplay.server.ClientHandler.startGame(ClientHandler.java:196) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:41) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-16 16:57:32.016 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-16 16:57:32.018 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-16 16:58:06.534 [main] INFO  io.deeplay.server.Server - Client %d connected
+2023-08-16 16:58:06.541 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-16 16:58:15.453 [main] INFO  io.deeplay.server.Server - Client %d connected
+2023-08-16 16:58:15.453 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-16 18:45:03.068 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-16 18:45:03.071 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-16 18:45:03.104 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-16 18:45:03.109 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-16 18:45:11.678 [main] INFO  io.deeplay.server.Server - Client 2 connected
+2023-08-16 18:45:11.679 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-16 19:39:28.024 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-16 19:39:28.029 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 00:49:49.149 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 00:49:49.156 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 00:50:02.682 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 00:50:02.690 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 00:50:25.029 [main] INFO  io.deeplay.server.Server - Client 2 connected
+2023-08-17 00:50:25.031 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 00:50:30.915 [Thread-1] INFO  io.deeplay.server.ClientHandler - Игрок не согласился на игру
+2023-08-17 00:50:30.917 [Thread-1] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.RuntimeException: Player fewq declined to start the game.
+	at io.deeplay.server.ClientHandler.startGame(ClientHandler.java:196) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:41) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 00:50:50.163 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 00:50:50.168 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 00:51:07.712 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 00:51:07.717 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 00:51:16.339 [main] INFO  io.deeplay.server.Server - Client 2 connected
+2023-08-17 00:51:16.340 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 00:54:49.675 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 00:54:49.682 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 00:54:51.637 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 00:54:51.645 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 00:54:58.979 [main] INFO  io.deeplay.server.Server - Client 2 connected
+2023-08-17 00:54:58.979 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 00:55:26.356 [Thread-0] ERROR io.deeplay.server.ClientHandler - Не получилось обработать ход: 
+com.fasterxml.jackson.core.JsonParseException: Unrecognized token 'Start': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: (String)"Start position = null end position + null"; line: 1, column: 6]
+	at com.fasterxml.jackson.core.JsonParser._constructError(JsonParser.java:2477) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.base.ParserMinimalBase._reportError(ParserMinimalBase.java:760) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._reportInvalidToken(ReaderBasedJsonParser.java:3041) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._handleOddValue(ReaderBasedJsonParser.java:2082) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser.nextToken(ReaderBasedJsonParser.java:808) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper._initForReading(ObjectMapper.java:4912) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4818) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3772) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3740) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at io.deeplay.server.ClientHandler.validateMove(ClientHandler.java:175) [main/:?]
+	at io.deeplay.server.ClientHandler.handleClientInput(ClientHandler.java:69) [main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:47) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 00:55:26.384 [Thread-0] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.NullPointerException: Cannot invoke "io.deeplay.model.move.Move.startPosition()" because "move" is null
+	at io.deeplay.server.ClientHandler.validateMove(ClientHandler.java:185) ~[main/:?]
+	at io.deeplay.server.ClientHandler.handleClientInput(ClientHandler.java:69) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:47) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 00:55:26.386 [Thread-0] ERROR io.deeplay.server.ClientHandler - Ошибка при прочтении данных: 
+java.net.SocketException: Socket closed
+	at sun.nio.ch.NioSocketImpl.ensureOpenAndConnected(NioSocketImpl.java:162) ~[?:?]
+	at sun.nio.ch.NioSocketImpl.beginWrite(NioSocketImpl.java:363) ~[?:?]
+	at sun.nio.ch.NioSocketImpl.implWrite(NioSocketImpl.java:408) ~[?:?]
+	at sun.nio.ch.NioSocketImpl.write(NioSocketImpl.java:437) ~[?:?]
+	at sun.nio.ch.NioSocketImpl$2.write(NioSocketImpl.java:823) ~[?:?]
+	at java.net.Socket$SocketOutputStream.write(Socket.java:1035) ~[?:?]
+	at sun.nio.cs.StreamEncoder.writeBytes(StreamEncoder.java:234) ~[?:?]
+	at sun.nio.cs.StreamEncoder.implClose(StreamEncoder.java:340) ~[?:?]
+	at sun.nio.cs.StreamEncoder.close(StreamEncoder.java:169) ~[?:?]
+	at java.io.OutputStreamWriter.close(OutputStreamWriter.java:254) ~[?:?]
+	at java.io.BufferedWriter.close(BufferedWriter.java:269) ~[?:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:54) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 00:55:32.641 [Thread-1] ERROR io.deeplay.server.ClientHandler - Не получилось обработать ход: 
+com.fasterxml.jackson.core.JsonParseException: Unrecognized token 'Start': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: (String)"Start position = null end position + null"; line: 1, column: 6]
+	at com.fasterxml.jackson.core.JsonParser._constructError(JsonParser.java:2477) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.base.ParserMinimalBase._reportError(ParserMinimalBase.java:760) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._reportInvalidToken(ReaderBasedJsonParser.java:3041) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._handleOddValue(ReaderBasedJsonParser.java:2082) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser.nextToken(ReaderBasedJsonParser.java:808) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper._initForReading(ObjectMapper.java:4912) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4818) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3772) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3740) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at io.deeplay.server.ClientHandler.validateMove(ClientHandler.java:175) [main/:?]
+	at io.deeplay.server.ClientHandler.handleClientInput(ClientHandler.java:69) [main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:47) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 00:55:32.643 [Thread-1] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.NullPointerException: Cannot invoke "io.deeplay.model.move.Move.startPosition()" because "move" is null
+	at io.deeplay.server.ClientHandler.validateMove(ClientHandler.java:185) ~[main/:?]
+	at io.deeplay.server.ClientHandler.handleClientInput(ClientHandler.java:69) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:47) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 00:55:32.643 [Thread-1] ERROR io.deeplay.server.ClientHandler - Ошибка при прочтении данных: 
+java.net.SocketException: Socket closed
+	at sun.nio.ch.NioSocketImpl.ensureOpenAndConnected(NioSocketImpl.java:162) ~[?:?]
+	at sun.nio.ch.NioSocketImpl.beginWrite(NioSocketImpl.java:363) ~[?:?]
+	at sun.nio.ch.NioSocketImpl.implWrite(NioSocketImpl.java:408) ~[?:?]
+	at sun.nio.ch.NioSocketImpl.write(NioSocketImpl.java:437) ~[?:?]
+	at sun.nio.ch.NioSocketImpl$2.write(NioSocketImpl.java:823) ~[?:?]
+	at java.net.Socket$SocketOutputStream.write(Socket.java:1035) ~[?:?]
+	at sun.nio.cs.StreamEncoder.writeBytes(StreamEncoder.java:234) ~[?:?]
+	at sun.nio.cs.StreamEncoder.implClose(StreamEncoder.java:340) ~[?:?]
+	at sun.nio.cs.StreamEncoder.close(StreamEncoder.java:169) ~[?:?]
+	at java.io.OutputStreamWriter.close(OutputStreamWriter.java:254) ~[?:?]
+	at java.io.BufferedWriter.close(BufferedWriter.java:269) ~[?:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:54) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 12:47:26.653 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 12:47:26.658 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 12:47:39.953 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 12:47:39.953 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 12:47:39.993 [Thread-0] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.NullPointerException: Cannot invoke "java.io.BufferedReader.readLine()" because "this.in" is null
+	at io.deeplay.server.ClientHandler.receiveGameStartRequest(ClientHandler.java:211) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:38) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 12:47:49.339 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 12:47:49.339 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 12:48:14.938 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 12:48:14.953 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 12:48:14.988 [Thread-0] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.NullPointerException: Cannot invoke "java.io.BufferedReader.readLine()" because "this.in" is null
+	at io.deeplay.server.ClientHandler.receiveGameStartRequest(ClientHandler.java:211) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:38) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 12:48:41.728 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 12:48:41.728 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 12:49:22.259 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 12:49:22.269 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 12:49:46.193 [main] INFO  io.deeplay.server.Server - Client 2 connected
+2023-08-17 12:49:46.193 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 12:49:49.228 [Thread-1] INFO  io.deeplay.server.ClientHandler - Игрок не согласился на игру
+2023-08-17 12:49:49.228 [Thread-1] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.RuntimeException: Player rqw declined to start the game.
+	at io.deeplay.server.ClientHandler.startGame(ClientHandler.java:205) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:45) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 12:50:06.143 [Thread-0] ERROR io.deeplay.server.ClientHandler - Не получилось обработать ход: 
+com.fasterxml.jackson.core.JsonParseException: Unrecognized token 'Start': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: (String)"Start position = null end position + null"; line: 1, column: 6]
+	at com.fasterxml.jackson.core.JsonParser._constructError(JsonParser.java:2477) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.base.ParserMinimalBase._reportError(ParserMinimalBase.java:760) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._reportInvalidToken(ReaderBasedJsonParser.java:3041) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._handleOddValue(ReaderBasedJsonParser.java:2082) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser.nextToken(ReaderBasedJsonParser.java:808) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper._initForReading(ObjectMapper.java:4912) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4818) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3772) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3740) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at io.deeplay.server.ClientHandler.validateMove(ClientHandler.java:183) [main/:?]
+	at io.deeplay.server.ClientHandler.handleClientInput(ClientHandler.java:76) [main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:51) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 12:50:06.145 [Thread-0] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.NullPointerException: Cannot invoke "io.deeplay.model.move.Move.startPosition()" because "move" is null
+	at io.deeplay.server.ClientHandler.validateMove(ClientHandler.java:193) ~[main/:?]
+	at io.deeplay.server.ClientHandler.handleClientInput(ClientHandler.java:76) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:51) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 13:26:33.246 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 13:26:33.250 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 13:26:46.031 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 13:26:46.035 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 13:26:50.566 [Thread-0] INFO  io.deeplay.server.ClientHandler - Игрок не согласился на игру
+2023-08-17 13:26:50.566 [Thread-0] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.RuntimeException: Player null declined to start the game.
+	at io.deeplay.server.ClientHandler.startGame(ClientHandler.java:204) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:41) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 13:26:59.147 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 13:26:59.151 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 13:27:13.300 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 13:27:13.304 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 13:27:22.987 [main] INFO  io.deeplay.server.Server - Client 2 connected
+2023-08-17 13:27:22.987 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 13:27:56.855 [Thread-1] ERROR io.deeplay.server.ClientHandler - Не получилось обработать ход: 
+com.fasterxml.jackson.core.JsonParseException: Unrecognized token 'Start': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: (String)"Start position = null end position + null"; line: 1, column: 6]
+	at com.fasterxml.jackson.core.JsonParser._constructError(JsonParser.java:2477) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.base.ParserMinimalBase._reportError(ParserMinimalBase.java:760) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._reportInvalidToken(ReaderBasedJsonParser.java:3041) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._handleOddValue(ReaderBasedJsonParser.java:2082) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser.nextToken(ReaderBasedJsonParser.java:808) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper._initForReading(ObjectMapper.java:4912) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4818) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3772) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3740) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at io.deeplay.server.ClientHandler.validateMove(ClientHandler.java:175) [main/:?]
+	at io.deeplay.server.ClientHandler.handleClientInput(ClientHandler.java:68) [main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:46) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 13:27:56.873 [Thread-1] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.NullPointerException: Cannot invoke "io.deeplay.model.move.Move.startPosition()" because "move" is null
+	at io.deeplay.server.ClientHandler.validateMove(ClientHandler.java:185) ~[main/:?]
+	at io.deeplay.server.ClientHandler.handleClientInput(ClientHandler.java:68) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:46) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 13:28:00.402 [Thread-0] ERROR io.deeplay.server.ClientHandler - Не получилось обработать ход: 
+com.fasterxml.jackson.core.JsonParseException: Unrecognized token 'Start': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: (String)"Start position = null end position + null"; line: 1, column: 6]
+	at com.fasterxml.jackson.core.JsonParser._constructError(JsonParser.java:2477) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.base.ParserMinimalBase._reportError(ParserMinimalBase.java:760) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._reportInvalidToken(ReaderBasedJsonParser.java:3041) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._handleOddValue(ReaderBasedJsonParser.java:2082) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser.nextToken(ReaderBasedJsonParser.java:808) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper._initForReading(ObjectMapper.java:4912) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4818) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3772) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3740) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at io.deeplay.server.ClientHandler.validateMove(ClientHandler.java:175) [main/:?]
+	at io.deeplay.server.ClientHandler.handleClientInput(ClientHandler.java:68) [main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:46) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 13:28:00.404 [Thread-0] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.NullPointerException: Cannot invoke "io.deeplay.model.move.Move.startPosition()" because "move" is null
+	at io.deeplay.server.ClientHandler.validateMove(ClientHandler.java:185) ~[main/:?]
+	at io.deeplay.server.ClientHandler.handleClientInput(ClientHandler.java:68) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:46) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 13:50:07.826 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 13:50:07.829 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 13:50:21.985 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 13:50:21.988 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 13:50:37.042 [Thread-0] ERROR io.deeplay.server.ClientHandler - Не получилось обработать ход: 
+com.fasterxml.jackson.core.JsonParseException: Unrecognized token 'Start': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: (String)"Start position = null end position + null"; line: 1, column: 6]
+	at com.fasterxml.jackson.core.JsonParser._constructError(JsonParser.java:2477) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.base.ParserMinimalBase._reportError(ParserMinimalBase.java:760) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._reportInvalidToken(ReaderBasedJsonParser.java:3041) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._handleOddValue(ReaderBasedJsonParser.java:2082) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser.nextToken(ReaderBasedJsonParser.java:808) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper._initForReading(ObjectMapper.java:4912) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4818) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3772) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3740) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at io.deeplay.server.ClientHandler.validateMove(ClientHandler.java:176) [main/:?]
+	at io.deeplay.server.ClientHandler.handleClientInput(ClientHandler.java:69) [main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:47) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 13:50:37.059 [Thread-0] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.NullPointerException: Cannot invoke "io.deeplay.model.move.Move.startPosition()" because "move" is null
+	at io.deeplay.server.ClientHandler.validateMove(ClientHandler.java:186) ~[main/:?]
+	at io.deeplay.server.ClientHandler.handleClientInput(ClientHandler.java:69) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:47) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 13:50:40.618 [main] INFO  io.deeplay.server.Server - Client 2 connected
+2023-08-17 13:50:40.619 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 13:50:46.137 [Thread-1] INFO  io.deeplay.server.ClientHandler - Игрок не согласился на игру
+2023-08-17 13:50:46.138 [Thread-1] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.RuntimeException: Player null declined to start the game.
+	at io.deeplay.server.ClientHandler.startGame(ClientHandler.java:205) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:42) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 13:53:36.707 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 13:53:36.710 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 13:53:42.100 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 13:53:42.104 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 13:53:45.415 [Thread-0] INFO  io.deeplay.server.ClientHandler - Игрок не согласился на игру
+2023-08-17 13:53:45.416 [Thread-0] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.RuntimeException: Player null declined to start the game.
+	at io.deeplay.server.ClientHandler.startGame(ClientHandler.java:205) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:42) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 13:53:58.367 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 13:53:58.370 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 13:54:04.580 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 13:54:04.584 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 13:54:28.148 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 13:54:28.150 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 13:54:34.263 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 13:54:34.268 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 13:54:48.097 [Thread-0] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.NullPointerException: Cannot invoke "String.equalsIgnoreCase(String)" because "response" is null
+	at io.deeplay.server.ClientHandler.startGame(ClientHandler.java:194) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:42) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 13:54:51.815 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 13:54:51.826 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 13:55:03.734 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 13:55:03.739 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 13:55:32.625 [Thread-0] ERROR io.deeplay.server.ClientHandler - Не получилось обработать ход: 
+com.fasterxml.jackson.core.JsonParseException: Unrecognized token 'Start': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: (String)"Start position = null end position + null"; line: 1, column: 6]
+	at com.fasterxml.jackson.core.JsonParser._constructError(JsonParser.java:2477) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.base.ParserMinimalBase._reportError(ParserMinimalBase.java:760) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._reportInvalidToken(ReaderBasedJsonParser.java:3041) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._handleOddValue(ReaderBasedJsonParser.java:2082) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser.nextToken(ReaderBasedJsonParser.java:808) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper._initForReading(ObjectMapper.java:4912) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4818) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3772) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3740) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at io.deeplay.server.ClientHandler.validateMove(ClientHandler.java:176) [main/:?]
+	at io.deeplay.server.ClientHandler.handleClientInput(ClientHandler.java:69) [main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:47) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 13:55:32.643 [Thread-0] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.NullPointerException: Cannot invoke "io.deeplay.model.move.Move.startPosition()" because "move" is null
+	at io.deeplay.server.ClientHandler.validateMove(ClientHandler.java:186) ~[main/:?]
+	at io.deeplay.server.ClientHandler.handleClientInput(ClientHandler.java:69) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:47) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 13:57:29.858 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 13:57:29.863 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 13:57:53.505 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 13:57:53.511 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 13:58:40.041 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 13:58:40.044 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 13:59:05.350 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 13:59:05.354 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 13:59:09.483 [Thread-0] INFO  io.deeplay.server.ClientHandler - Игрок не согласился на игру
+2023-08-17 13:59:09.484 [Thread-0] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.RuntimeException: Player null declined to start the game.
+	at io.deeplay.server.ClientHandler.startGame(ClientHandler.java:205) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:42) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 14:17:00.717 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 14:17:00.721 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 14:17:09.130 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 14:17:09.135 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 14:17:14.376 [Thread-0] INFO  io.deeplay.server.ClientHandler - Игрок не согласился на игру
+2023-08-17 14:17:14.378 [Thread-0] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.RuntimeException: Player null declined to start the game.
+	at io.deeplay.server.ClientHandler.startGame(ClientHandler.java:205) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:42) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 14:17:21.898 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 14:17:21.901 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 14:17:30.202 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 14:17:30.205 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 15:27:26.790 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 15:27:26.790 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 15:27:28.730 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 15:27:28.730 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 15:29:52.951 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 15:29:52.951 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 15:30:00.286 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 15:30:00.290 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 15:30:14.610 [Thread-0] INFO  io.deeplay.server.ClientHandler - Игрок не согласился на игру
+2023-08-17 15:30:14.616 [Thread-0] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.RuntimeException: Player null declined to start the game.
+	at io.deeplay.server.ClientHandler.startGame(ClientHandler.java:205) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:42) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 15:30:22.240 [main] INFO  io.deeplay.server.Server - Client 2 connected
+2023-08-17 15:30:22.240 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 15:30:22.240 [main] ERROR io.deeplay.server.ClientHandler - Не получилось отправить сообщение 
+java.io.IOException: Stream closed
+	at java.io.BufferedWriter.ensureOpen(BufferedWriter.java:107) ~[?:?]
+	at java.io.BufferedWriter.write(BufferedWriter.java:224) ~[?:?]
+	at java.io.Writer.write(Writer.java:249) ~[?:?]
+	at io.deeplay.server.ClientHandler.sendMessage(ClientHandler.java:112) [main/:?]
+	at io.deeplay.server.Server.broadcast(Server.java:109) [main/:?]
+	at io.deeplay.server.Server.start(Server.java:86) [main/:?]
+	at io.deeplay.server.Server.main(Server.java:49) [main/:?]
+2023-08-17 15:30:37.970 [Thread-1] ERROR io.deeplay.server.ClientHandler - Не получилось обработать ход: 
+com.fasterxml.jackson.core.JsonParseException: Unrecognized token 'Start': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: (String)"Start position = null end position + null"; line: 1, column: 6]
+	at com.fasterxml.jackson.core.JsonParser._constructError(JsonParser.java:2477) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.base.ParserMinimalBase._reportError(ParserMinimalBase.java:760) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._reportInvalidToken(ReaderBasedJsonParser.java:3041) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._handleOddValue(ReaderBasedJsonParser.java:2082) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser.nextToken(ReaderBasedJsonParser.java:808) ~[jackson-core-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper._initForReading(ObjectMapper.java:4912) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4818) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3772) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3740) ~[jackson-databind-2.15.1.jar:2.15.1]
+	at io.deeplay.server.ClientHandler.validateMove(ClientHandler.java:176) [main/:?]
+	at io.deeplay.server.ClientHandler.handleClientInput(ClientHandler.java:69) [main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:47) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 15:30:37.970 [Thread-1] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.NullPointerException: Cannot invoke "io.deeplay.model.move.Move.startPosition()" because "move" is null
+	at io.deeplay.server.ClientHandler.validateMove(ClientHandler.java:186) ~[main/:?]
+	at io.deeplay.server.ClientHandler.handleClientInput(ClientHandler.java:69) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:47) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 15:30:42.832 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 15:30:42.840 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 15:30:48.470 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 15:30:48.470 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 15:31:28.220 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 15:31:28.220 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 15:31:28.296 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 15:31:28.296 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 15:32:02.883 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 15:32:02.883 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 15:32:09.000 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 15:32:09.000 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 15:32:11.814 [Thread-0] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.NullPointerException: Cannot invoke "String.equalsIgnoreCase(String)" because "response" is null
+	at io.deeplay.server.ClientHandler.startGame(ClientHandler.java:194) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:42) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 15:33:55.010 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 15:33:55.010 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 15:34:16.943 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 15:34:16.951 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 15:35:27.340 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 15:35:27.340 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 15:35:30.670 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 15:35:30.671 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 15:35:59.140 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 15:35:59.140 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 15:36:02.202 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 15:36:02.202 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 15:36:59.170 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 15:36:59.175 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 15:37:01.490 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 15:37:36.170 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 15:37:36.180 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 15:37:38.903 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 15:37:42.850 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 15:39:18.790 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 15:39:18.790 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 15:39:21.140 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 15:39:25.230 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 15:39:25.230 [main] INFO  io.deeplay.server.Server - Waiting for second player
+2023-08-17 15:39:29.967 [main] INFO  io.deeplay.server.Server - Client 2 connected
+2023-08-17 15:39:33.560 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 15:39:37.220 [Thread-0] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.NullPointerException: Cannot invoke "com.fasterxml.jackson.databind.ObjectMapper.readValue(String, java.lang.Class)" because "this.objectMapper" is null
+	at io.deeplay.server.ClientHandler.handleClientInput(ClientHandler.java:65) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:46) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 15:39:37.250 [Thread-0] ERROR io.deeplay.server.ClientHandler - Ошибка при прочтении данных: 
+java.net.SocketException: Socket closed
+	at sun.nio.ch.NioSocketImpl.ensureOpenAndConnected(NioSocketImpl.java:162) ~[?:?]
+	at sun.nio.ch.NioSocketImpl.beginWrite(NioSocketImpl.java:363) ~[?:?]
+	at sun.nio.ch.NioSocketImpl.implWrite(NioSocketImpl.java:408) ~[?:?]
+	at sun.nio.ch.NioSocketImpl.write(NioSocketImpl.java:437) ~[?:?]
+	at sun.nio.ch.NioSocketImpl$2.write(NioSocketImpl.java:823) ~[?:?]
+	at java.net.Socket$SocketOutputStream.write(Socket.java:1035) ~[?:?]
+	at sun.nio.cs.StreamEncoder.writeBytes(StreamEncoder.java:234) ~[?:?]
+	at sun.nio.cs.StreamEncoder.implClose(StreamEncoder.java:340) ~[?:?]
+	at sun.nio.cs.StreamEncoder.close(StreamEncoder.java:169) ~[?:?]
+	at java.io.OutputStreamWriter.close(OutputStreamWriter.java:254) ~[?:?]
+	at java.io.BufferedWriter.close(BufferedWriter.java:269) ~[?:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:53) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 15:53:29.430 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 15:53:29.442 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 15:53:38.318 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 15:53:41.660 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 15:53:45.800 [Thread-0] ERROR io.deeplay.server.ClientHandler - Ошибка при прочтении данных: 
+java.net.SocketException: Socket closed
+	at sun.nio.ch.NioSocketImpl.ensureOpenAndConnected(NioSocketImpl.java:162) ~[?:?]
+	at sun.nio.ch.NioSocketImpl.beginWrite(NioSocketImpl.java:363) ~[?:?]
+	at sun.nio.ch.NioSocketImpl.implWrite(NioSocketImpl.java:408) ~[?:?]
+	at sun.nio.ch.NioSocketImpl.write(NioSocketImpl.java:437) ~[?:?]
+	at sun.nio.ch.NioSocketImpl$2.write(NioSocketImpl.java:823) ~[?:?]
+	at java.net.Socket$SocketOutputStream.write(Socket.java:1035) ~[?:?]
+	at sun.nio.cs.StreamEncoder.writeBytes(StreamEncoder.java:234) ~[?:?]
+	at sun.nio.cs.StreamEncoder.implClose(StreamEncoder.java:340) ~[?:?]
+	at sun.nio.cs.StreamEncoder.close(StreamEncoder.java:169) ~[?:?]
+	at java.io.OutputStreamWriter.close(OutputStreamWriter.java:254) ~[?:?]
+	at java.io.BufferedWriter.close(BufferedWriter.java:269) ~[?:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:53) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 16:31:05.229 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 16:31:05.239 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 16:31:14.879 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 16:31:17.319 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 16:34:59.279 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 16:34:59.279 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 16:35:06.679 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 16:35:10.430 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 16:35:16.895 [Thread-0] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.NullPointerException: Cannot invoke "com.fasterxml.jackson.databind.ObjectMapper.readValue(String, java.lang.Class)" because "this.objectMapper" is null
+	at io.deeplay.server.ClientHandler.handleClientInput(ClientHandler.java:65) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:46) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 16:35:16.910 [Thread-0] ERROR io.deeplay.server.ClientHandler - Ошибка при прочтении данных: 
+java.net.SocketException: Socket closed
+	at sun.nio.ch.NioSocketImpl.ensureOpenAndConnected(NioSocketImpl.java:162) ~[?:?]
+	at sun.nio.ch.NioSocketImpl.beginWrite(NioSocketImpl.java:363) ~[?:?]
+	at sun.nio.ch.NioSocketImpl.implWrite(NioSocketImpl.java:408) ~[?:?]
+	at sun.nio.ch.NioSocketImpl.write(NioSocketImpl.java:437) ~[?:?]
+	at sun.nio.ch.NioSocketImpl$2.write(NioSocketImpl.java:823) ~[?:?]
+	at java.net.Socket$SocketOutputStream.write(Socket.java:1035) ~[?:?]
+	at sun.nio.cs.StreamEncoder.writeBytes(StreamEncoder.java:234) ~[?:?]
+	at sun.nio.cs.StreamEncoder.implClose(StreamEncoder.java:340) ~[?:?]
+	at sun.nio.cs.StreamEncoder.close(StreamEncoder.java:169) ~[?:?]
+	at java.io.OutputStreamWriter.close(OutputStreamWriter.java:254) ~[?:?]
+	at java.io.BufferedWriter.close(BufferedWriter.java:269) ~[?:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:53) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 16:36:33.239 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 16:36:33.239 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 16:36:43.211 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 16:36:45.799 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 16:38:54.113 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 16:38:54.116 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 16:39:07.292 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 16:39:09.904 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 16:39:15.225 [main] INFO  io.deeplay.service.UserCommunicationService - Выбран режим bot-bot
+2023-08-17 16:39:15.231 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 16:39:15.285 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.295 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.297 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.298 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 16:39:15.298 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.299 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.300 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.300 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 16:39:15.301 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.302 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.304 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.305 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 16:39:15.305 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.305 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.306 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.307 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 16:39:15.307 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.307 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.310 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.310 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 16:39:15.311 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.311 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.312 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.313 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 16:39:15.313 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.314 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.315 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.315 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 16:39:15.315 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.316 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.318 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.318 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 16:39:15.318 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.319 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.321 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.322 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 16:39:15.322 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.324 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.326 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.326 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 16:39:15.326 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.327 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.328 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.329 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 16:39:15.329 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.330 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.331 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.331 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 16:39:15.331 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.331 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.332 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.333 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 16:39:15.333 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.333 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.334 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.334 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 16:39:15.334 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.335 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.336 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.336 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 16:39:15.337 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.337 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.338 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.338 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 16:39:15.338 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.339 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.339 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.340 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 16:39:15.340 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.340 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.341 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.341 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 16:39:15.342 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.342 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.343 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.343 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 16:39:15.343 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.344 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.345 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.345 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 16:39:15.345 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.345 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.346 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.346 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 16:39:15.347 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.347 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.347 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.347 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 16:39:15.349 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.349 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.349 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.350 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 16:39:15.350 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.351 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.352 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.352 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.353 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.353 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.353 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.354 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.354 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.354 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.354 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.354 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.355 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.355 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.355 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.356 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.356 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.356 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.356 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.357 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.357 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.357 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.357 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.357 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.358 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.358 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.358 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.358 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.358 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.359 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.359 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.359 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.359 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.359 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.359 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.360 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.360 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.360 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.360 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.361 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.361 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 16:39:15.361 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 16:39:15.361 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 16:39:15.362 [main] INFO  io.deeplay.engine.GameSession - Game ended BLACK win
+2023-08-17 16:39:15.362 [main] INFO  io.deeplay.engine.GameSession - Игра окончена Game ended, because WHITE is in check and can't move
+2023-08-17 17:38:21.233 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 17:38:21.238 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 17:38:26.922 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 17:38:30.268 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 17:38:39.275 [main] INFO  io.deeplay.service.UserCommunicationService - Выбран режим bot-bot
+2023-08-17 17:38:39.283 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.403 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.428 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.432 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.433 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.433 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.434 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.436 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.436 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.436 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.438 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.439 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.439 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.440 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.441 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.442 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.443 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.444 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.445 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.446 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.448 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.448 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.450 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.452 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.453 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.453 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.454 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.456 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.456 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.456 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.457 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.458 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.459 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.460 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.461 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.463 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.463 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.464 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.464 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.466 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.466 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.466 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.468 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.469 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.469 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.470 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.471 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.472 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.472 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.473 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.473 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.474 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.475 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.475 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.475 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.476 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.477 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.478 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.478 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.480 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.480 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.481 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.482 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.483 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.484 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.485 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.486 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.488 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.489 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.489 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.492 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.494 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.495 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.495 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.496 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.498 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.498 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.499 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.499 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.500 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.501 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.501 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.502 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.503 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.504 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.504 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.506 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.508 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.508 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.509 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.510 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.511 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.512 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.513 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.515 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.515 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.515 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.516 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.518 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.520 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.520 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.521 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.523 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.525 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.526 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.526 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.527 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.528 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.528 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.528 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.529 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.530 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.531 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.532 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.533 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.534 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.535 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.535 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.536 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.537 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.538 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.539 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.541 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.542 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.543 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.543 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.543 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.544 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.544 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.545 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.545 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.546 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.546 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.546 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.546 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.546 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.547 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.547 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.547 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.548 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.548 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.549 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.549 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.550 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.551 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.551 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.552 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.553 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.554 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.554 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.555 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.556 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.556 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.556 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.557 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.557 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.559 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.559 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.560 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.561 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.561 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.562 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.563 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.564 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.564 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.564 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.565 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.566 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.566 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.567 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.567 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.568 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.568 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.568 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.569 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.570 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.570 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.570 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.570 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.571 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.571 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.571 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.572 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.572 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.573 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.573 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.574 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.574 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.574 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.575 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.575 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.575 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.575 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.576 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.576 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.576 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.576 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.576 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.578 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.578 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.578 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.578 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.578 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.579 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.579 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.579 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.579 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.580 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.580 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.580 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.580 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.580 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.581 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.581 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.581 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.581 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.582 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.582 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.584 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.586 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.586 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.587 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.588 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.589 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.589 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.590 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.592 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.593 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.593 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.594 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.595 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.596 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.596 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.596 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.598 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.599 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.599 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.600 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.602 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.603 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.603 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.604 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.606 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.606 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.607 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.607 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.608 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.647 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.648 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.652 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.656 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.656 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.658 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.666 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.666 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.667 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.668 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.668 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.669 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.670 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.671 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.671 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.672 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.673 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.673 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.673 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.674 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.674 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.675 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.675 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.675 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.676 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.676 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.676 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.676 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.678 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.678 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.679 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.679 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.681 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.682 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.684 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.686 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.687 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.688 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.688 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.688 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.689 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.689 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.689 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.690 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.690 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.692 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.692 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.693 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.693 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.696 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.697 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.698 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.698 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.699 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.699 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.699 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.700 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.700 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.700 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.701 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.701 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.702 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.702 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.702 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.703 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.703 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.704 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.704 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.704 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.705 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.705 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.706 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.706 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.706 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.706 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.708 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.708 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.709 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.709 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.710 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.711 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.711 [main] INFO  io.deeplay.engine.GameSession - Ход WHITE
+2023-08-17 17:38:39.713 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.715 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.716 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.717 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.718 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.721 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.721 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.723 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.724 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.724 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.725 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.726 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.726 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.728 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.729 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.729 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.729 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.729 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.730 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.730 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.730 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.730 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.731 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.732 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.732 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.733 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.733 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.734 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.734 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.735 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.736 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.736 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.736 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.736 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.736 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.737 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.737 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.737 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.737 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.737 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.737 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.737 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.737 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.738 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.738 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.738 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.738 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.738 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.738 [main] INFO  io.deeplay.engine.GameSession - Ход BLACK
+2023-08-17 17:38:39.738 [main] INFO  io.deeplay.engine.GameSession - Текущий игрок: Bot
+2023-08-17 17:38:39.738 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-17 17:38:39.739 [main] INFO  io.deeplay.engine.GameSession - Game ended WHITE win
+2023-08-17 17:38:39.740 [main] INFO  io.deeplay.engine.GameSession - Игра окончена Game ended, because BLACK is in check and can't move
+2023-08-17 17:41:37.466 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 17:41:37.474 [main] INFO  io.deeplay.server.Server - Ready to accept
+2023-08-17 17:41:38.071 [main] INFO  io.deeplay.server.Server - Client 1 connected
+2023-08-17 17:41:41.302 [main] INFO  io.deeplay.server.ClientHandler - Игрок не согласился на игру
+2023-08-17 17:41:41.303 [main] INFO  io.deeplay.server.Server - New client connected
+2023-08-17 17:41:42.050 [Thread-0] ERROR io.deeplay.server.ClientHandler - Ошибка при подключении игрока: 
+java.lang.NullPointerException: Cannot invoke "com.fasterxml.jackson.databind.ObjectMapper.readValue(String, java.lang.Class)" because "this.objectMapper" is null
+	at io.deeplay.server.ClientHandler.handleClientInput(ClientHandler.java:65) ~[main/:?]
+	at io.deeplay.server.ClientHandler.run(ClientHandler.java:45) [main/:?]
+	at java.lang.Thread.run(Thread.java:833) [?:?]
+2023-08-17 17:41:53.738 [main] INFO  io.deeplay.server.Server - Server started on port 8080
+2023-08-17 17:41:53.748 [main] INFO  io.deeplay.server.Server - Ready to accept
