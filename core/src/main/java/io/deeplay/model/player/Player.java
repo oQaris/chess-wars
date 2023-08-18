@@ -2,6 +2,7 @@ package io.deeplay.model.player;
 
 import io.deeplay.domain.Color;
 import io.deeplay.domain.MoveType;
+import io.deeplay.domain.SwitchPieceType;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
@@ -83,5 +84,17 @@ public abstract class Player {
      */
     public Color getColor() {
         return color;
+    }
+
+    public Move getMove(Board board, Color currentColor, Coordinates pieceCoordinates, Coordinates moveCoordinates) {
+        Piece selectedPiece = board.getPiece(pieceCoordinates);
+        MoveType moveType = getType(selectedPiece, moveCoordinates, board);
+        SwitchPieceType selectedSwitchPiece = SwitchPieceType.NULL;
+
+        System.out.println("You selected " + selectedPiece.getColor().name() + " "
+                + selectedPiece.getClass().getSimpleName() + " to move to coordinates x:" + moveCoordinates.getX()
+                + " y:" + moveCoordinates.getY());
+
+        return new Move(selectedPiece.getCoordinates(), moveCoordinates, moveType, selectedSwitchPiece);
     }
 }

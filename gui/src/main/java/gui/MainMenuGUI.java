@@ -6,8 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainMenuGUI extends JFrame {
-    private final int APP_WIDTH = 800;
-    private final int APP_HEIGHT = 400;
+    public static final int APP_WIDTH = 800;
+    public static final int APP_HEIGHT = 400;
     private JComboBox<String> gameTypeComboBox;
     private JComboBox<String> botDifficultyComboBox;
     private JButton chooseColorButton;
