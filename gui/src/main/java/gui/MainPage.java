@@ -1,9 +1,15 @@
 package gui;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
+import static gui.MainMenuGUI.APP_HEIGHT;
+import static gui.MainMenuGUI.APP_WIDTH;
+
+@Slf4j
 public class MainPage {
     private JPanel mainPanel;
     private JButton startGameButton;
@@ -19,14 +25,26 @@ public class MainPage {
         });
 
         startGameButton.addActionListener(e -> {
-            System.out.println("Starting the game...");
+            try {
+                Frame[] frames = JFrame.getFrames();
+                frames[0].dispose();
+                new ChessGUI(String.valueOf(gameTypesBox.getSelectedItem()), String.valueOf(players.getSelectedItem()),
+                        String.valueOf(botLevels.getSelectedItem()));
+            } catch (NullPointerException exception) {
+                log.error("Can't find any frame!" + exception);
+            }
         });
     }
 
-    public static void main(String[] args) {
+    public void startApplication() {
         JFrame frame = new JFrame("MainPage");
         frame.setContentPane(new MainPage().mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        int windowHeight = (int) ((Toolkit.getDefaultToolkit().getScreenSize().getHeight() - APP_HEIGHT) / 2);
+        int windowWidth = (int) ((Toolkit.getDefaultToolkit().getScreenSize().getWidth() - APP_WIDTH) / 2);
+        frame.setLocation(windowWidth, windowHeight);
+
         frame.pack();
         frame.setVisible(true);
     }
@@ -38,7 +56,7 @@ public class MainPage {
         String[] playerTypes = {"Игрок 1", "Игрок 2"};
         players = new JComboBox<>(playerTypes);
 
-        String[] botLevelsArray = {"Легкий", "Средний", "Тяжелый"};
+        String[] botLevelsArray = {"Легкий", "Средний", "Сложный"};
         botLevels = new JComboBox<>(botLevelsArray);
     }
 
