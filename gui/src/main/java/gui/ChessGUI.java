@@ -189,7 +189,7 @@ public class ChessGUI extends JFrame {
                     chessBoardSquares[x][y].setBackground(new Color(0xFFB74D00, true));
                 }
 
-                chessBoardSquares[x][y].addActionListener(new ChessSquareListener(x, y));
+                chessBoardSquares[x][y].addActionListener(new ChessSquareListener(y, x));
                 chessBoardPanel.add(chessBoardSquares[x][y]);
                 isLightSquare = !isLightSquare;
             }
