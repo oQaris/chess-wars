@@ -18,7 +18,7 @@
           <background color="-1"/>
         </properties>
         <border type="empty">
-          <size top="25" left="25" bottom="25" right="25"/>
+          <size top="0" left="0" bottom="0" right="0"/>
         </border>
         <children>
           <grid id="f28b0" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -120,7 +120,7 @@
           <background color="-1"/>
         </properties>
         <border type="empty">
-          <size top="25" left="25" bottom="25" right="25"/>
+          <size top="0" left="0" bottom="0" right="0"/>
         </border>
         <children>
           <component id="fe636" class="javax.swing.JButton" binding="startGameButton" custom-create="true">
@@ -128,6 +128,7 @@
             <properties>
               <background color="-16777216"/>
               <foreground color="-1"/>
+              <hideActionText value="false"/>
               <text value="Начать игру"/>
             </properties>
           </component>
