@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Client {
     private static final String SERVER_IP = "localhost";
@@ -34,7 +35,9 @@ public class Client {
 
             objectMapper = new ObjectMapper();
             String response = in.readLine();
-
+            if (response.equals("The game has started!")) {
+                System.out.println("Game started");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -85,6 +88,38 @@ public class Client {
             return null;
         }
     }
+    public void startGame(){
+        while(true){
+            Scanner scanner = new Scanner(System.in);
+            String data = scanner.nextLine();
+            if(data.equals("black")){
+                sendColor(data);
+            }
+        }
+    }
+
+    public void sendType(String color){
+        try{
+            String jsonColor = objectMapper.writeValueAsString(color);
+            out.write(jsonColor);
+            out.newLine();
+            out.flush();
+        } catch(IOException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public void sendColor(String color){
+        try{
+            String jsonColor = objectMapper.writeValueAsString(color);
+            System.out.println(jsonColor);
+            out.write(jsonColor);
+            out.newLine();
+            out.flush();
+        } catch(IOException exception) {
+            exception.printStackTrace();
+        }
+    }
 
     public String receiveError() {
         return null;
@@ -100,6 +135,9 @@ public class Client {
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
+        Client client = new Client();
+        client.connectToServer();
+        client.startGame();
     }
 }
