@@ -3,6 +3,7 @@ package gui;
 import gui.model.PieceColorIcon;
 import gui.service.BoardService;
 import io.deeplay.domain.GameType;
+import io.deeplay.domain.MoveType;
 import io.deeplay.engine.GameInfo;
 import io.deeplay.engine.GameState;
 import io.deeplay.model.Board;
@@ -63,7 +64,7 @@ public class ChessGUI extends JFrame {
         chessBoardSquares = new JButton[BOARD_SIZE][BOARD_SIZE];
         defaultCellColors = new Color[BOARD_SIZE][BOARD_SIZE];
 
-        paintBoard(BoardService.getBoard(gameInfo.getCurrentBoard()));
+        paintInitialBoard(BoardService.getBoard(gameInfo.getCurrentBoard()));
 
         moveHistoryTextArea = new JTextArea(20, 15);
         moveHistoryTextArea.setEditable(false);
@@ -134,23 +135,15 @@ public class ChessGUI extends JFrame {
                             .setBackground(defaultCellColors[coordinates.getKey().getX()][coordinates.getKey().getY()]);
                     if (selectedPiece.getCoordinates().getX() == coordinates.getKey().getX()
                             && selectedPiece.getCoordinates().getY() == coordinates.getKey().getY()) {
-                        int pieceCol = prevSelectedPiece.getCoordinates().getX();
-                        int pieceRow = prevSelectedPiece.getCoordinates().getY();
-                        int moveCol = selectedPiece.getCoordinates().getX();
-                        int moveRow = selectedPiece.getCoordinates().getY();
-
-                        gameInfo.move(player.getMove(currentBoard, player.getColor(),
-                                prevSelectedPiece.getCoordinates(), selectedPiece.getCoordinates()));
-
-                        chessBoardSquares[pieceRow][pieceCol].setIcon(null);
-                        chessBoardSquares[moveRow][moveCol].setIcon(setIcon(
-                                currentBoard.getBoard()[moveCol][moveRow].getClass().getSimpleName(),
-                                currentBoard.getBoard()[moveCol][moveRow].getColor()));
+                        Move move = player.getMove(currentBoard, player.getColor(),
+                                prevSelectedPiece.getCoordinates(), selectedPiece.getCoordinates());
+                        gameInfo.move(move);
+                        paintBoard(gameInfo.getCurrentBoard().getBoard());
                     }
 
-                    for (Map.Entry<Coordinates, Boolean> prevcoordinates : possibleMoveCells.entrySet()) {
-                        chessBoardSquares[prevcoordinates.getKey().getY()][prevcoordinates.getKey().getX()]
-                                .setBackground(defaultCellColors[prevcoordinates.getKey().getY()][prevcoordinates.getKey().getX()]);
+                    for (Map.Entry<Coordinates, Boolean> prevCoordinates : possibleMoveCells.entrySet()) {
+                        chessBoardSquares[prevCoordinates.getKey().getY()][prevCoordinates.getKey().getX()]
+                                .setBackground(defaultCellColors[prevCoordinates.getKey().getY()][prevCoordinates.getKey().getX()]);
                     }
                 }
                 selectedSquare.setBackground(chessBoardSquares[x][y].getBackground());
@@ -160,20 +153,42 @@ public class ChessGUI extends JFrame {
         }
     }
 
+    private void paintBoard(Piece[][] board) {
+        boolean isLightSquare = true;
+
+// Если в будущем будет вылетать ошибка, то тут должно быть так:
+        for (int x = 7; x >= 0; x--) {
+            isLightSquare = !isLightSquare;
+            for (int y = 7; y >= 0; y--) {
+                if (board[y][x].getClass() != Empty.class) {
+                    chessBoardSquares[x][y].setIcon(setIcon(board[y][x].getClass().getSimpleName(), board[y][x].getColor()));
+                } else chessBoardSquares[x][y].setIcon(null);
+
+                if (isLightSquare) {
+                    chessBoardSquares[x][y].setBackground(new Color(0xFF5E1700, true));
+                } else {
+                    chessBoardSquares[x][y].setBackground(new Color(0xFFB74D00, true));
+                }
+
+                isLightSquare = !isLightSquare;
+            }
+        }
+    }
+
     public void updateGameInfo(Move move) {
         gameInfo.move(move);
     }
 
-    public void paintBoard(Piece[][] board) {
+    public void paintInitialBoard(Piece[][] board) {
         boolean isLightSquare = true;
 
         // Если в будущем будет вылетать ошибка, то тут должно быть так:
-         for (int x = 0; x < BOARD_SIZE; x++) {
-         isLightSquare = !isLightSquare;
-         for (int y = 0; y < BOARD_SIZE; y++) {
-//        for (int x = 7; x >= 0; x--) {
-//            isLightSquare = !isLightSquare;
-//            for (int y = 7; y >= 0; y--) {
+//         for (int x = 0; x < BOARD_SIZE; x++) {
+//         isLightSquare = !isLightSquare;
+//         for (int y = 0; y < BOARD_SIZE; y++) {
+            for (int x = 7; x >= 0; x--) {
+                isLightSquare = !isLightSquare;
+                for (int y = 7; y >= 0; y--) {
                 chessBoardSquares[x][y] = new JButton();
                 chessBoardSquares[x][y].setPreferredSize(new Dimension(60, 60));
 
