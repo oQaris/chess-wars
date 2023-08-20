@@ -131,38 +131,44 @@ public class ChessGUI extends JFrame {
                 // Reset the selected square's background color
 
                 for (Map.Entry<Coordinates, Boolean> coordinates : possibleMoveCells.entrySet()) {
-                    chessBoardSquares[coordinates.getKey().getX()][coordinates.getKey().getY()]
-                            .setBackground(defaultCellColors[coordinates.getKey().getX()][coordinates.getKey().getY()]);
+//                    chessBoardSquares[coordinates.getKey().getX()][coordinates.getKey().getY()]
+//                            .setBackground(defaultCellColors[coordinates.getKey().getX()][coordinates.getKey().getY()]);
                     if (selectedPiece.getCoordinates().getX() == coordinates.getKey().getX()
                             && selectedPiece.getCoordinates().getY() == coordinates.getKey().getY()) {
                         Move move = player.getMove(currentBoard, player.getColor(),
                                 prevSelectedPiece.getCoordinates(), selectedPiece.getCoordinates());
                         gameInfo.move(move);
-                        paintBoard(gameInfo.getCurrentBoard().getBoard());
                     }
 
-                    for (Map.Entry<Coordinates, Boolean> prevCoordinates : possibleMoveCells.entrySet()) {
-                        chessBoardSquares[prevCoordinates.getKey().getY()][prevCoordinates.getKey().getX()]
-                                .setBackground(defaultCellColors[prevCoordinates.getKey().getY()][prevCoordinates.getKey().getX()]);
-                    }
+//                    for (Map.Entry<Coordinates, Boolean> prevCoordinates : possibleMoveCells.entrySet()) {
+//                        chessBoardSquares[prevCoordinates.getKey().getY()][prevCoordinates.getKey().getX()]
+//                                .setBackground(defaultCellColors[prevCoordinates.getKey().getY()][prevCoordinates.getKey().getX()]);
+//                    }
                 }
                 selectedSquare.setBackground(chessBoardSquares[x][y].getBackground());
                 selectedSquare = null;
                 prevSelectedPiece = null;
+                paintBoard(gameInfo.getCurrentBoard().getBoard());
+                Board.printBoardOnce(gameInfo.getCurrentBoard());
             }
         }
     }
 
     private void paintBoard(Piece[][] board) {
-        boolean isLightSquare = true;
+        boolean isLightSquare = false;
 
-// Если в будущем будет вылетать ошибка, то тут должно быть так:
-        for (int x = 7; x >= 0; x--) {
+        // Если в будущем будет вылетать ошибка, то тут должно быть так:
+        for (int x = 0; x < BOARD_SIZE; x++) {
             isLightSquare = !isLightSquare;
-            for (int y = 7; y >= 0; y--) {
+            for (int y = 0; y < BOARD_SIZE; y++) {
+//            for (int x = 7; x >= 0; x--) {
+//                isLightSquare = !isLightSquare;
+//                for (int y = 7; y >= 0; y--) {
                 if (board[y][x].getClass() != Empty.class) {
                     chessBoardSquares[x][y].setIcon(setIcon(board[y][x].getClass().getSimpleName(), board[y][x].getColor()));
-                } else chessBoardSquares[x][y].setIcon(null);
+                } else {
+                    chessBoardSquares[x][y].setIcon(null);
+                }
 
                 if (isLightSquare) {
                     chessBoardSquares[x][y].setBackground(new Color(0xFF5E1700, true));
@@ -180,15 +186,15 @@ public class ChessGUI extends JFrame {
     }
 
     public void paintInitialBoard(Piece[][] board) {
-        boolean isLightSquare = true;
+        boolean isLightSquare = false;
 
         // Если в будущем будет вылетать ошибка, то тут должно быть так:
-//         for (int x = 0; x < BOARD_SIZE; x++) {
-//         isLightSquare = !isLightSquare;
-//         for (int y = 0; y < BOARD_SIZE; y++) {
-            for (int x = 7; x >= 0; x--) {
-                isLightSquare = !isLightSquare;
-                for (int y = 7; y >= 0; y--) {
+         for (int x = 0; x < BOARD_SIZE; x++) {
+             isLightSquare = !isLightSquare;
+             for (int y = 0; y < BOARD_SIZE; y++) {
+//            for (int x = 7; x >= 0; x--) {
+//                isLightSquare = !isLightSquare;
+//                for (int y = 7; y >= 0; y--) {
                 chessBoardSquares[x][y] = new JButton();
                 chessBoardSquares[x][y].setPreferredSize(new Dimension(60, 60));
 
