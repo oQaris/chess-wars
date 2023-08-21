@@ -41,8 +41,9 @@ public class Pawn extends Piece {
 
     /**
      * Проверяет, может ли данная фигура Pawn (пешка) сделать ход на заданные координаты на заданной доске.
+     *
      * @param coordinates координаты для проверки возможности хода
-     * @param board доска для проверки возможности хода
+     * @param board       доска для проверки возможности хода
      * @return true, если ход возможен, false в противном случае
      */
     public boolean canMoveAt(Coordinates coordinates, Board board) {
@@ -138,6 +139,10 @@ public class Pawn extends Piece {
                 lastMove.endPosition().getY()));
 
         if (!(pieceMadeLastMove instanceof Pawn)) {
+            return false;
+        }
+
+        if (pieceMadeLastMove.getCoordinates().getX() != targetX) {
             return false;
         }
 
