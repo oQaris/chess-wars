@@ -2,21 +2,15 @@ package gui;
 
 import gui.model.PieceColorIcon;
 import gui.service.BoardService;
-import io.deeplay.domain.GameType;
 import io.deeplay.domain.MoveType;
+import io.deeplay.domain.SwitchPieceType;
 import io.deeplay.engine.GameInfo;
-import io.deeplay.engine.GameState;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
-import io.deeplay.model.piece.Empty;
-import io.deeplay.model.piece.Piece;
-import io.deeplay.model.player.Bot;
-import io.deeplay.model.player.Human;
+import io.deeplay.model.piece.*;
 import io.deeplay.model.player.Player;
 import io.deeplay.server.ServerPlayer;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -27,8 +21,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
-import static io.deeplay.model.Board.printBoardOnce;
-
 public class ChessGUI extends JFrame {
 
     private JPanel chessBoardPanel;
@@ -36,8 +28,6 @@ public class ChessGUI extends JFrame {
     private Color[][] defaultCellColors;
     private JTextArea moveHistoryTextArea;
     private final int BOARD_SIZE = 8;
-    private final Color LIGHT_SQUARE_COLOR = Color.WHITE;
-    private final Color DARK_SQUARE_COLOR = Color.GRAY;
     private final Color HIGHLIGHT_COLOR = Color.YELLOW;
     private final Color POSSIBLEMOVE_COLOR = Color.GREEN;
     private JButton selectedSquare = null;
@@ -48,7 +38,6 @@ public class ChessGUI extends JFrame {
     private Map<Coordinates, Boolean> possibleMoveCells = null;
 
     public ChessGUI(String gameType, String whitePlayerChoice, String botLevel) {
-//        session = processAndCreateSession(gameType, whitePlayerChoice, botLevel);
         gameInfo = new GameInfo();
         player = new ServerPlayer(getColor(whitePlayerChoice));
         initUI();
@@ -79,19 +68,19 @@ public class ChessGUI extends JFrame {
     }
 
     private class ChessSquareListener implements ActionListener {
-        private int y;
         private int x;
+        private int y;
 
-        public ChessSquareListener(int y, int x) {
-            this.y = y;
+        public ChessSquareListener(int x, int y) {
             this.x = x;
+            this.y = y;
         }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             JButton clickedSquare = (JButton) e.getSource();
             Board currentBoard = gameInfo.getCurrentBoard();
-            Piece selectedPiece = currentBoard.getPiece(new Coordinates(y, x));
+            Piece selectedPiece = currentBoard.getPiece(new Coordinates(x, y));
 
             io.deeplay.domain.Color currentColor = gameInfo.getCurrentMoveColor();
             possibleMoves = null;
@@ -100,7 +89,7 @@ public class ChessGUI extends JFrame {
             }
 
             if (selectedSquare == null) {
-                System.out.println("Click to the cell");
+                System.out.println("Click to the cell: x = " + x + ", y = " + y);
                 prevSelectedPiece = selectedPiece;
                 selectedSquare = clickedSquare;
                 selectedSquare.setBackground(HIGHLIGHT_COLOR);
@@ -108,7 +97,7 @@ public class ChessGUI extends JFrame {
                     possibleMoveCells = new HashMap<>();
                     for (Coordinates coordinates : possibleMoves) {
                         possibleMoveCells.put(coordinates, true);
-                        chessBoardSquares[coordinates.getY()][coordinates.getX()].setBackground(POSSIBLEMOVE_COLOR);
+                        chessBoardSquares[coordinates.getX()][coordinates.getY()].setBackground(POSSIBLEMOVE_COLOR);
                     }
                 }
             } else if (selectedSquare == chessBoardSquares[x][y]) {
@@ -116,34 +105,28 @@ public class ChessGUI extends JFrame {
 
                 if (possibleMoves != null) {
                     for (Coordinates coordinates : possibleMoves) {
-                        chessBoardSquares[coordinates.getY()][coordinates.getX()]
-                                .setBackground(defaultCellColors[coordinates.getY()][coordinates.getX()]);
+                        chessBoardSquares[coordinates.getX()][coordinates.getY()]
+                                .setBackground(defaultCellColors[coordinates.getX()][coordinates.getY()]);
                     }
                 }
 
                 selectedSquare.setBackground(defaultCellColors[x][y]);
                 selectedSquare = null;
             } else {
-                // Here you would implement the logic to make the move
-                // based on the selectedSquare and clickedSquare positions
-                // Update moveHistoryTextArea with the move details
-
-                // Reset the selected square's background color
-
                 for (Map.Entry<Coordinates, Boolean> coordinates : possibleMoveCells.entrySet()) {
-//                    chessBoardSquares[coordinates.getKey().getX()][coordinates.getKey().getY()]
-//                            .setBackground(defaultCellColors[coordinates.getKey().getX()][coordinates.getKey().getY()]);
                     if (selectedPiece.getCoordinates().getX() == coordinates.getKey().getX()
                             && selectedPiece.getCoordinates().getY() == coordinates.getKey().getY()) {
                         Move move = player.getMove(currentBoard, player.getColor(),
                                 prevSelectedPiece.getCoordinates(), selectedPiece.getCoordinates());
-                        gameInfo.move(move);
+                        if (move.moveType() == MoveType.PROMOTION) {
+                            SwitchPieceType switchPieceType = getSwitchPieceType();
+                            gameInfo.move(new Move(move.startPosition(), move.endPosition(),
+                                    move.moveType(), switchPieceType));
+                        } else {
+                            gameInfo.move(move);
+                        }
+                        possibleMoveCells = new HashMap<>();
                     }
-
-//                    for (Map.Entry<Coordinates, Boolean> prevCoordinates : possibleMoveCells.entrySet()) {
-//                        chessBoardSquares[prevCoordinates.getKey().getY()][prevCoordinates.getKey().getX()]
-//                                .setBackground(defaultCellColors[prevCoordinates.getKey().getY()][prevCoordinates.getKey().getX()]);
-//                    }
                 }
                 selectedSquare.setBackground(chessBoardSquares[x][y].getBackground());
                 selectedSquare = null;
@@ -152,20 +135,30 @@ public class ChessGUI extends JFrame {
                 Board.printBoardOnce(gameInfo.getCurrentBoard());
             }
         }
+
+        private SwitchPieceType getSwitchPieceType() {
+            String result = new PromotionOptionPane().getResult();
+            SwitchPieceType switchPieceType;
+            switch (result) {
+                case "BISHOP" -> switchPieceType = SwitchPieceType.BISHOP;
+                case "KNIGHT" -> switchPieceType = SwitchPieceType.KNIGHT;
+                case "QUEEN" -> switchPieceType = SwitchPieceType.QUEEN;
+                case "ROOK" -> switchPieceType = SwitchPieceType.ROOK;
+                default -> throw new IllegalArgumentException("Invalid choice");
+            }
+            return switchPieceType;
+        }
     }
 
     private void paintBoard(Piece[][] board) {
         boolean isLightSquare = false;
 
-        // Если в будущем будет вылетать ошибка, то тут должно быть так:
-        for (int x = 0; x < BOARD_SIZE; x++) {
+        for (int y = 7; y >= 0; y--) {
             isLightSquare = !isLightSquare;
-            for (int y = 0; y < BOARD_SIZE; y++) {
-//            for (int x = 7; x >= 0; x--) {
-//                isLightSquare = !isLightSquare;
-//                for (int y = 7; y >= 0; y--) {
-                if (board[y][x].getClass() != Empty.class) {
-                    chessBoardSquares[x][y].setIcon(setIcon(board[y][x].getClass().getSimpleName(), board[y][x].getColor()));
+            for (int x = 0; x < BOARD_SIZE; x++) {
+                isLightSquare = !isLightSquare;
+                if (board[x][y].getClass() != Empty.class) {
+                    chessBoardSquares[x][y].setIcon(setIcon(board[x][y].getClass().getSimpleName(), board[x][y].getColor()));
                 } else {
                     chessBoardSquares[x][y].setIcon(null);
                 }
@@ -175,8 +168,6 @@ public class ChessGUI extends JFrame {
                 } else {
                     chessBoardSquares[x][y].setBackground(new Color(0xFFB74D00, true));
                 }
-
-                isLightSquare = !isLightSquare;
             }
         }
     }
@@ -189,17 +180,21 @@ public class ChessGUI extends JFrame {
         boolean isLightSquare = false;
 
         // Если в будущем будет вылетать ошибка, то тут должно быть так:
-         for (int x = 0; x < BOARD_SIZE; x++) {
-             isLightSquare = !isLightSquare;
-             for (int y = 0; y < BOARD_SIZE; y++) {
+//         for (int x = 0; x < BOARD_SIZE; x++) {
+//             isLightSquare = !isLightSquare;
+//             for (int y = 0; y < BOARD_SIZE; y++) {
 //            for (int x = 7; x >= 0; x--) {
 //                isLightSquare = !isLightSquare;
 //                for (int y = 7; y >= 0; y--) {
+        for (int y = 7; y >= 0; y--) {
+            isLightSquare = !isLightSquare;
+            for (int x = 0; x < BOARD_SIZE; x++) {
+                isLightSquare = !isLightSquare;
                 chessBoardSquares[x][y] = new JButton();
                 chessBoardSquares[x][y].setPreferredSize(new Dimension(60, 60));
 
-                if (board[y][x].getClass() != Empty.class) {
-                    chessBoardSquares[x][y].setIcon(setIcon(board[y][x].getClass().getSimpleName(), board[y][x].getColor()));
+                if (board[x][y].getClass() != Empty.class) {
+                    chessBoardSquares[x][y].setIcon(setIcon(board[x][y].getClass().getSimpleName(), board[x][y].getColor()));
                 }
 
                 if (isLightSquare) {
@@ -210,9 +205,8 @@ public class ChessGUI extends JFrame {
                     chessBoardSquares[x][y].setBackground(new Color(0xFFB74D00, true));
                 }
 
-                chessBoardSquares[x][y].addActionListener(new ChessSquareListener(y, x));
+                chessBoardSquares[x][y].addActionListener(new ChessSquareListener(x, y));
                 chessBoardPanel.add(chessBoardSquares[x][y]);
-                isLightSquare = !isLightSquare;
             }
         }
     }
@@ -258,60 +252,4 @@ public class ChessGUI extends JFrame {
         if (isWhiteFirst) return io.deeplay.domain.Color.BLACK;
         else return io.deeplay.domain.Color.WHITE;
     }
-
-//    GuiSession processAndCreateSession(String gameTypeString, String whitePlayerChoice, String selectedBotLevel) {
-//        int botLevel;
-//        switch (selectedBotLevel) {
-//            case "Легкий" -> botLevel = 1;
-//            case "Средний" -> botLevel = 2;
-//            case "Сложный" -> botLevel = 3;
-//            case "" -> botLevel = 0;
-//            default -> throw new IllegalArgumentException("Wrong bot level selection");
-//        }
-//
-//        GameType gameType;
-//        switch (gameTypeString) {
-//            case "Человек vs. Человек" -> gameType = GameType.HumanVsHuman;
-//            case "Бот vs. Бот" -> gameType = GameType.BotVsBot;
-//            case "Человек vs. Бот" -> gameType = GameType.HumanVsBot;
-//            default -> throw new IllegalArgumentException("Wrong game type selection");
-//        }
-//
-//        boolean isWhiteFirst;
-//        switch (whitePlayerChoice) {
-//            case "Игрок 1" -> isWhiteFirst = true;
-//            case "Игрок 2" -> isWhiteFirst = false;
-//            default -> throw new IllegalArgumentException("Wrong white player selection");
-//        }
-//
-//        Player player1;
-//        Player player2;
-//        if (gameType == GameType.HumanVsHuman) {
-//            if (isWhiteFirst) {
-//                player1 = new Human(io.deeplay.domain.Color.WHITE);
-//                player2 = new Human(io.deeplay.domain.Color.BLACK);
-//            } else {
-//                player1 = new Human(io.deeplay.domain.Color.BLACK);
-//                player2 = new Human(io.deeplay.domain.Color.WHITE);
-//            }
-//        } else if (gameType == GameType.BotVsBot) {
-//            if (isWhiteFirst) {
-//                player1 = new Bot(io.deeplay.domain.Color.WHITE, botLevel);
-//                player2 = new Bot(io.deeplay.domain.Color.BLACK, botLevel);
-//            } else {
-//                player1 = new Bot(io.deeplay.domain.Color.BLACK, botLevel);
-//                player2 = new Bot(io.deeplay.domain.Color.WHITE, botLevel);
-//            }
-//        } else {
-//            if (isWhiteFirst) {
-//                player1 = new Human(io.deeplay.domain.Color.WHITE);
-//                player2 = new Bot(io.deeplay.domain.Color.BLACK, botLevel);
-//            } else {
-//                player1 = new Human(io.deeplay.domain.Color.BLACK);
-//                player2 = new Bot(io.deeplay.domain.Color.WHITE, botLevel);
-//            }
-//        }
-//
-//        return new GuiSession(player1, player2, gameType);
-//    }
 }

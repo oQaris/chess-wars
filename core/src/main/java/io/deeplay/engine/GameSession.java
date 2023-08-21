@@ -33,9 +33,6 @@ public class GameSession {
             Color enemyColor = gameInfo.getCurrentMoveColor().opposite();
             System.out.println(currentColor);
 
-            GameStates stateBeforeMove = GameStates.DEFAULT;
-            if (GameState.isCheck(gameInfo.getCurrentBoard(), currentColor)) stateBeforeMove = GameStates.CHECK;
-
             Player playerWhoMoves = choosePlayer(currentColor);
             System.out.println("current player: " + playerWhoMoves.getClass().getSimpleName());
 
