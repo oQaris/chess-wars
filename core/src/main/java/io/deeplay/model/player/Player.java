@@ -3,6 +3,7 @@ package io.deeplay.model.player;
 import io.deeplay.domain.Color;
 import io.deeplay.domain.MoveType;
 import io.deeplay.domain.SwitchPieceType;
+import io.deeplay.engine.GameState;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
@@ -41,7 +42,9 @@ public abstract class Player {
                 Piece piece = board.getPiece(new Coordinates(x, y));
                 if (!piece.getColor().equals(Color.EMPTY) && piece.getColor().equals(color)
                         && !piece.getPossibleMoves(board).isEmpty()) {
-                    movablePieces.add(piece);
+                    if (!GameState.getMovesWithoutMakingCheck(board, piece, piece.getPossibleMoves(board)).isEmpty()) {
+                        movablePieces.add(piece);
+                    }
                 }
             }
         }

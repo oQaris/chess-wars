@@ -5,6 +5,7 @@ import gui.service.BoardService;
 import io.deeplay.domain.MoveType;
 import io.deeplay.domain.SwitchPieceType;
 import io.deeplay.engine.GameInfo;
+import io.deeplay.engine.GameState;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
@@ -88,6 +89,8 @@ public class ChessGUI extends JFrame {
             possibleMoves = null;
             if (selectedPiece.getColor() == currentColor) {
                 possibleMoves = selectedPiece.getPossibleMoves(currentBoard);
+                List<Coordinates> movesWithoutCheck = GameState.getMovesWithoutMakingCheck(gameInfo.getCurrentBoard(), selectedPiece, possibleMoves);
+                possibleMoves.retainAll(movesWithoutCheck);
             }
 
             if (selectedSquare == null) {
