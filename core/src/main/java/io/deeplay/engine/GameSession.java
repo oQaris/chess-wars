@@ -36,12 +36,6 @@ public class GameSession {
             log.info("Ход {}", currentColor);
             System.out.println(currentColor);
 
-            GameStates stateBeforeMove = GameStates.DEFAULT;
-
-            if (GameState.isCheck(gameInfo.getCurrentBoard(), currentColor)) {
-                stateBeforeMove = GameStates.CHECK;
-            }
-
             Player playerWhoMoves = choosePlayer(currentColor);
             log.info("Текущий игрок: {}", playerWhoMoves.getClass().getSimpleName());
             System.out.println("current player: " + playerWhoMoves.getClass().getSimpleName());
