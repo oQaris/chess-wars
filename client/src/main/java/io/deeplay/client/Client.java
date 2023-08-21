@@ -1,12 +1,9 @@
 package io.deeplay.client;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import io.deeplay.communication.dto.EndGameDTO;
+import io.deeplay.communication.converter.Converter;
 import io.deeplay.communication.dto.MoveDTO;
-import io.deeplay.communication.dto.MoveTransferDTO;
-import io.deeplay.communication.dto.StartGameDTO;
-import io.deeplay.communication.model.GameType;
+import io.deeplay.communication.service.DeserializationService;
+import io.deeplay.model.move.Move;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,8 +16,6 @@ public class Client {
     private Socket socket;
     private BufferedWriter out;
     private BufferedReader in;
-    private boolean isMyTurn = false;
-    private ObjectMapper objectMapper = new ObjectMapper();
     private static final Logger logger = LogManager.getLogger(Client.class);
 
     public void connectToServer() {
@@ -32,7 +27,6 @@ public class Client {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
-            objectMapper = new ObjectMapper();
             String response = in.readLine();
 
         } catch (IOException e) {
@@ -46,58 +40,32 @@ public class Client {
         }
     }
 
-    public void sendMove(MoveDTO move) throws IOException {
-        Gson gson = new Gson();
-        String json = gson.toJson(move);
-
-        out.write(json);
-        out.newLine();
-        out.flush();
-    }
-
-    public void sendGameStartRequest(GameType gameType) {
-        StartGameDTO gameStartDTO = new StartGameDTO(gameType);
-        Gson gson = new Gson();
-        String json = gson.toJson(gameStartDTO);
+    public void sendMove(Move move) {
+        // MoveDTO moveDTO = Converter.convertMoveToDTO(move);
+        //  String moveJson = SerializationService.convertMoveDTOToJson(moveDTO);
 
         try {
-            out.write(json);
-            out.newLine();
+            //       out.write(moveJson);
+            // out.write(moveDTO) ??
             out.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void handleMoveTransfer(MoveTransferDTO moveTransferDTO) { // обработка полученного хода
+    public Move getMove() {
+        String json;
+        Move move;
 
-    }
-
-    public void handleEndGame(EndGameDTO endGameDto) { // обработка сообщения о конце игры
-    }
-
-
-    public String receiveMessage() {
         try {
-            return in.readLine();
+            json = String.valueOf(in.read());
+            MoveDTO moveDTO = DeserializationService.convertJsonToMoveDTO(json);
+            move = Converter.convertDTOToMove(moveDTO);
         } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException(e);
         }
-    }
 
-    public String receiveError() {
-        return null;
-    }
-
-    public void disconnect() {
-        try {
-            in.close();
-            out.close();
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return move;
     }
 
     public static void main(String[] args) throws IOException {

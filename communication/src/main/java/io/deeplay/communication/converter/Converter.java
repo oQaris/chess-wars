@@ -3,11 +3,7 @@ package io.deeplay.communication.converter;
 import io.deeplay.communication.dto.EndGameDTO;
 import io.deeplay.communication.dto.MoveDTO;
 import io.deeplay.communication.dto.StartGameDTO;
-import io.deeplay.communication.model.GameType;
-import io.deeplay.domain.MoveType;
-import io.deeplay.domain.SwitchPieceType;
-import io.deeplay.domain.Color;
-import io.deeplay.domain.GameStates;
+import io.deeplay.domain.*;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
 
@@ -81,7 +77,7 @@ public class Converter {
         throw new IOException("no such gameState");
     }
 
-    public static GameType convertGameTypeDTO(GameType gameType) throws IOException {
+    public static GameType convertGameTypeDTO(io.deeplay.communication.model.GameType gameType) throws IOException {
         if (Objects.equals(gameType.toString(), "BotVsBot")){
             return GameType.BotVsBot;
         }
