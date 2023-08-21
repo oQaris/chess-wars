@@ -80,6 +80,7 @@ public class Converter {
         }
         throw new IOException("no such gameState");
     }
+
     public static GameType convertGameTypeDTO(GameType gameType) throws IOException {
         if (Objects.equals(gameType.toString(), "BotVsBot")){
             return GameType.BotVsBot;
@@ -100,7 +101,6 @@ public class Converter {
         return new Move(new Coordinates(startPositionX, startPositionY),  new Coordinates(endPositionX, endPositionY), getMoveTypeFromDTO(moveDTO), getSwitchPieceType(moveDTO));
     }
 
-
     public static String convertEndGameStateDTO(EndGameDTO endGameDTO) throws IOException {
         return Objects.requireNonNull(convertGameStateDTO(endGameDTO)) + "," + convertColor(endGameDTO.getWinColor());
     }
@@ -108,5 +108,4 @@ public class Converter {
     public static String convertStartGameDTO(StartGameDTO startGameDTO) throws IOException {
         return Objects.requireNonNull(convertGameTypeDTO(startGameDTO.getGameType())) + "," + Objects.requireNonNull(convertColor(startGameDTO.getCurrentColor()));
     }
-
 }
