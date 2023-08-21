@@ -1,18 +1,10 @@
 package io.deeplay.server;
 
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import io.deeplay.communication.dto.EndGameDTO;
 import io.deeplay.communication.dto.MoveDTO;
-import io.deeplay.communication.dto.StartGameDTO;
 import io.deeplay.communication.model.GameType;
 import io.deeplay.communication.service.SerializationService;
 import io.deeplay.engine.GameSession;
-import io.deeplay.engine.GameState;
 import io.deeplay.model.Board;
-import io.deeplay.model.player.Player;
-import io.deeplay.service.UserCommunicationService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,22 +15,21 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import static io.deeplay.communication.converter.Converter.convertGameTypeDTO;
+
 public class Server {
     private static final Logger logger = LogManager.getLogger(Server.class);
     private static final int PORT = 8080;
     private ServerSocket serverSocket;
-    private ObjectMapper mapper;
     private List<ClientHandler> clients = new ArrayList<>();
     private GameSession gameSession;
     private boolean isGameStarted;
-    private boolean gameStarted = false;
-    private DeserializationContext objectMapper;
-    private Player player1;
-    private Player player2;
     private GameType gameType;
 
+    ServerPlayer serverPlayer1;
+    ServerPlayer serverPlayer2;
+
     public Server(int port) {
-        mapper = new ObjectMapper();
     }
 
     public static void main(String[] args) throws IOException {
@@ -79,33 +70,35 @@ public class Server {
                     broadcast(startMessage);
                     isGameStarted = true;
 
-                    gameSession = new UserCommunicationService(System.in, System.out).getGameSessionInfo();
-                    gameSession.startGameSession();
-
-                    // startGame(); ??
+                    startGame(); // сделать start
                     break;
                 } else if (gameType == GameType.HumanVsBot) {
                     String startMessage = "Game human-bot has started";
 
                     broadcast(startMessage);
                     isGameStarted = true;
-                    startGame();
+                    startGame(); // сделать start
                     break;
                 }
             } else if (clients.size() == 2 && !isGameStarted) {
                 String startMessage = "Game human-human has started";
                 broadcast(startMessage);
                 isGameStarted = true;
-                gameSession.startGameSession();
-                startGame();
+                startGame(); // сделать start
                 break;
             }
         }
     }
 
-    private void startGame() {
-        // GameSession gameSession1 = new GameSession(player1, player2, gameType); // TODO: спросить Серёжу про gameType
-        // TODO: спросить про DTO и core
+    private void startGame() throws IOException {
+        gameSession = new GameSession(serverPlayer1, serverPlayer2, convertGameTypeDTO(gameType)) {
+            @Override
+            public void sendMove() {
+                // реализация
+            }
+        };
+
+        gameSession.startGameSession();
     }
 
     public void broadcastMove(MoveDTO move) {
@@ -121,59 +114,11 @@ public class Server {
         }
     }
 
-    private String receiveClientResponse(ClientHandler client) {
-        try {
-            return client.in.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
-
-    private void endGame() {
-        gameStarted = false;
-
-        for (ClientHandler client : clients) {
-            client.sendMessage("{\"end\": true}");
-        }
-    }
-
-    public void createNewGame(StartGameDTO startGameDTO) {
-        // создание новой игры
-        // gameSession = new GameSession(); // TODO: передать Player ов и тип игры
-
-        // отправка сообщения о начале игры всем клиентам
-        String startGameMessage = "Game started!";
-        broadcast(startGameMessage);
-    }
-
-    public void handleEndGame(ClientHandler clientHandler) {
-        // обработка конца игры
-        EndGameDTO endGameDto = new EndGameDTO();
-        Gson gson = new Gson();
-        String json = gson.toJson(endGameDto);
-
-        for (ClientHandler client : clients) {
-            client.sendMessageToClient(json);
-        }
-    }
-
-    public void removeClient(ClientHandler client) {
-        clients.remove(client);
-    }
-
     public Board getBoardState() {
         return null;
     }
 
-    public boolean isGameOver() {
-        return false;
-    }
-
-    public void resetGame() {
-    }
-
-    public void broadcastGameState(GameState gameState) {
-        // Рассылает состояние игры всем клиентам
+    public GameSession getGameSession() {
+        return gameSession;
     }
 }
