@@ -2,8 +2,10 @@ package io.deeplay.server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.deeplay.communication.model.Color;
+import io.deeplay.communication.converter.Converter;
+import io.deeplay.communication.dto.MoveDTO;
 import io.deeplay.communication.model.GameType;
+import io.deeplay.communication.service.DeserializationService;
 import io.deeplay.engine.GameSession;
 import io.deeplay.model.Board;
 import io.deeplay.model.move.Move;
@@ -31,18 +33,19 @@ public class ClientHandler implements Runnable {
         board = new Board();
         out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        gameType = startGame();
+        gameType = chooseGameType();
     }
 
     @Override
     public void run() {
         try {
-            String clientInput;
-
             handleGameStart(gameType);
-            // ожидание ходов от клиента
-            while ((clientInput = in.readLine()) != null) {
-                handleClientInput(clientInput);
+
+            while (true) {
+                String clientInput = in.readLine();
+                MoveDTO moveDTO = DeserializationService.convertJsonToMoveDTO(clientInput);
+                Move move = Converter.convertDTOToMove(moveDTO);
+                // serverPlayer.setMove(move); // передать игроку???
             }
 
         } catch (Exception e) {
@@ -57,53 +60,6 @@ public class ClientHandler implements Runnable {
                 e.printStackTrace();
             }
         }
-    }
-
-    private void handleClientInput(String clientInput) {
-        try {
-            // Преобразование JSON-строки в объект Move
-            Move move = objectMapper.readValue(clientInput, Move.class);
-
-            // Логика обработки ввода клиента, включая ходы игрока, проверки и отправку на сервер
-            boolean canMove = validateMove(String.valueOf(move));
-
-            if (canMove) {
-                // Преобразование объекта Move обратно в JSON-строку для отправки на сервер
-                String moveJson = objectMapper.writeValueAsString(move);
-
-                sendMoveToServer(moveJson); // отправляет на сервер
-                String serverResponse = receiveServerResponse(); // получает ответ сервера,
-                // логика с получением хода, добавляет историю, обновляет доску и тд
-                sendMessageToClient(serverResponse); // отправляет клиенту ответ сервера
-
-                // сервер отправляет запрос на ход другого игрока
-
-                // проверить на завершение игры
-                if (server.isGameOver()) {
-                    server.broadcast("Game over!");
-                    server.resetGame();
-                }
-            } else {
-                sendMessageToClient("Invalid move. Please try again.");
-            }
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            logger.error("Ошибка: ", e);
-        }
-    }
-
-    private String getPlayerName() {
-        sendMessageToClient("Enter your name:");
-        String name = "";
-
-        try {
-            return in.readLine();
-        } catch (IOException e) {
-            logger.error("Игрок не ввел имя", e);
-        }
-
-        return name;
     }
 
     public void sendMessage(String message) {
@@ -133,16 +89,6 @@ public class ClientHandler implements Runnable {
     private void sendMoveToServer(String move) throws IOException {
         out.write(move);
         out.flush();
-    }
-
-    private String receiveServerResponse() {
-        try {
-            return in.readLine();
-        } catch (IOException e) {
-            logger.error("Не получилось обработать ответ сервера: ", e);
-            e.printStackTrace();
-            return null;
-        }
     }
 
     /**
@@ -185,7 +131,7 @@ public class ClientHandler implements Runnable {
         return board.getPiece(move.startPosition()).canMoveAt(move.endPosition(), board);
     }
 
-    private GameType startGame() throws IOException {
+    private GameType chooseGameType() throws IOException {
         sendMessageToClient("Choose game type: bot-bot / human-bot / human-human");
         String response = in.readLine();
 
@@ -206,18 +152,6 @@ public class ClientHandler implements Runnable {
     }
 
     private void handleGameStart(GameType gameType) { // обработать запрос на старт игры
-    }
-
-    public Board getBoard() {
-        return board;
-    }
-
-    public Color getPlayerColor() {
-        return null;
-    }
-
-    public Move receiveMoveFromClient() {
-        return null;
     }
 
     public GameType getGameType() {
