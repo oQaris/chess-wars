@@ -1,8 +1,10 @@
 package io.deeplay.model.player;
 
 import io.deeplay.domain.Color;
+import io.deeplay.domain.GameStates;
 import io.deeplay.domain.MoveType;
 import io.deeplay.domain.SwitchPieceType;
+import io.deeplay.engine.GameState;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
@@ -30,12 +32,17 @@ public class Human extends Player {
     @Override
     public Move getMove(Board board, Color currentColor) {
         UserCommunicationService userCommunicationService = new UserCommunicationService(System.in, System.out);
+
         List<Piece> possiblePiecesToMove = getPiecesPossibleToMove(board, currentColor);
+
         Piece selectedPiece = userCommunicationService.selectPiece(possiblePiecesToMove);
         List<Coordinates> availableMoves = selectedPiece.getPossibleMoves(board);
-        Coordinates moveCoordinates = userCommunicationService.selectCoordinates(availableMoves);
-        MoveType moveType = getType(selectedPiece, moveCoordinates, board);
+        List<Coordinates> movesWithoutCheck = GameState.getMovesWithoutMakingCheck(board, selectedPiece, availableMoves);
+        availableMoves.retainAll(movesWithoutCheck);
 
+        Coordinates moveCoordinates = userCommunicationService.selectCoordinates(availableMoves);
+
+        MoveType moveType = getType(selectedPiece, moveCoordinates, board);
         SwitchPieceType selectedSwitchPiece = SwitchPieceType.NULL;
         if (moveType == MoveType.PROMOTION) selectedSwitchPiece = userCommunicationService.selectSwitchPiece();
 
