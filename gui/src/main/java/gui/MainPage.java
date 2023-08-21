@@ -6,11 +6,10 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
-import static gui.MainMenuGUI.APP_HEIGHT;
-import static gui.MainMenuGUI.APP_WIDTH;
-
 @Slf4j
 public class MainPage {
+    public static final int APP_WIDTH = 800;
+    public static final int APP_HEIGHT = 400;
     private JPanel mainPanel;
     private JButton startGameButton;
     private JComboBox gameTypesBox;
