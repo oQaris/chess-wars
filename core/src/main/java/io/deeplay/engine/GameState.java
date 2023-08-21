@@ -14,6 +14,9 @@ import io.deeplay.model.player.Human;
 import io.deeplay.service.BoardUtil;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 public class GameState {
     /**
@@ -140,6 +143,38 @@ public class GameState {
      */
     public static boolean drawWithGameWithoutTakingAndAdvancingPawns(Board board) {
         return board.getMoveHistory().getMovesWithoutTake() >= 50;
+    }
+
+    public static List<Coordinates> getMovesWithoutMakingCheck(Board board, Piece piece,
+                                                               List<Coordinates> potentialCoordinates) {
+        List<Coordinates> rightMoves = new ArrayList<>();
+
+        for (Coordinates coordinates : potentialCoordinates) {
+            Board duplicateBoard = new Board();
+            BoardUtil.duplicateBoard(board).accept(duplicateBoard);
+            Human tempHuman = new Human(piece.getColor());
+
+            MoveType moveType = tempHuman.getType(piece, coordinates, duplicateBoard);
+            if (moveType == MoveType.PROMOTION) {
+                for (int i = 0; i < SwitchPieceType.values().length; i++) {
+                    SwitchPieceType switchPieceType = SwitchPieceType.values()[i];
+                    duplicateBoard.move(new Move(piece.getCoordinates(), coordinates,
+                            moveType, switchPieceType));
+                    if (!isCheck(duplicateBoard, piece.getColor())) {
+                        rightMoves.add(coordinates);
+                    }
+                }
+            } else {
+                SwitchPieceType switchPieceType = SwitchPieceType.NULL;
+                duplicateBoard.move(new Move(piece.getCoordinates(), coordinates,
+                        moveType, switchPieceType));
+                if (!isCheck(duplicateBoard, piece.getColor())) {
+                    rightMoves.add(coordinates);
+                }
+            }
+        }
+
+        return rightMoves;
     }
 
     /**
