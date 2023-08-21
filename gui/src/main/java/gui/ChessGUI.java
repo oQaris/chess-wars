@@ -14,6 +14,7 @@ import io.deeplay.server.ServerPlayer;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,7 +56,7 @@ public class ChessGUI extends JFrame {
 
         paintInitialBoard(BoardService.getBoard(gameInfo.getCurrentBoard()));
 
-        moveHistoryTextArea = new JTextArea(20, 15);
+        moveHistoryTextArea = new JTextArea(20, 18);
         moveHistoryTextArea.setEditable(false);
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, chessBoardPanel, new JScrollPane(moveHistoryTextArea));
@@ -65,6 +66,7 @@ public class ChessGUI extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+        setResizable(false);
     }
 
     private class ChessSquareListener implements ActionListener {
@@ -125,6 +127,7 @@ public class ChessGUI extends JFrame {
                         } else {
                             gameInfo.move(move);
                         }
+                        addToMoveHistory(currentColor, move.startPosition(), move.endPosition());
                         possibleMoveCells = new HashMap<>();
                     }
                 }
@@ -176,16 +179,13 @@ public class ChessGUI extends JFrame {
         gameInfo.move(move);
     }
 
+    private void addToMoveHistory(io.deeplay.domain.Color color, Coordinates start, Coordinates end) {
+        moveHistoryTextArea.append(" " + color + ": " + start + " -> " + end + "\n");
+    }
+
     public void paintInitialBoard(Piece[][] board) {
         boolean isLightSquare = false;
 
-        // Если в будущем будет вылетать ошибка, то тут должно быть так:
-//         for (int x = 0; x < BOARD_SIZE; x++) {
-//             isLightSquare = !isLightSquare;
-//             for (int y = 0; y < BOARD_SIZE; y++) {
-//            for (int x = 7; x >= 0; x--) {
-//                isLightSquare = !isLightSquare;
-//                for (int y = 7; y >= 0; y--) {
         for (int y = 7; y >= 0; y--) {
             isLightSquare = !isLightSquare;
             for (int x = 0; x < BOARD_SIZE; x++) {
