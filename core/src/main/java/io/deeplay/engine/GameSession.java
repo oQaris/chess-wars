@@ -7,6 +7,7 @@ import io.deeplay.model.move.Move;
 import io.deeplay.model.player.Player;
 
 import static io.deeplay.model.Board.printBoardOnce;
+
 @Slf4j
 public class GameSession {
     private final Player player1;
@@ -45,6 +46,8 @@ public class GameSession {
             System.out.println("current player: " + playerWhoMoves.getClass().getSimpleName());
 
             Move move = playerWhoMoves.getMove(gameInfo.getCurrentBoard(), currentColor);
+
+            sendMove(); // реализовать на сервере
 
             gameInfo.move(move);
             printBoardOnce(gameInfo.getCurrentBoard());
@@ -94,5 +97,8 @@ public class GameSession {
 
     public GameType getGameType() {
         return gameType;
+    }
+
+    public void sendMove() {
     }
 }

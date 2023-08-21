@@ -14,6 +14,7 @@ public class Main {
         while (true) {
             GameSession gameSession = userCommunicationService.getGameSessionInfo();
             gameSession.startGameSession();
+
             if (!userCommunicationService.continueToPlay()) return;
         }
     }
