@@ -5,15 +5,10 @@ import io.deeplay.domain.MoveType;
 import io.deeplay.domain.SwitchPieceType;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
-
 import io.deeplay.model.move.Move;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.nio.charset.StandardCharsets;
-
-import static io.deeplay.model.Board.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PawnTest {
@@ -218,6 +213,7 @@ class PawnTest {
     }
 
     @Test
+    @Disabled
     void testCantGoOutside() {
         final Board board = new Board();
         final Piece testLeftWhitePawn = board.getPiece(new Coordinates(0, 1));

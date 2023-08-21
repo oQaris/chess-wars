@@ -176,9 +176,9 @@ public class Board {
                 whitePiecesNumber--;
             }
 
-            board[end.getX()][start.getY()] = new Empty(new Coordinates(end.getX(), end.getY()));
-            board[end.getX()][end.getY()] = pieceToMove;
-            board[start.getX()][start.getY()] = new Empty(start);
+            board[end.getX()][start.getY()] = new Empty(new Coordinates(end.getX(), start.getY()));
+            board[end.getX()][end.getY()] = new Pawn(new Coordinates(end.getX(), end.getY()), pieceToMove.getColor());
+            board[start.getX()][start.getY()] = new Empty(new Coordinates(start.getX(), start.getY()));
 
             logger.info("Игрок сделал взятие на проходе");
         } else if (moveType == MoveType.PROMOTION) {
