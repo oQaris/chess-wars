@@ -4,7 +4,6 @@ import io.deeplay.domain.MoveType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class MoveHistory {
     private final List<Move> moveHistory;
