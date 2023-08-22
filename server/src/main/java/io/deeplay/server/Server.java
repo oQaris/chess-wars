@@ -25,7 +25,6 @@ public class Server {
     private GameSession gameSession;
     private boolean isGameStarted;
     private GameType gameType;
-
     ServerPlayer serverPlayer1;
     ServerPlayer serverPlayer2;
 
@@ -84,6 +83,7 @@ public class Server {
                 String startMessage = "Game human-human has started";
                 broadcast(startMessage);
                 isGameStarted = true;
+
                 startGame(); // сделать start
                 break;
             }
@@ -94,7 +94,7 @@ public class Server {
         gameSession = new GameSession(serverPlayer1, serverPlayer2, convertGameTypeDTO(gameType)) {
             @Override
             public void sendMove() {
-                // реализация
+                // реализация отправление клиентов
             }
         };
 
@@ -104,11 +104,11 @@ public class Server {
     public void broadcastMove(MoveDTO move) {
         for (ClientHandler client : clients) {
             String serializedMoveDTO = SerializationService.convertMoveDTOToJson(move);
-            client.sendMove(serializedMoveDTO);
+          //  client.sendMove(serializedMoveDTO);
         }
     }
 
-    public synchronized void broadcast(String message) { // сообщения обоим игрокам
+    public void broadcast(String message) { // сообщения обоим игрокам
         for (ClientHandler client : clients) {
             client.sendMessage(message);
         }
