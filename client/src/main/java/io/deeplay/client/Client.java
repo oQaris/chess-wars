@@ -41,7 +41,7 @@ public class Client {
     }
 
     public void sendMove(Move move) {
-        // MoveDTO moveDTO = Converter.convertMoveToDTO(move);
+        //   MoveDTO moveDTO = Converter.convertMoveToDTO(move);
         //  String moveJson = SerializationService.convertMoveDTOToJson(moveDTO);
 
         try {
@@ -69,5 +69,6 @@ public class Client {
     }
 
     public static void main(String[] args) throws IOException {
+       // gui.getMove();
     }
 }
