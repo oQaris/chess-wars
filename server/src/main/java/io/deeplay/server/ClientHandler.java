@@ -1,12 +1,10 @@
 package io.deeplay.server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.deeplay.communication.converter.Converter;
 import io.deeplay.communication.dto.MoveDTO;
 import io.deeplay.communication.model.GameType;
 import io.deeplay.communication.service.DeserializationService;
-import io.deeplay.engine.GameSession;
 import io.deeplay.model.Board;
 import io.deeplay.model.move.Move;
 import org.apache.logging.log4j.LogManager;
@@ -21,9 +19,6 @@ public class ClientHandler implements Runnable {
     private final Server server;
     BufferedWriter out;
     BufferedReader in;
-    private ObjectMapper objectMapper;
-    private String player;
-    private GameSession gameSession;
     Board board;
     GameType gameType;
 
@@ -42,9 +37,6 @@ public class ClientHandler implements Runnable {
             handleGameStart(gameType);
 
             while (true) {
-                String clientInput = in.readLine();
-                MoveDTO moveDTO = DeserializationService.convertJsonToMoveDTO(clientInput);
-                Move move = Converter.convertDTOToMove(moveDTO);
                 // serverPlayer.setMove(move); // передать игроку???
             }
 
@@ -62,6 +54,12 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    public Move getMove() throws IOException {
+        String clientInput = in.readLine();
+        MoveDTO moveDTO = DeserializationService.convertJsonToMoveDTO(clientInput);
+        return Converter.convertDTOToMove(moveDTO);
+    }
+
     public void sendMessage(String message) {
         try {
             out.write(message);
@@ -72,19 +70,19 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public void sendMove(String move) {
-        String jsonData;
-
-        try {
-            jsonData = objectMapper.writeValueAsString(move);
-            out.write(jsonData);
-            out.flush();
-        } catch (JsonProcessingException e) {
-            logger.error("Не получилось преобразовать данные ", e);
-        } catch (IOException e) {
-            logger.error("Не получилось отправить данные на сервер ", e);
-        }
-    }
+//    public void sendMove(String move) {
+//        String jsonData;
+//
+//        try {
+//            jsonData = objectMapper.writeValueAsString(move);
+//            out.write(jsonData);
+//            out.flush();
+//        } catch (JsonProcessingException e) {
+//            logger.error("Не получилось преобразовать данные ", e);
+//        } catch (IOException e) {
+//            logger.error("Не получилось отправить данные на сервер ", e);
+//        }
+//    }
 
     private void sendMoveToServer(String move) throws IOException {
         out.write(move);
@@ -118,10 +116,13 @@ public class ClientHandler implements Runnable {
         Move move = null;
 
         try {
-            move = objectMapper.readValue(moveString, Move.class);
+            MoveDTO moveDTO = DeserializationService.convertJsonToMoveDTO(moveString);
+            move = Converter.convertDTOToMove(moveDTO);
         } catch (JsonProcessingException e) {
             logger.error("Не получилось обработать ход: ", e);
             e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         // Получение текущего состояния доски
