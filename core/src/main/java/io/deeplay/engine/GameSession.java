@@ -5,6 +5,7 @@ import io.deeplay.domain.GameStates;
 import io.deeplay.domain.GameType;
 import io.deeplay.model.move.Move;
 import io.deeplay.model.player.Player;
+import lombok.extern.slf4j.Slf4j;
 
 import static io.deeplay.model.Board.printBoardOnce;
 

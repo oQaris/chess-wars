@@ -1,6 +1,5 @@
 package io.deeplay.server;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.deeplay.communication.converter.Converter;
 import io.deeplay.communication.dto.MoveDTO;
 import io.deeplay.communication.model.GameType;
@@ -12,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ClientHandler implements Runnable {
     private static final Logger logger = LogManager.getLogger(ClientHandler.class);
@@ -21,6 +21,8 @@ public class ClientHandler implements Runnable {
     BufferedReader in;
     Board board;
     GameType gameType;
+    private final ConcurrentLinkedQueue<Move> movesQueue;
+
 
     public ClientHandler(Socket clientSocket, Server server) throws IOException {
         this.clientSocket = clientSocket;
@@ -29,17 +31,16 @@ public class ClientHandler implements Runnable {
         out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         gameType = chooseGameType();
+        movesQueue = new ConcurrentLinkedQueue<>();
     }
 
     @Override
     public void run() {
         try {
-            handleGameStart(gameType);
-
             while (true) {
-                // serverPlayer.setMove(move); // передать игроку???
+                Move move = getMove();
+                movesQueue.offer(move);
             }
-
         } catch (Exception e) {
             logger.error("Ошибка при подключении игрока: ", e);
         } finally {
@@ -48,8 +49,7 @@ public class ClientHandler implements Runnable {
                 out.close();
                 clientSocket.close();
             } catch (IOException e) {
-                logger.error("Ошибка при прочтении данных: ", e);
-                e.printStackTrace();
+                logger.error("Ошибка при закрытии сокета: ", e);
             }
         }
     }
@@ -70,19 +70,15 @@ public class ClientHandler implements Runnable {
         }
     }
 
-//    public void sendMove(String move) {
-//        String jsonData;
-//
-//        try {
-//            jsonData = objectMapper.writeValueAsString(move);
-//            out.write(jsonData);
-//            out.flush();
-//        } catch (JsonProcessingException e) {
-//            logger.error("Не получилось преобразовать данные ", e);
-//        } catch (IOException e) {
-//            logger.error("Не получилось отправить данные на сервер ", e);
-//        }
-//    }
+    public void sendMove(String serializedMoveDTO) {
+        try {
+            out.write(serializedMoveDTO);
+            out.newLine();
+            out.flush();
+        } catch (IOException e) {
+            logger.error("Не получилось отправить ход: ", e);
+        }
+    }
 
     private void sendMoveToServer(String move) throws IOException {
         out.write(move);
@@ -105,33 +101,6 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    /**
-     * Проверяет корректность хода.
-     *
-     * @param moveString строка с ходом
-     * @return true, если ход корректный, false в противном случае
-     * * @throws JsonProcessingException
-     */
-    private boolean validateMove(String moveString) {
-        Move move = null;
-
-        try {
-            MoveDTO moveDTO = DeserializationService.convertJsonToMoveDTO(moveString);
-            move = Converter.convertDTOToMove(moveDTO);
-        } catch (JsonProcessingException e) {
-            logger.error("Не получилось обработать ход: ", e);
-            e.printStackTrace();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        // Получение текущего состояния доски
-        Board board = server.getBoardState();
-
-        // Проверка корректности хода
-        return board.getPiece(move.startPosition()).canMoveAt(move.endPosition(), board);
-    }
-
     private GameType chooseGameType() throws IOException {
         sendMessageToClient("Choose game type: bot-bot / human-bot / human-human");
         String response = in.readLine();
@@ -150,9 +119,6 @@ public class ClientHandler implements Runnable {
         }
 
         return gameType;
-    }
-
-    private void handleGameStart(GameType gameType) { // обработать запрос на старт игры
     }
 
     public GameType getGameType() {

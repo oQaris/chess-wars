@@ -18,14 +18,17 @@ public class Client {
     private BufferedReader in;
     private static final Logger logger = LogManager.getLogger(Client.class);
 
+    public Client(String serverAddress, int serverPort) throws IOException {
+        socket = new Socket(serverAddress, serverPort);
+        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+    }
+
     public void connectToServer() {
         try {
-            socket = new Socket(SERVER_IP, PORT);
+            Client client = new Client(SERVER_IP, PORT);
             logger.info("Клиент подключился к серверу");
             System.out.println("Connected to server");
-
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
             String response = in.readLine();
 
@@ -54,11 +57,10 @@ public class Client {
     }
 
     public Move getMove() {
-        String json;
         Move move;
 
         try {
-            json = String.valueOf(in.read());
+            String json = in.readLine();
             MoveDTO moveDTO = DeserializationService.convertJsonToMoveDTO(json);
             move = Converter.convertDTOToMove(moveDTO);
         } catch (IOException e) {
@@ -69,6 +71,6 @@ public class Client {
     }
 
     public static void main(String[] args) throws IOException {
-       // gui.getMove();
+        // gui.getMove();
     }
 }

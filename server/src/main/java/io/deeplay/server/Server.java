@@ -4,7 +4,6 @@ import io.deeplay.communication.dto.MoveDTO;
 import io.deeplay.communication.model.GameType;
 import io.deeplay.communication.service.SerializationService;
 import io.deeplay.engine.GameSession;
-import io.deeplay.model.Board;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -94,7 +93,8 @@ public class Server {
         gameSession = new GameSession(serverPlayer1, serverPlayer2, convertGameTypeDTO(gameType)) {
             @Override
             public void sendMove() {
-                // реализация отправление клиентов
+//                serverPlayer1.sendMove();
+//                serverPlayer2.sendMove();
             }
         };
 
@@ -104,7 +104,7 @@ public class Server {
     public void broadcastMove(MoveDTO move) {
         for (ClientHandler client : clients) {
             String serializedMoveDTO = SerializationService.convertMoveDTOToJson(move);
-          //  client.sendMove(serializedMoveDTO);
+            client.sendMove(serializedMoveDTO);
         }
     }
 
@@ -112,13 +112,5 @@ public class Server {
         for (ClientHandler client : clients) {
             client.sendMessage(message);
         }
-    }
-
-    public Board getBoardState() {
-        return null;
-    }
-
-    public GameSession getGameSession() {
-        return gameSession;
     }
 }
