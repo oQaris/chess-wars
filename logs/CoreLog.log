@@ -792,3 +792,12 @@
 2023-08-17 17:54:58.095 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
 2023-08-17 17:54:58.095 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
 2023-08-17 17:54:58.096 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-21 15:15:41.760 [main] INFO  io.deeplay.service.UserCommunicationService - Выбран режим human-human 
+2023-08-21 15:15:41.768 [main] ERROR io.deeplay.service.UserCommunicationService - Ошибка ввода при выборе режима игры
+2023-08-21 15:15:59.220 [main] INFO  io.deeplay.service.UserCommunicationService - Выбран режим human-bot 
+2023-08-21 15:15:59.228 [main] ERROR io.deeplay.service.UserCommunicationService - Ошибка ввода при выборе режима игры
+2023-08-21 15:16:08.987 [main] INFO  io.deeplay.service.UserCommunicationService - Выбран режим human-bot
+2023-08-21 15:16:23.111 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-21 15:16:23.117 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-21 15:16:23.119 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
+2023-08-21 15:16:23.120 [main] INFO  io.deeplay.model.Board - Игрок сделал обычный ход
