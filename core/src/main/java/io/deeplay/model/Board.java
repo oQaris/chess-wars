@@ -182,7 +182,7 @@ public class Board {
 
             logger.info("Игрок сделал взятие на проходе");
         } else if (moveType == MoveType.PROMOTION) {
-            Piece newPiece = null;
+            Piece newPiece;
             switch (move.switchPieceType()) {
                 case BISHOP -> newPiece = new Bishop(end, pieceToMove.getColor());
                 case KNIGHT -> newPiece = new Knight(end, pieceToMove.getColor());

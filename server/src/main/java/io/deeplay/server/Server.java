@@ -1,11 +1,14 @@
 package io.deeplay.server;
 
+import io.deeplay.communication.converter.Converter;
 import io.deeplay.communication.dto.MoveDTO;
 import io.deeplay.communication.model.GameType;
+import io.deeplay.communication.service.DeserializationService;
 import io.deeplay.communication.service.SerializationService;
 import io.deeplay.domain.Color;
 import io.deeplay.engine.GameSession;
 import io.deeplay.model.Board;
+import io.deeplay.model.move.Move;
 import io.deeplay.model.player.Bot;
 import io.deeplay.model.player.Human;
 import io.deeplay.model.player.Player;
@@ -107,17 +110,30 @@ public class Server {
         gameSession = new GameSession(serverPlayer1, serverPlayer2, convertGameTypeDTO(gameType)) {
             @Override
             public void sendMove() {
-
+                if(getGameInfo().getCurrentMoveColor().equals(serverPlayer1.getColor())){
+                    Server.this.sendMove(serverPlayer2.getMove(gameSession.getGameInfo().getCurrentBoard(), gameSession.getGameInfo().getCurrentMoveColor()));
+                }else if(getGameInfo().getCurrentMoveColor().equals(serverPlayer2.getColor())){
+                    Server.this.sendMove(serverPlayer1.getMove(gameSession.getGameInfo().getCurrentBoard(), gameSession.getGameInfo().getCurrentMoveColor()));
+                }
             }
         };
 
         gameSession.startGameSession();
     }
 
+    public void sendMove(Move move) {
+        Color color = gameSession.getGameInfo().getCurrentMoveColor();
+        if(clients.get(0).getColor().equals(color)){
+            clients.get(0).sendMove((SerializationService.convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
+        }if(clients.get(1).getColor().equals(color)){
+            clients.get(1).sendMove((SerializationService.convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
+        } else logger.error("Не удалось найти ход игрока");
+    }
+
     public void broadcastMove(MoveDTO move) {
         for (ClientHandler client : clients) {
             String serializedMoveDTO = SerializationService.convertMoveDTOToJson(move);
-          //  client.sendMove(serializedMoveDTO);
+            client.sendMove(serializedMoveDTO); //теперь можно отправить мувы
         }
     }
 

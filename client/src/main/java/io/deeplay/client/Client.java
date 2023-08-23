@@ -85,30 +85,17 @@ public class Client implements Runnable {
     }
 
     public void sendMove(Move move) {
-        //   MoveDTO moveDTO = Converter.convertMoveToDTO(move);
-        //  String moveJson = SerializationService.convertMoveDTOToJson(moveDTO);
-
+        String moveJson = SerializationService.convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move));
         try {
-            //       out.write(moveJson);
-            // out.write(moveDTO) ??
+            out.write(moveJson);
             out.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public Move getMove() {
-        Move move;
-
-        try {
-            String json = in.readLine();
-            MoveDTO moveDTO = DeserializationService.convertJsonToMoveDTO(json);
-            move = Converter.convertDTOToMove(moveDTO);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return move;
+    public Move getMove(String serverMove) { // с сервака берем ход
+        return Converter.convertDTOToMove(DeserializationService.convertJsonToMoveDTO(serverMove));
     }
 
     public static void main(String[] args) {
