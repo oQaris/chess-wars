@@ -7,133 +7,138 @@ import io.deeplay.domain.*;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
 
-import java.io.IOException;
 import java.util.Objects;
+
 
 public class Converter {
 
-    public static MoveType getMoveTypeFromDTO(MoveDTO moveDTO) throws IOException {
-        if (Objects.equals(moveDTO.getMoveType().toString(), "EN_PASSANT")){
+    public static MoveType getMoveTypeFromDTO(MoveDTO moveDTO) {
+        if (Objects.equals(moveDTO.getMoveType().toString(), "EN_PASSANT")) {
             return MoveType.EN_PASSANT;
         }
-        if (Objects.equals(moveDTO.getMoveType().toString(), "ORDINARY")){
+        if (Objects.equals(moveDTO.getMoveType().toString(), "ORDINARY")) {
             return MoveType.ORDINARY;
         }
-        if (Objects.equals(moveDTO.getMoveType().toString(), "CASTLING")){
-            return  MoveType.CASTLING;
+        if (Objects.equals(moveDTO.getMoveType().toString(), "CASTLING")) {
+            return MoveType.CASTLING;
         }
-        if (Objects.equals(moveDTO.getMoveType().toString(), "PROMOTION")){
+        if (Objects.equals(moveDTO.getMoveType().toString(), "PROMOTION")) {
             return MoveType.PROMOTION;
         }
-        if (Objects.equals(moveDTO.getMoveType().toString(), "TAKE")){
+        if (Objects.equals(moveDTO.getMoveType().toString(), "TAKE")) {
             return MoveType.TAKE;
-        }throw new IOException("no such type");
+        }
+        throw new IllegalArgumentException("Illegal parameter converting");
     }
 
-    public static io.deeplay.communication.model.MoveType getMoveTypeFromMove(Move move) throws IOException {
-        if (Objects.equals(move.moveType().toString(), "EN_PASSANT")){
+    public static io.deeplay.communication.model.MoveType getMoveTypeFromMove(Move move) {
+        if (Objects.equals(move.moveType().toString(), "EN_PASSANT")) {
             return io.deeplay.communication.model.MoveType.EN_PASSANT;
         }
-        if (Objects.equals(move.moveType().toString(), "ORDINARY")){
+        if (Objects.equals(move.moveType().toString(), "ORDINARY")) {
             return io.deeplay.communication.model.MoveType.ORDINARY;
         }
-        if (Objects.equals(move.moveType().toString(), "CASTLING")){
-            return  io.deeplay.communication.model.MoveType.CASTLING;
+        if (Objects.equals(move.moveType().toString(), "CASTLING")) {
+            return io.deeplay.communication.model.MoveType.CASTLING;
         }
-        if (Objects.equals(move.moveType().toString(), "PROMOTION")){
+        if (Objects.equals(move.moveType().toString(), "PROMOTION")) {
             return io.deeplay.communication.model.MoveType.PROMOTION;
         }
-        if (Objects.equals(move.moveType().toString(), "TAKE")){
+        if (Objects.equals(move.moveType().toString(), "TAKE")) {
             return io.deeplay.communication.model.MoveType.TAKE;
-        }throw new IOException("no such type");
+        }
+        throw new IllegalArgumentException("Illegal parameter converting");
     }
 
-    public static SwitchPieceType getSwitchPieceType(MoveDTO moveDTO) throws IOException {
-        if (Objects.equals(moveDTO.getSwitchPieceType().toString(), "ROOK")){
+    public static SwitchPieceType getSwitchPieceType(MoveDTO moveDTO) {
+        if (Objects.equals(moveDTO.getSwitchPieceType().toString(), "ROOK")) {
             return SwitchPieceType.ROOK;
         }
-        if (Objects.equals(moveDTO.getSwitchPieceType().toString(), "KNIGHT")){
+        if (Objects.equals(moveDTO.getSwitchPieceType().toString(), "KNIGHT")) {
             return SwitchPieceType.KNIGHT;
         }
-        if (Objects.equals(moveDTO.getSwitchPieceType().toString(), "QUEEN")){
+        if (Objects.equals(moveDTO.getSwitchPieceType().toString(), "QUEEN")) {
             return SwitchPieceType.QUEEN;
         }
-        if (Objects.equals(moveDTO.getSwitchPieceType().toString(), "BISHOP")){
+        if (Objects.equals(moveDTO.getSwitchPieceType().toString(), "BISHOP")) {
             return SwitchPieceType.BISHOP;
         }
-        if (Objects.equals(moveDTO.getSwitchPieceType().toString(), "NULL")){
+        if (Objects.equals(moveDTO.getSwitchPieceType().toString(), "NULL")) {
             return SwitchPieceType.NULL;
-        }throw new IOException("no such piece");
+        }
+        throw new IllegalArgumentException("Illegal parameter converting");
     }
 
-    public static io.deeplay.communication.model.SwitchPieceType getSwitchPieceTypeDTO(Move move) throws IOException {
-        if (Objects.equals(move.switchPieceType().toString(), "ROOK")){
+    public static io.deeplay.communication.model.SwitchPieceType getSwitchPieceTypeDTO(Move move) {
+        if (Objects.equals(move.switchPieceType().toString(), "ROOK")) {
             return io.deeplay.communication.model.SwitchPieceType.ROOK;
         }
-        if (Objects.equals(move.switchPieceType().toString(), "KNIGHT")){
+        if (Objects.equals(move.switchPieceType().toString(), "KNIGHT")) {
             return io.deeplay.communication.model.SwitchPieceType.KNIGHT;
         }
-        if (Objects.equals(move.switchPieceType().toString(), "QUEEN")){
+        if (Objects.equals(move.switchPieceType().toString(), "QUEEN")) {
             return io.deeplay.communication.model.SwitchPieceType.QUEEN;
         }
-        if (Objects.equals(move.switchPieceType().toString(), "BISHOP")){
+        if (Objects.equals(move.switchPieceType().toString(), "BISHOP")) {
             return io.deeplay.communication.model.SwitchPieceType.BISHOP;
         }
-        if (Objects.equals(move.switchPieceType().toString(), "NULL")){
+        if (Objects.equals(move.switchPieceType().toString(), "NULL")) {
             return io.deeplay.communication.model.SwitchPieceType.NULL;
-        }throw new IOException("no such piece");
+        }
+        throw new IllegalArgumentException("Illegal parameter converting");
     }
 
-    public static Color convertColor(io.deeplay.communication.model.Color color) throws IOException {
-        if (Objects.equals(color.toString(), Color.BLACK.toString())){
+    public static Color convertColor(io.deeplay.communication.model.Color color) {
+        if (Objects.equals(color.toString(), Color.BLACK.toString())) {
             return Color.BLACK;
         }
-        if (Objects.equals(color.toString(), Color.WHITE.toString())){
+        if (Objects.equals(color.toString(), Color.WHITE.toString())) {
             return Color.WHITE;
         }
-        if (Objects.equals(color.toString(), Color.EMPTY.toString())){
+        if (Objects.equals(color.toString(), Color.EMPTY.toString())) {
             return Color.EMPTY;
         }
-        throw new IOException("no such Color");
+        throw new IllegalArgumentException("Illegal parameter converting");
     }
 
-    public static GameStates convertGameStateDTO(EndGameDTO gameStateType) throws IOException {
-        if (Objects.equals(gameStateType.getEndGameStateType().toString(), GameStates.CHECK.toString())){
+    public static GameStates convertGameStateDTO(EndGameDTO gameStateType) {
+        if (Objects.equals(gameStateType.getEndGameStateType().toString(), GameStates.CHECK.toString())) {
             return GameStates.CHECK;
         }
-        if (Objects.equals(gameStateType.getEndGameStateType().toString(), GameStates.CHECKMATE.toString())){
+        if (Objects.equals(gameStateType.getEndGameStateType().toString(), GameStates.CHECKMATE.toString())) {
             return GameStates.CHECKMATE;
         }
-        if (Objects.equals(gameStateType.getEndGameStateType().toString(), GameStates.STALEMATE.toString())){
+        if (Objects.equals(gameStateType.getEndGameStateType().toString(), GameStates.STALEMATE.toString())) {
             return GameStates.STALEMATE;
         }
-        if (Objects.equals(gameStateType.getEndGameStateType().toString(), GameStates.DEFAULT.toString())){
+        if (Objects.equals(gameStateType.getEndGameStateType().toString(), GameStates.DEFAULT.toString())) {
             return GameStates.DEFAULT;
         }
-        throw new IOException("no such gameState");
+        throw new IllegalArgumentException("Illegal parameter converting");
     }
 
-    public static GameType convertGameTypeDTO(io.deeplay.communication.model.GameType gameType) throws IOException {
-        if (Objects.equals(gameType.toString(), "BotVsBot")){
+    public static GameType convertGameTypeDTO(io.deeplay.communication.model.GameType gameType) {
+        if (Objects.equals(gameType.toString(), "BotVsBot")) {
             return GameType.BotVsBot;
         }
-        if (Objects.equals(gameType.toString(), "HumanVsBot")){
+        if (Objects.equals(gameType.toString(), "HumanVsBot")) {
             return GameType.HumanVsBot;
         }
-        if (Objects.equals(gameType.toString(), "HumanVsHuman")){
+        if (Objects.equals(gameType.toString(), "HumanVsHuman")) {
             return GameType.HumanVsHuman;
         }
-        throw new IOException("no such GameType");
+        throw new IllegalArgumentException("Illegal parameter converting");
     }
-    public static Move convertDTOToMove(MoveDTO moveDTO) throws IOException {
+
+    public static Move convertDTOToMove(MoveDTO moveDTO) {
         int startPositionX = moveDTO.getStartPosition().getX();
         int startPositionY = moveDTO.getStartPosition().getY();
         int endPositionX = moveDTO.getEndPosition().getX();
         int endPositionY = moveDTO.getEndPosition().getY();
-        return new Move(new Coordinates(startPositionX, startPositionY),  new Coordinates(endPositionX, endPositionY), getMoveTypeFromDTO(moveDTO), getSwitchPieceType(moveDTO));
+        return new Move(new Coordinates(startPositionX, startPositionY), new Coordinates(endPositionX, endPositionY), getMoveTypeFromDTO(moveDTO), getSwitchPieceType(moveDTO));
     }
 
-    public static MoveDTO convertMoveToMoveDTO(Move move) throws IOException {
+    public static MoveDTO convertMoveToMoveDTO(Move move) {
         int startPositionX = move.startPosition().getX();
         int startPositionY = move.startPosition().getY();
         int endPositionX = move.endPosition().getX();
@@ -143,11 +148,11 @@ public class Converter {
                 getMoveTypeFromMove(move), getSwitchPieceTypeDTO(move));
     }
 
-    public static String convertEndGameStateDTO(EndGameDTO endGameDTO) throws IOException {
+    public static String convertEndGameStateDTO(EndGameDTO endGameDTO) {
         return Objects.requireNonNull(convertGameStateDTO(endGameDTO)) + "," + convertColor(endGameDTO.getWinColor());
     }
 
-    public static String convertStartGameDTO(StartGameDTO startGameDTO) throws IOException {
+    public static String convertStartGameDTO(StartGameDTO startGameDTO) {
         return Objects.requireNonNull(convertGameTypeDTO(startGameDTO.getGameType())) + "," + Objects.requireNonNull(convertColor(startGameDTO.getCurrentColor()));
     }
 }

@@ -1,7 +1,0 @@
-2023-08-16 16:12:28.100 [main] INFO  io.deeplay.server.Server - Ready to accept
-2023-08-16 16:20:07.141 [main] INFO  io.deeplay.server.Server - Server started on port 8080
-2023-08-16 16:20:07.145 [main] INFO  io.deeplay.server.Server - Ready to accept
-2023-08-16 16:20:27.485 [main] INFO  io.deeplay.server.Server - Client %d connected
-2023-08-16 16:20:27.492 [main] INFO  io.deeplay.server.Server - New client connected
-2023-08-16 16:20:35.230 [main] INFO  io.deeplay.server.Server - Client %d connected
-2023-08-16 16:20:35.232 [main] INFO  io.deeplay.server.Server - New client connected

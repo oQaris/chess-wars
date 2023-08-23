@@ -1,12 +1,13 @@
 package io.deeplay.engine;
 
 import io.deeplay.domain.Color;
-import io.deeplay.domain.GameStates;
 import io.deeplay.domain.GameType;
 import io.deeplay.model.move.Move;
 import io.deeplay.model.player.Player;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.IOException;
 
 import static io.deeplay.model.Board.printBoardOnce;
 
@@ -32,7 +33,6 @@ public class GameSession {
      */
     public void startGameSession() {
         printBoardOnce(gameInfo.getCurrentBoard());
-
         while (true) {
             Color currentColor = gameInfo.getCurrentMoveColor();
             Color enemyColor = gameInfo.getCurrentMoveColor().opposite();
@@ -98,5 +98,6 @@ public class GameSession {
     }
 
     public void sendMove() {
+
     }
 }

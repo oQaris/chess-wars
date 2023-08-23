@@ -92,20 +92,27 @@ public class ClientHandler implements Runnable {
         }
     }
 
-//    public void sendMove(String serializedMoveDTO) {
-//        try {
-//            out.write(serializedMoveDTO);
-//            out.newLine();
-//            out.flush();
-//        } catch (IOException e) {
-//            logger.error("Не получилось отправить ход: ", e);
-//        }
-//    }
+    public void sendMove(String serializedMoveDTO) {
+        try {
+            out.write(serializedMoveDTO);
+            out.newLine();
+            out.flush();
+        } catch (IOException e) {
+            logger.error("Не получилось отправить ход: ", e);
+        }
+    }
 
-    private void sendMoveToServer(String move) throws IOException {
+    /*public Move getMove(String serializedMoveDTO) {
+        return Converter.convertDTOToMove(DeserializationService.convertJsonToMoveDTO(serializedMoveDTO));
+    }*/
+    //принимаем client.getMove() -> отправляем другому клиенту
+    //отправляет клиентам ход
+    //
+
+    /*private void sendMoveToServer(String move) throws IOException {
         out.write(move);
         out.flush();
-    }
+    }*/
 
     /**
      * Отправляет сообщение клиенту.
