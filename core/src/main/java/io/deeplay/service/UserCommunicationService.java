@@ -18,7 +18,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-public class UserCommunicationService {
+public class UserCommunicationService implements IUserCommunication {
 
     private final Scanner scanner;
     private final PrintStream printStream;
@@ -43,19 +43,20 @@ public class UserCommunicationService {
 
         switch (gameType) {
             case "bot-bot" -> {
-                return new GameSession(new Bot(Color.WHITE, chooseBotLevel()),
-                        new Bot(Color.BLACK, chooseBotLevel()), GameType.BotVsBot);
+                return new GameSession(new Bot(Color.WHITE, chooseBotLevel(), new UserCommunicationService(System.in, System.out)),
+                        new Bot(Color.BLACK, chooseBotLevel(), new UserCommunicationService(System.in, System.out)), GameType.BotVsBot);
             }
 
             case "human-human" -> {
                 Color[] userColor = chooseColor();
-                return new GameSession(new Human(userColor[0]), new Human(userColor[1]), GameType.HumanVsHuman);
+                return new GameSession(new Human(userColor[0], this),
+                        new Human(userColor[1], this), GameType.HumanVsHuman);
             }
 
             case "human-bot" -> {
                 Color[] userColor = chooseColor();
-                return new GameSession(new Human(userColor[0]), new Bot(userColor[1],
-                        chooseBotLevel()), GameType.HumanVsBot);
+                return new GameSession(new Human(userColor[0], this), new Bot(userColor[1],
+                        chooseBotLevel(), new UserCommunicationService(System.in, System.out)), GameType.HumanVsBot);
             }
 
             default -> {
@@ -94,6 +95,7 @@ public class UserCommunicationService {
 
             if (selectedMove > possiblePiecesToMove.size() || selectedMove < 0) {
                 logger.error("Ввод должен быть предложенным целочисленным числом");
+                throw new IllegalArgumentException("Invalid choice!");
             } else {
                 selectedPiece = possiblePiecesToMove.get(selectedMove);
             }
@@ -129,6 +131,7 @@ public class UserCommunicationService {
 
             if (selectedMove > availableMoves.size() || selectedMove < 0) {
                 logger.error("Ввод должен быть предложенным целочисленным числом");
+                throw new IllegalArgumentException("Invalid choice!");
             } else {
                 moveCoordinates = availableMoves.get(selectedMove);
             }

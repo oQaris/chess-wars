@@ -7,6 +7,7 @@ import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
 import io.deeplay.model.piece.Piece;
+import io.deeplay.service.IUserCommunication;
 
 import java.util.List;
 import java.util.Random;
@@ -15,8 +16,8 @@ public class Bot extends Player {
     private int difficultyLevel;
     private Color color;
 
-    public Bot(Color color, int difficultyLevel) {
-        super(color);
+    public Bot(Color color, int difficultyLevel, IUserCommunication iUserCommunication) {
+        super(color, iUserCommunication);
         this.difficultyLevel = difficultyLevel;
     }
 

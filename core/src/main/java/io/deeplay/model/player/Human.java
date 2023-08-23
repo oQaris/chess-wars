@@ -9,6 +9,7 @@ import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
 import io.deeplay.model.piece.Piece;
+import io.deeplay.service.IUserCommunication;
 import io.deeplay.service.UserCommunicationService;
 
 import java.util.ArrayList;
@@ -18,8 +19,8 @@ import static io.deeplay.model.Board.BOARD_HEIGHT;
 import static io.deeplay.model.Board.BOARD_LENGTH;
 
 public class Human extends Player {
-    public Human(Color color) {
-        super(color);
+    public Human(Color color, IUserCommunication iUserCommunication) {
+        super(color, iUserCommunication);
     }
 
     /**

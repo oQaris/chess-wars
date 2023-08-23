@@ -11,6 +11,7 @@ import io.deeplay.model.piece.Empty;
 import io.deeplay.model.piece.King;
 import io.deeplay.model.piece.Pawn;
 import io.deeplay.model.piece.Piece;
+import io.deeplay.service.IUserCommunication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ import static io.deeplay.model.Board.BOARD_LENGTH;
 public abstract class Player {
     protected Color color;
 
-    public Player(Color color) {
+    public Player(Color color, IUserCommunication iUserCommunication) {
         this.color = color;
     }
 

@@ -57,11 +57,6 @@ class BishopTest {
     }
 
     @Test
-    void canMoveOffTheBoard(){
-        assertFalse(bishop.canMoveAt(new Coordinates(-1, -1), board));
-    }
-
-    @Test
     void canMoveOnCurrent(){
         assertFalse(bishop.canMoveAt(new Coordinates(3,3),board));
     }

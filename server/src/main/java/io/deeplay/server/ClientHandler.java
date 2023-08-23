@@ -1,6 +1,5 @@
 package io.deeplay.server;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.deeplay.communication.converter.Converter;
 import io.deeplay.communication.dto.MoveDTO;
 import io.deeplay.communication.dto.StartGameDTO;
@@ -17,6 +16,7 @@ import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ClientHandler implements Runnable {
     private static final Logger logger = LogManager.getLogger(ClientHandler.class);
@@ -33,12 +33,15 @@ public class ClientHandler implements Runnable {
     @Getter
     private int botLevel;
 
+    private final ConcurrentLinkedQueue<Move> movesQueue;
+
     public ClientHandler(Socket clientSocket, Server server) throws IOException {
         this.clientSocket = clientSocket;
         this.server = server;
         board = new Board();
         out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        movesQueue = new ConcurrentLinkedQueue<>();
         startGameDTO = getStartGame();
         gameType = startGameDTO.getGameType();
         color = Converter.convertColor(startGameDTO.getCurrentColor());
@@ -52,8 +55,9 @@ public class ClientHandler implements Runnable {
         try {
             while (true) {
                 // serverPlayer.setMove(move); // передать игроку???
+                Move move = getMove();
+                movesQueue.offer(move);
             }
-
         } catch (Exception e) {
             logger.error("Ошибка при подключении игрока: ", e);
         } finally {
@@ -62,8 +66,7 @@ public class ClientHandler implements Runnable {
                 out.close();
                 clientSocket.close();
             } catch (IOException e) {
-                logger.error("Ошибка при прочтении данных: ", e);
-                e.printStackTrace();
+                logger.error("Ошибка при закрытии сокета: ", e);
             }
         }
     }
@@ -89,17 +92,13 @@ public class ClientHandler implements Runnable {
         }
     }
 
-//    public void sendMove(String move) {
-//        String jsonData;
-//
+//    public void sendMove(String serializedMoveDTO) {
 //        try {
-//            jsonData = objectMapper.writeValueAsString(move);
-//            out.write(jsonData);
+//            out.write(serializedMoveDTO);
+//            out.newLine();
 //            out.flush();
-//        } catch (JsonProcessingException e) {
-//            logger.error("Не получилось преобразовать данные ", e);
 //        } catch (IOException e) {
-//            logger.error("Не получилось отправить данные на сервер ", e);
+//            logger.error("Не получилось отправить ход: ", e);
 //        }
 //    }
 
@@ -122,33 +121,6 @@ public class ClientHandler implements Runnable {
             logger.error("Не получилось отправить сообщение клиенту: ", e);
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Проверяет корректность хода.
-     *
-     * @param moveString строка с ходом
-     * @return true, если ход корректный, false в противном случае
-     * * @throws JsonProcessingException
-     */
-    private boolean validateMove(String moveString) {
-        Move move = null;
-
-        try {
-            MoveDTO moveDTO = DeserializationService.convertJsonToMoveDTO(moveString);
-            move = Converter.convertDTOToMove(moveDTO);
-        } catch (JsonProcessingException e) {
-            logger.error("Не получилось обработать ход: ", e);
-            e.printStackTrace();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        // Получение текущего состояния доски
-        Board board = server.getBoardState();
-
-        // Проверка корректности хода
-        return board.getPiece(move.startPosition()).canMoveAt(move.endPosition(), board);
     }
 
     private void handleGameStart(GameType gameType) { // обработать запрос на старт игры

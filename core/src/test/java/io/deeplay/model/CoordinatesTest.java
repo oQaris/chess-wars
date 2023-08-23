@@ -10,7 +10,7 @@ class CoordinatesTest {
 
     @BeforeEach
     void setUp() {
-        coordinates = new Coordinates(5, 10);
+        coordinates = new Coordinates(5, 6);
     }
 
     @Test
@@ -20,25 +20,25 @@ class CoordinatesTest {
 
     @Test
     void getY() {
-        assertEquals(10, coordinates.getY());
+        assertEquals(6, coordinates.getY());
     }
 
     @Test
     void setX() {
-        coordinates.setX(15);
-        assertEquals(15, coordinates.getX());
+        coordinates.setX(2);
+        assertEquals(2, coordinates.getX());
     }
 
     @Test
     void setY() {
-        coordinates.setY(15);
-        assertEquals(15, coordinates.getY());
+        coordinates.setY(1);
+        assertEquals(1, coordinates.getY());
     }
 
     @Test
     void testEquals() {
-        Coordinates coordinates2 = new Coordinates(5, 10);
-        Coordinates coordinates3 = new Coordinates(10, 5);
+        Coordinates coordinates2 = new Coordinates(5, 6);
+        Coordinates coordinates3 = new Coordinates(6, 5);
 
         assertEquals(coordinates, coordinates2);
         assertNotEquals(coordinates, coordinates3);
@@ -46,13 +46,13 @@ class CoordinatesTest {
 
     @Test
     void testHashCode() {
-        Coordinates coordinates2 = new Coordinates(5, 10);
+        Coordinates coordinates2 = new Coordinates(5, 6);
 
         assertEquals(coordinates.hashCode(), coordinates2.hashCode());
     }
 
     @Test
     void testToString() {
-        assertEquals("(x = 5, y = 10)", coordinates.toString());
+        assertEquals("(x = 5, y = 6)", coordinates.toString());
     }
 }

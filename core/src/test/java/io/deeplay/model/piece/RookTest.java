@@ -56,11 +56,6 @@ class RookTest {
     }
 
     @Test
-    void canMoveOffTheBoard(){
-        assertFalse(rook.canMoveAt(new Coordinates(-1, 4), board));
-    }
-
-    @Test
     void canMoveOnCurrent(){
         assertFalse(rook.canMoveAt(new Coordinates(4,4),board));
     }
