@@ -9,6 +9,7 @@ import io.deeplay.model.Board;
 import io.deeplay.model.player.Bot;
 import io.deeplay.model.player.Human;
 import io.deeplay.model.player.Player;
+import io.deeplay.service.UserCommunicationService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -59,8 +60,8 @@ public class Server {
 
             ClientHandler clientHandler = new ClientHandler(socket, this);
             if (clientHandler.getGameType() == GameType.HumanVsHuman) {
-                if (serverPlayer1 != null) serverPlayer1 = new Human(clientHandler.getColor());
-                else serverPlayer2 = new Human(clientHandler.getColor());
+                if (serverPlayer1 != null) serverPlayer1 = new Human(clientHandler.getColor(), new UserCommunicationService(System.in, System.out));
+                else serverPlayer2 = new Human(clientHandler.getColor(), new UserCommunicationService(System.in, System.out));
             }
             clients.add(clientHandler);
             new Thread(clientHandler).start();
@@ -73,8 +74,8 @@ public class Server {
                     logger.info("Один игрок подключен, ожидание второго");
                 } else if (gameType == GameType.BotVsBot) {
                     String startMessage = "Game bot-bot has started";
-                    serverPlayer1 = new Bot(Color.WHITE, 1);
-                    serverPlayer2 = new Bot(Color.BLACK, 1);
+                    serverPlayer1 = new Bot(Color.WHITE, 1, new UserCommunicationService(System.in, System.out));
+                    serverPlayer2 = new Bot(Color.BLACK, 1, new UserCommunicationService(System.in, System.out));
                     broadcast(startMessage);
                     isGameStarted = true;
 
@@ -84,8 +85,8 @@ public class Server {
                     String startMessage = "Game human-bot has started";
                     broadcast(startMessage);
 
-                    serverPlayer1 = new Human(clientHandler.getColor());
-                    serverPlayer2 = new Bot(clientHandler.getColor().opposite(), 1);
+                    serverPlayer1 = new Human(clientHandler.getColor(), new UserCommunicationService(System.in, System.out));
+                    serverPlayer2 = new Bot(clientHandler.getColor().opposite(), 1, new UserCommunicationService(System.in, System.out));
 
                     isGameStarted = true;
                     startGame(); // сделать start
@@ -124,13 +125,5 @@ public class Server {
         for (ClientHandler client : clients) {
             client.sendMessage(message);
         }
-    }
-
-    public Board getBoardState() {
-        return null;
-    }
-
-    public GameSession getGameSession() {
-        return gameSession;
     }
 }

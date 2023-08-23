@@ -46,7 +46,7 @@ class UserCommunicationServiceTest {
     @Test
     void testSelectPiece_expectNewPiece() {
         Board board = new Board();
-        Human human = new Human(Color.WHITE);
+        Human human = new Human(Color.WHITE, new UserCommunicationService(System.in, System.out));
         List<Piece> possiblePiecesToMove = human.getPiecesPossibleToMove(board, human.getColor());
 
         ByteArrayInputStream inputStream = new ByteArrayInputStream("1".getBytes(Charset.defaultCharset()));
@@ -66,7 +66,7 @@ class UserCommunicationServiceTest {
         UserCommunicationService userCommunicationService = new UserCommunicationService(inputStream, ps);
 
         Board board = new Board();
-        Human human = new Human(Color.WHITE);
+        Human human = new Human(Color.WHITE, new UserCommunicationService(System.in, System.out));
         List<Piece> possiblePiecesToMove = human.getPiecesPossibleToMove(board, human.getColor());
 
         IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class,
@@ -129,7 +129,7 @@ class UserCommunicationServiceTest {
 
         IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class,
                 userCommunicationService::selectSwitchPiece);
-        Assertions.assertEquals("Invalid choice!", thrown.getMessage());
+        Assertions.assertEquals("Ввод должен быть предложенным целочисленным числом", thrown.getMessage());
     }
 
     @Test

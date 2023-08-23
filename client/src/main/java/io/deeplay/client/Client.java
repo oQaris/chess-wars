@@ -98,11 +98,10 @@ public class Client implements Runnable {
     }
 
     public Move getMove() {
-        String json;
         Move move;
 
         try {
-            json = String.valueOf(in.read());
+            String json = in.readLine();
             MoveDTO moveDTO = DeserializationService.convertJsonToMoveDTO(json);
             move = Converter.convertDTOToMove(moveDTO);
         } catch (IOException e) {

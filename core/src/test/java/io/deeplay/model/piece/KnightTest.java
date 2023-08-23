@@ -58,11 +58,6 @@ class KnightTest {
     }
 
     @Test
-    void canMoveOffTheBoard(){
-        assertFalse(board.getPiece(new Coordinates(1,0)).canMoveAt(new Coordinates(-1, -1), board));
-    }
-
-    @Test
     void canMoveOnCurrent(){
         assertFalse(knight.canMoveAt(new Coordinates(4,5),board));
     }

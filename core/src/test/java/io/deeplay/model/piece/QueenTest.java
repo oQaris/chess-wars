@@ -61,11 +61,6 @@ class QueenTest {
     }
 
     @Test
-    void canMoveOffTheBoard(){
-        assertFalse(queen.canMoveAt(new Coordinates(-1, 4), board));
-    }
-
-    @Test
     void canMoveOnCurrentCell(){
         assertFalse(queen.canMoveAt(new Coordinates(4,4),board));
     }

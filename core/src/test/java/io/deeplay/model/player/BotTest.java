@@ -6,6 +6,7 @@ import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
 import io.deeplay.model.piece.Knight;
 import io.deeplay.model.piece.Piece;
+import io.deeplay.service.UserCommunicationService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ class BotTest {
 
     @Test
     void testRandomMove() {
-        final Bot bot = new Bot(Color.WHITE, 1);
+        final Bot bot = new Bot(Color.WHITE, 1, new UserCommunicationService(System.in, System.out));
         Move result = bot.getMove(board, bot.getColor());
 
         Assertions.assertNotNull(result);
@@ -36,7 +37,7 @@ class BotTest {
 
     @Test
     void testSingleAvailableMove() {
-        final Bot bot = new Bot(Color.WHITE, 1);
+        final Bot bot = new Bot(Color.WHITE, 1, new UserCommunicationService(System.in, System.out));
         possiblePiecesToMove.remove(1);
 
         Assertions.assertDoesNotThrow(() -> bot.getMove(board, bot.getColor()));

@@ -17,7 +17,7 @@ class GameStateTest {
     @Test
     void isCheck() {
         final Board board = new Board();
-        //  board.setBoard(Board.getEmptyBoard());
+        board.setBoard(Board.getEmptyBoard());
         board.getPieceMoved()[0][0] = true;
         board.getPieceMoved()[4][0] = true;
         board.getPieceMoved()[7][0] = true;
@@ -31,9 +31,7 @@ class GameStateTest {
         board.setPiece(new Coordinates(1, 1), new Rook(new Coordinates(1, 1), Color.BLACK));
 
         assertFalse(GameState.isCheck(board, Color.WHITE));
-
         board.move(new Move(new Coordinates(1, 1), new Coordinates(1, 0), MoveType.ORDINARY, SwitchPieceType.NULL));
-
         assertTrue(GameState.isCheck(board, Color.WHITE));
     }
 

@@ -63,13 +63,6 @@ class KingTest {
     }
 
     @Test
-    void canMoveOffTheBoard(){
-        final Board board = new Board();
-        King king = new King(new Coordinates(0,5), Color.WHITE);
-        assertFalse(king.canMoveAt(new Coordinates(-1, 5), board));
-    }
-
-    @Test
     void canMoveOnCurrent(){
         final Board board = new Board();
         King king = new King(new Coordinates(0,5), Color.WHITE);

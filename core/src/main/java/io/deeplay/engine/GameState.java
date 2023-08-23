@@ -13,6 +13,7 @@ import io.deeplay.model.piece.Piece;
 import io.deeplay.model.player.Human;
 import io.deeplay.model.player.Player;
 import io.deeplay.service.BoardUtil;
+import io.deeplay.service.UserCommunicationService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class GameState {
                     for (Coordinates coordinates : piece.getPossibleMoves(board)) {
                         Board duplicateBoard = new Board();
                         BoardUtil.duplicateBoard(board).accept(duplicateBoard);
-                        Human tempHuman = new Human(color);
+                        Human tempHuman = new Human(color, new UserCommunicationService(System.in, System.out));
 
                         MoveType moveType = tempHuman.getType(piece, coordinates, duplicateBoard);
                         if (moveType == MoveType.PROMOTION) {

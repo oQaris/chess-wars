@@ -13,6 +13,7 @@ import io.deeplay.model.move.Move;
 import io.deeplay.model.piece.*;
 import io.deeplay.model.player.Human;
 import io.deeplay.model.player.Player;
+import io.deeplay.service.UserCommunicationService;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -43,7 +44,7 @@ public class ChessGUI extends JFrame {
     // Поменять передачу цвета на передачу Player в конструкторе
     public ChessGUI(String gameType, String whitePlayerChoice, String botLevel) {
         gameInfo = new GameInfo();
-        player = new Human(getColor(whitePlayerChoice));
+        player = new Human(getColor(whitePlayerChoice), new UserCommunicationService(System.in, System.out));
         initUI();
     }
 
