@@ -96,7 +96,7 @@
                     <constraints/>
                     <properties>
                       <foreground color="-16777216"/>
-                      <text value="Выберите игрока с белым цветом"/>
+                      <text value="Выберите свой цвет"/>
                     </properties>
                   </component>
                   <component id="ae435" class="javax.swing.JComboBox" binding="players" custom-create="true">

@@ -3,8 +3,12 @@ package io.deeplay.server;
 import io.deeplay.communication.dto.MoveDTO;
 import io.deeplay.communication.model.GameType;
 import io.deeplay.communication.service.SerializationService;
+import io.deeplay.domain.Color;
 import io.deeplay.engine.GameSession;
 import io.deeplay.model.Board;
+import io.deeplay.model.player.Bot;
+import io.deeplay.model.player.Human;
+import io.deeplay.model.player.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,8 +29,8 @@ public class Server {
     private GameSession gameSession;
     private boolean isGameStarted;
     private GameType gameType;
-    ServerPlayer serverPlayer1;
-    ServerPlayer serverPlayer2;
+    Player serverPlayer1;
+    Player serverPlayer2;
 
     public Server(int port) {
     }
@@ -51,8 +55,13 @@ public class Server {
         while (true) {
             Socket socket = serverSocket.accept();
             logger.info("Client {} connected", clients.size() + 1);
+            System.out.println("Client " + clients.size() + 1 + " connected");
 
             ClientHandler clientHandler = new ClientHandler(socket, this);
+            if (clientHandler.getGameType() == GameType.HumanVsHuman) {
+                if (serverPlayer1 != null) serverPlayer1 = new Human(clientHandler.getColor());
+                else serverPlayer2 = new Human(clientHandler.getColor());
+            }
             clients.add(clientHandler);
             new Thread(clientHandler).start();
             logger.info("New client connected");
@@ -61,11 +70,11 @@ public class Server {
                 gameType = clientHandler.getGameType();
 
                 if (gameType == GameType.HumanVsHuman) {
-                    String waitMessage = "Waiting for second player";
-                    broadcast(waitMessage);
                     logger.info("Один игрок подключен, ожидание второго");
                 } else if (gameType == GameType.BotVsBot) {
                     String startMessage = "Game bot-bot has started";
+                    serverPlayer1 = new Bot(Color.WHITE, 1);
+                    serverPlayer2 = new Bot(Color.BLACK, 1);
                     broadcast(startMessage);
                     isGameStarted = true;
 
@@ -73,8 +82,11 @@ public class Server {
                     break;
                 } else if (gameType == GameType.HumanVsBot) {
                     String startMessage = "Game human-bot has started";
-
                     broadcast(startMessage);
+
+                    serverPlayer1 = new Human(clientHandler.getColor());
+                    serverPlayer2 = new Bot(clientHandler.getColor().opposite(), 1);
+
                     isGameStarted = true;
                     startGame(); // сделать start
                     break;
@@ -94,7 +106,7 @@ public class Server {
         gameSession = new GameSession(serverPlayer1, serverPlayer2, convertGameTypeDTO(gameType)) {
             @Override
             public void sendMove() {
-                // реализация отправление клиентов
+
             }
         };
 

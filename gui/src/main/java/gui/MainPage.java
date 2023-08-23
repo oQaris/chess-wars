@@ -1,10 +1,14 @@
 package gui;
 
+import io.deeplay.client.Client;
+import io.deeplay.domain.GameType;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class MainPage {
@@ -15,6 +19,7 @@ public class MainPage {
     private JComboBox gameTypesBox;
     private JComboBox botLevels;
     private JComboBox players;
+    private List<String> gameSettings;
 
     public MainPage() {
         gameTypesBox.addActionListener(e -> {
@@ -24,11 +29,20 @@ public class MainPage {
         });
 
         startGameButton.addActionListener(e -> {
+            gameSettings = new ArrayList<>();
             try {
                 Frame[] frames = JFrame.getFrames();
                 frames[0].dispose();
-                new ChessGUI(String.valueOf(gameTypesBox.getSelectedItem()), String.valueOf(players.getSelectedItem()),
-                        String.valueOf(botLevels.getSelectedItem()));
+                gameSettings.add(String.valueOf(gameTypesBox.getSelectedItem()));
+                gameSettings.add(String.valueOf(String.valueOf(players.getSelectedItem())));
+                gameSettings.add(String.valueOf(String.valueOf(botLevels.getSelectedItem())));
+                System.out.println("creating new client ----- " + gameSettings);
+                new Client(gameSettings);
+                System.out.println("created new client");
+                if (!gameSettings.get(0).equals("BotVsBot")) {
+                    new ChessGUI(String.valueOf(gameTypesBox.getSelectedItem()), String.valueOf(players.getSelectedItem()),
+                            String.valueOf(botLevels.getSelectedItem()));
+                }
             } catch (NullPointerException exception) {
                 log.error("Can't find any frame!" + exception);
             }
@@ -52,7 +66,7 @@ public class MainPage {
         String[] gameTypes = {"Человек vs. Человек", "Бот vs. Бот", "Человек vs. Бот"};
         gameTypesBox = new JComboBox<>(gameTypes);
 
-        String[] playerTypes = {"Игрок 1", "Игрок 2"};
+        String[] playerTypes = {"Белый", "Черный"};
         players = new JComboBox<>(playerTypes);
 
         String[] botLevelsArray = {"Легкий", "Средний", "Сложный"};

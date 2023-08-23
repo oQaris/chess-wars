@@ -11,6 +11,7 @@ import io.deeplay.model.piece.Empty;
 import io.deeplay.model.piece.King;
 import io.deeplay.model.piece.Piece;
 import io.deeplay.model.player.Human;
+import io.deeplay.model.player.Player;
 import io.deeplay.service.BoardUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -107,9 +108,8 @@ public class GameState {
                     for (Coordinates coordinates : piece.getPossibleMoves(board)) {
                         Board duplicateBoard = new Board();
                         BoardUtil.duplicateBoard(board).accept(duplicateBoard);
-                        Human tempHuman = new Human(color);
 
-                        MoveType moveType = tempHuman.getType(piece, coordinates, duplicateBoard);
+                        MoveType moveType = Player.getType(piece, coordinates, duplicateBoard);
                         if (moveType == MoveType.PROMOTION) {
                             for (int i = 0; i < SwitchPieceType.values().length; i++) {
                                 SwitchPieceType switchPieceType = SwitchPieceType.values()[i];
@@ -152,9 +152,8 @@ public class GameState {
         for (Coordinates coordinates : potentialCoordinates) {
             Board duplicateBoard = new Board();
             BoardUtil.duplicateBoard(board).accept(duplicateBoard);
-            Human tempHuman = new Human(piece.getColor());
 
-            MoveType moveType = tempHuman.getType(piece, coordinates, duplicateBoard);
+            MoveType moveType = Player.getType(piece, coordinates, duplicateBoard);
             if (moveType == MoveType.PROMOTION) {
                 for (int i = 0; i < SwitchPieceType.values().length; i++) {
                     SwitchPieceType switchPieceType = SwitchPieceType.values()[i];

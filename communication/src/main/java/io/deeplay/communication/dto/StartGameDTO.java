@@ -8,10 +8,12 @@ import lombok.Getter;
 public class StartGameDTO {
     private GameType gameType;
     private final Color currentColor;
+    private int botLevel;
 
-    public StartGameDTO(GameType gameType) {
+    public StartGameDTO(GameType gameType, Color color, int botLevel) {
         this.gameType = gameType;
-        this.currentColor = Color.WHITE;
+        this.currentColor = color;
+        this.botLevel = botLevel;
     }
 
     public void setGameType(GameType gameType) {
