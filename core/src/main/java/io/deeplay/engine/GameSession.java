@@ -7,8 +7,6 @@ import io.deeplay.model.player.Player;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.IOException;
-
 import static io.deeplay.model.Board.printBoardOnce;
 
 @Slf4j

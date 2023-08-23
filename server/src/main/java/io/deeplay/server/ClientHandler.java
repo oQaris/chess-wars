@@ -56,6 +56,7 @@ public class ClientHandler implements Runnable {
             while (true) {
                 // serverPlayer.setMove(move); // передать игроку???
                 Move move = getMove();
+                System.out.println("getMove in run method");
                 movesQueue.offer(move);
             }
         } catch (Exception e) {
@@ -79,6 +80,7 @@ public class ClientHandler implements Runnable {
     public Move getMove() throws IOException {
         String clientInput = in.readLine();
         MoveDTO moveDTO = DeserializationService.convertJsonToMoveDTO(clientInput);
+        System.out.println("received move:" + moveDTO);
         return Converter.convertDTOToMove(moveDTO);
     }
 
