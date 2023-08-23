@@ -3,11 +3,7 @@ package io.deeplay.communication.converter;
 import io.deeplay.communication.dto.EndGameDTO;
 import io.deeplay.communication.dto.MoveDTO;
 import io.deeplay.communication.dto.StartGameDTO;
-import io.deeplay.communication.model.GameType;
-import io.deeplay.domain.MoveType;
-import io.deeplay.domain.SwitchPieceType;
-import io.deeplay.domain.Color;
-import io.deeplay.domain.GameStates;
+import io.deeplay.domain.*;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
 
@@ -34,6 +30,24 @@ public class Converter {
         }throw new IOException("no such type");
     }
 
+    public static io.deeplay.communication.model.MoveType getMoveTypeFromMove(Move move) throws IOException {
+        if (Objects.equals(move.moveType().toString(), "EN_PASSANT")){
+            return io.deeplay.communication.model.MoveType.EN_PASSANT;
+        }
+        if (Objects.equals(move.moveType().toString(), "ORDINARY")){
+            return io.deeplay.communication.model.MoveType.ORDINARY;
+        }
+        if (Objects.equals(move.moveType().toString(), "CASTLING")){
+            return  io.deeplay.communication.model.MoveType.CASTLING;
+        }
+        if (Objects.equals(move.moveType().toString(), "PROMOTION")){
+            return io.deeplay.communication.model.MoveType.PROMOTION;
+        }
+        if (Objects.equals(move.moveType().toString(), "TAKE")){
+            return io.deeplay.communication.model.MoveType.TAKE;
+        }throw new IOException("no such type");
+    }
+
     public static SwitchPieceType getSwitchPieceType(MoveDTO moveDTO) throws IOException {
         if (Objects.equals(moveDTO.getSwitchPieceType().toString(), "ROOK")){
             return SwitchPieceType.ROOK;
@@ -49,6 +63,24 @@ public class Converter {
         }
         if (Objects.equals(moveDTO.getSwitchPieceType().toString(), "NULL")){
             return SwitchPieceType.NULL;
+        }throw new IOException("no such piece");
+    }
+
+    public static io.deeplay.communication.model.SwitchPieceType getSwitchPieceTypeDTO(Move move) throws IOException {
+        if (Objects.equals(move.switchPieceType().toString(), "ROOK")){
+            return io.deeplay.communication.model.SwitchPieceType.ROOK;
+        }
+        if (Objects.equals(move.switchPieceType().toString(), "KNIGHT")){
+            return io.deeplay.communication.model.SwitchPieceType.KNIGHT;
+        }
+        if (Objects.equals(move.switchPieceType().toString(), "QUEEN")){
+            return io.deeplay.communication.model.SwitchPieceType.QUEEN;
+        }
+        if (Objects.equals(move.switchPieceType().toString(), "BISHOP")){
+            return io.deeplay.communication.model.SwitchPieceType.BISHOP;
+        }
+        if (Objects.equals(move.switchPieceType().toString(), "NULL")){
+            return io.deeplay.communication.model.SwitchPieceType.NULL;
         }throw new IOException("no such piece");
     }
 
@@ -81,7 +113,7 @@ public class Converter {
         throw new IOException("no such gameState");
     }
 
-    public static GameType convertGameTypeDTO(GameType gameType) throws IOException {
+    public static GameType convertGameTypeDTO(io.deeplay.communication.model.GameType gameType) throws IOException {
         if (Objects.equals(gameType.toString(), "BotVsBot")){
             return GameType.BotVsBot;
         }
@@ -99,6 +131,16 @@ public class Converter {
         int endPositionX = moveDTO.getEndPosition().getX();
         int endPositionY = moveDTO.getEndPosition().getY();
         return new Move(new Coordinates(startPositionX, startPositionY),  new Coordinates(endPositionX, endPositionY), getMoveTypeFromDTO(moveDTO), getSwitchPieceType(moveDTO));
+    }
+
+    public static MoveDTO convertMoveToMoveDTO(Move move) throws IOException {
+        int startPositionX = move.startPosition().getX();
+        int startPositionY = move.startPosition().getY();
+        int endPositionX = move.endPosition().getX();
+        int endPositionY = move.endPosition().getY();
+        return new MoveDTO(new io.deeplay.communication.model.Coordinates(startPositionX, startPositionY),
+                new io.deeplay.communication.model.Coordinates(endPositionX, endPositionY),
+                getMoveTypeFromMove(move), getSwitchPieceTypeDTO(move));
     }
 
     public static String convertEndGameStateDTO(EndGameDTO endGameDTO) throws IOException {
