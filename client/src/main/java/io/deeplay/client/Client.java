@@ -1,5 +1,8 @@
 package io.deeplay.client;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import io.deeplay.communication.converter.Converter;
 import io.deeplay.communication.dto.*;
 import io.deeplay.communication.model.Color;
@@ -14,7 +17,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.List;
 
-public class Client implements Runnable {
+public class Client {
     private static final String HOST = "localhost";
     private static final int PORT = 8080;
     private Socket socket;
@@ -25,13 +28,12 @@ public class Client implements Runnable {
 
     public Client(List<String> gameSettings) {
         this.gameSettings = getStartGameSettings(gameSettings);
-        connectToServer();
     }
 
     private StartGameDTO getStartGameSettings(List<String> gameSettings) {
         GameType clientGameType;
         Color clientColor;
-        Integer clientBotLevel;
+        int clientBotLevel;
 
         switch (gameSettings.get(0)) {
             case "Человек vs. Человек" -> clientGameType = GameType.HumanVsHuman;
@@ -69,14 +71,17 @@ public class Client implements Runnable {
             out.newLine();
             out.flush();
 
-            String request = in.readLine();
-
-            if (request != null) {
-                processJson(request);
-            }
+            startListening();
         } catch (IOException e) {
             logger.error("Проблема с подключением к серверу");
         }
+//        finally {
+//            try {
+//                socket.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     public void processJson(String json) {
@@ -91,7 +96,7 @@ public class Client implements Runnable {
             // обработать ошибку
         } else if (jsonObject.has("startPosition")) {
             MoveDTO moveDTO = DeserializationService.convertJsonToMoveDTO(json);
-            Move move = getMove(moveDTO);
+            Move move = receiveMove(moveDTO);
             // обработка хода
         } else if (jsonObject.has("currentMoveColor")) {
             MoveTransferDTO moveTransferDTO = DeserializationService.convertJsonToMoveTransferDTO(json);
@@ -101,6 +106,10 @@ public class Client implements Runnable {
         } else {
             throw new JsonSyntaxException("Тип Json не найден");
         }
+    }
+
+    public void startListening() throws IOException {
+//        String request = in.readLine();
     }
 
     public void sendMove(Move move) {
@@ -114,26 +123,17 @@ public class Client implements Runnable {
         }
     }
 
-    public Move getMove(MoveDTO moveDTO) {
-        Move move;
+    public Move receiveMove(MoveDTO moveDTO) {
+        return Converter.convertDTOToMove(moveDTO);
+    }
 
-        try {
-            move = Converter.convertDTOToMove(moveDTO);
-        } catch (IOException e) {
-            logger.error("Ошибка получение хода клиентом");
-            throw new RuntimeException(e);
-        }
-
-        return move;
+    public Move getMove() {
+        return null;
     }
 
     public static void main(String[] args) {
 //        Client client = new Client();
 //        client.connectToServer();
         // gui.getMove();
-    }
-
-    @Override
-    public void run() {
     }
 }

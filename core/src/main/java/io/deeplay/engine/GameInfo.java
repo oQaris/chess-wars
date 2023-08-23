@@ -13,6 +13,11 @@ public class GameInfo {
         this.currentBoard = new Board();
     }
 
+    public GameInfo(Color currentMoveColor) {
+        this.currentMoveColor = currentMoveColor;
+        this.currentBoard = new Board();
+    }
+
     /**
      * Метод делает движение, путем обновления текущего состояния доски, добавления хода в MoveHistory. Также
      * меняет цвет текущего хода

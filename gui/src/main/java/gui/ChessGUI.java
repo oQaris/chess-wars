@@ -13,6 +13,7 @@ import io.deeplay.model.move.Move;
 import io.deeplay.model.piece.*;
 import io.deeplay.model.player.Human;
 import io.deeplay.model.player.Player;
+import io.deeplay.service.GuiUserCommunicationService;
 import io.deeplay.service.UserCommunicationService;
 
 import javax.imageio.ImageIO;
@@ -35,17 +36,21 @@ public class ChessGUI extends JFrame {
     private final Color POSSIBLEMOVE_COLOR = Color.GREEN;
     private JButton selectedSquare = null;
     private Piece prevSelectedPiece = null;
-    private GameInfo gameInfo;
-    private Player player;
     private List<Coordinates> possibleMoves;
     private Map<Coordinates, Boolean> possibleMoveCells = null;
+    private boolean isPlayerMove;
+    private GameInfo gameInfo;
+    private Player player;
     private Client client;
 
     // Поменять передачу цвета на передачу Player в конструкторе
-    public ChessGUI(String gameType, String whitePlayerChoice, String botLevel) {
-        gameInfo = new GameInfo();
-        player = new Human(getColor(whitePlayerChoice), new UserCommunicationService(System.in, System.out));
+    public ChessGUI(List<String> gameSettings, String gameType, String playerColor, String botLevel) {
+        isPlayerMove = getColor(playerColor) == io.deeplay.domain.Color.WHITE;
+        this.gameInfo = new GameInfo(getColor(playerColor));
+        this.player = new Human(getColor(playerColor), new GuiUserCommunicationService());
+        this.client = new Client(gameSettings);
         initUI();
+        client.connectToServer();
     }
 
     private void initUI() {
@@ -97,14 +102,16 @@ public class ChessGUI extends JFrame {
             }
 
             if (selectedSquare == null) {
-                prevSelectedPiece = selectedPiece;
-                selectedSquare = clickedSquare;
-                selectedSquare.setBackground(HIGHLIGHT_COLOR);
-                if (possibleMoves != null) {
-                    possibleMoveCells = new HashMap<>();
-                    for (Coordinates coordinates : possibleMoves) {
-                        possibleMoveCells.put(coordinates, true);
-                        chessBoardSquares[coordinates.getX()][coordinates.getY()].setBackground(POSSIBLEMOVE_COLOR);
+                if (isPlayerMove) {
+                    prevSelectedPiece = selectedPiece;
+                    selectedSquare = clickedSquare;
+                    selectedSquare.setBackground(HIGHLIGHT_COLOR);
+                    if (possibleMoves != null) {
+                        possibleMoveCells = new HashMap<>();
+                        for (Coordinates coordinates : possibleMoves) {
+                            possibleMoveCells.put(coordinates, true);
+                            chessBoardSquares[coordinates.getX()][coordinates.getY()].setBackground(POSSIBLEMOVE_COLOR);
+                        }
                     }
                 }
             } else if (selectedSquare == chessBoardSquares[x][y]) {
@@ -126,10 +133,14 @@ public class ChessGUI extends JFrame {
                                 prevSelectedPiece.getCoordinates(), selectedPiece.getCoordinates());
                         if (move.moveType() == MoveType.PROMOTION) {
                             SwitchPieceType switchPieceType = getSwitchPieceType();
-                            gameInfo.move(new Move(move.startPosition(), move.endPosition(),
-                                    move.moveType(), switchPieceType));
+                            Move promotionMove = new Move(move.startPosition(), move.endPosition(),
+                                    move.moveType(), switchPieceType);
+                            gameInfo.move(promotionMove);
+                            client.sendMove(promotionMove);
                         } else {
                             gameInfo.move(move);
+                            client.sendMove(move);
+                            isPlayerMove = false;
                         }
                         addToMoveHistory(currentColor, move.startPosition(), move.endPosition());
                         possibleMoveCells = new HashMap<>();
@@ -179,8 +190,11 @@ public class ChessGUI extends JFrame {
         }
     }
 
-    public void updateGameInfo(Move move) {
-        gameInfo.move(move);
+    public void updateGameInfo() {
+        Move incomingMove = client.getMove();
+        gameInfo.move(incomingMove);
+        isPlayerMove = true;
+        paintBoard(gameInfo.getCurrentBoard().getBoard());
     }
 
     private void addToMoveHistory(io.deeplay.domain.Color color, Coordinates start, Coordinates end) {
@@ -246,14 +260,14 @@ public class ChessGUI extends JFrame {
     }
 
     io.deeplay.domain.Color getColor(String whitePlayerChoice) {
-        boolean isWhiteFirst;
+        boolean playerIsWhite;
         switch (whitePlayerChoice) {
-            case "Белый" -> isWhiteFirst = true;
-            case "Черный" -> isWhiteFirst = false;
+            case "Белый" -> playerIsWhite = true;
+            case "Черный" -> playerIsWhite = false;
             default -> throw new IllegalArgumentException("Wrong white player selection");
         }
 
-        if (isWhiteFirst) return io.deeplay.domain.Color.BLACK;
-        else return io.deeplay.domain.Color.WHITE;
+        if (playerIsWhite) return io.deeplay.domain.Color.WHITE;
+        else return io.deeplay.domain.Color.BLACK;
     }
 }

@@ -18,7 +18,7 @@ public class MainPage {
     private JButton startGameButton;
     private JComboBox gameTypesBox;
     private JComboBox botLevels;
-    private JComboBox players;
+    private JComboBox playerColor;
     private List<String> gameSettings;
 
     public MainPage() {
@@ -34,14 +34,18 @@ public class MainPage {
                 Frame[] frames = JFrame.getFrames();
                 frames[0].dispose();
                 gameSettings.add(String.valueOf(gameTypesBox.getSelectedItem()));
-                gameSettings.add(String.valueOf(String.valueOf(players.getSelectedItem())));
+                gameSettings.add(String.valueOf(String.valueOf(playerColor.getSelectedItem())));
                 gameSettings.add(String.valueOf(String.valueOf(botLevels.getSelectedItem())));
+
                 System.out.println("creating new client ----- " + gameSettings);
-                new Client(gameSettings);
-                System.out.println("created new client");
+
                 if (!gameSettings.get(0).equals("BotVsBot")) {
-                    new ChessGUI(String.valueOf(gameTypesBox.getSelectedItem()), String.valueOf(players.getSelectedItem()),
+                    new ChessGUI(gameSettings, String.valueOf(gameTypesBox.getSelectedItem()), String.valueOf(playerColor.getSelectedItem()),
                             String.valueOf(botLevels.getSelectedItem()));
+                    System.out.println("created new client");
+                } else {
+                    new Client(gameSettings);
+                    System.out.println("created new client");
                 }
             } catch (NullPointerException exception) {
                 log.error("Can't find any frame!" + exception);
@@ -67,7 +71,7 @@ public class MainPage {
         gameTypesBox = new JComboBox<>(gameTypes);
 
         String[] playerTypes = {"Белый", "Черный"};
-        players = new JComboBox<>(playerTypes);
+        playerColor = new JComboBox<>(playerTypes);
 
         String[] botLevelsArray = {"Легкий", "Средний", "Сложный"};
         botLevels = new JComboBox<>(botLevelsArray);
@@ -140,9 +144,9 @@ public class MainPage {
         label3.setForeground(new Color(-16777216));
         label3.setText("Выберите игрока с белым цветом");
         panel5.add(label3);
-        players.setBackground(new Color(-1));
-        players.setForeground(new Color(-16777216));
-        panel5.add(players);
+        playerColor.setBackground(new Color(-1));
+        playerColor.setForeground(new Color(-16777216));
+        panel5.add(playerColor);
         final JPanel panel6 = new JPanel();
         panel6.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         panel6.setBackground(new Color(-1));

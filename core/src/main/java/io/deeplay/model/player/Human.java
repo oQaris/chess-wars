@@ -19,8 +19,10 @@ import static io.deeplay.model.Board.BOARD_HEIGHT;
 import static io.deeplay.model.Board.BOARD_LENGTH;
 
 public class Human extends Player {
+    private final IUserCommunication iUserCommunication;
     public Human(Color color, IUserCommunication iUserCommunication) {
         super(color, iUserCommunication);
+        this.iUserCommunication = iUserCommunication;
     }
 
     /**
@@ -32,20 +34,18 @@ public class Human extends Player {
      */
     @Override
     public Move getMove(Board board, Color currentColor) {
-        UserCommunicationService userCommunicationService = new UserCommunicationService(System.in, System.out);
-
         List<Piece> possiblePiecesToMove = getPiecesPossibleToMove(board, currentColor);
 
-        Piece selectedPiece = userCommunicationService.selectPiece(possiblePiecesToMove);
+        Piece selectedPiece = iUserCommunication.selectPiece(possiblePiecesToMove);
         List<Coordinates> availableMoves = selectedPiece.getPossibleMoves(board);
         List<Coordinates> movesWithoutCheck = GameState.getMovesWithoutMakingCheck(board, selectedPiece, availableMoves);
         availableMoves.retainAll(movesWithoutCheck);
 
-        Coordinates moveCoordinates = userCommunicationService.selectCoordinates(availableMoves);
+        Coordinates moveCoordinates = iUserCommunication.selectCoordinates(availableMoves);
 
         MoveType moveType = getType(selectedPiece, moveCoordinates, board);
         SwitchPieceType selectedSwitchPiece = SwitchPieceType.NULL;
-        if (moveType == MoveType.PROMOTION) selectedSwitchPiece = userCommunicationService.selectSwitchPiece();
+        if (moveType == MoveType.PROMOTION) selectedSwitchPiece = iUserCommunication.selectSwitchPiece();
 
         System.out.println("You selected " + selectedPiece.getColor().name() + " "
                 + selectedPiece.getClass().getSimpleName() + " to move to coordinates x:" + moveCoordinates.getX()

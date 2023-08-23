@@ -99,7 +99,7 @@
                       <text value="Выберите свой цвет"/>
                     </properties>
                   </component>
-                  <component id="ae435" class="javax.swing.JComboBox" binding="players" custom-create="true">
+                  <component id="ae435" class="javax.swing.JComboBox" binding="playerColor" custom-create="true">
                     <constraints/>
                     <properties>
                       <background color="-1"/>

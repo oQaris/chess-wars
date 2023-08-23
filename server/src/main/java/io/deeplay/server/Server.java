@@ -12,6 +12,7 @@ import io.deeplay.model.move.Move;
 import io.deeplay.model.player.Bot;
 import io.deeplay.model.player.Human;
 import io.deeplay.model.player.Player;
+import io.deeplay.service.GuiUserCommunicationService;
 import io.deeplay.service.UserCommunicationService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -63,8 +64,8 @@ public class Server {
 
             ClientHandler clientHandler = new ClientHandler(socket, this);
             if (clientHandler.getGameType() == GameType.HumanVsHuman) {
-                if (serverPlayer1 != null) serverPlayer1 = new Human(clientHandler.getColor(), new UserCommunicationService(System.in, System.out));
-                else serverPlayer2 = new Human(clientHandler.getColor(), new UserCommunicationService(System.in, System.out));
+                if (serverPlayer1 == null) serverPlayer1 = new Human(clientHandler.getColor(), new GuiUserCommunicationService());
+                else serverPlayer2 = new Human(clientHandler.getColor(), new GuiUserCommunicationService());
             }
             clients.add(clientHandler);
             new Thread(clientHandler).start();
@@ -88,7 +89,7 @@ public class Server {
                     String startMessage = "Game human-bot has started";
                     broadcast(startMessage);
 
-                    serverPlayer1 = new Human(clientHandler.getColor(), new UserCommunicationService(System.in, System.out));
+                    serverPlayer1 = new Human(clientHandler.getColor(), new GuiUserCommunicationService());
                     serverPlayer2 = new Bot(clientHandler.getColor().opposite(), 1, new UserCommunicationService(System.in, System.out));
 
                     isGameStarted = true;
