@@ -3,15 +3,20 @@ package io.deeplay.server;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.deeplay.communication.converter.Converter;
 import io.deeplay.communication.dto.MoveDTO;
+import io.deeplay.communication.dto.StartGameDTO;
 import io.deeplay.communication.model.GameType;
 import io.deeplay.communication.service.DeserializationService;
+import io.deeplay.domain.Color;
 import io.deeplay.model.Board;
 import io.deeplay.model.move.Move;
+import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
 
 public class ClientHandler implements Runnable {
     private static final Logger logger = LogManager.getLogger(ClientHandler.class);
@@ -20,7 +25,13 @@ public class ClientHandler implements Runnable {
     BufferedWriter out;
     BufferedReader in;
     Board board;
-    GameType gameType;
+    private StartGameDTO startGameDTO;
+    @Getter
+    private GameType gameType;
+    @Getter
+    private Color color;
+    @Getter
+    private int botLevel;
 
     public ClientHandler(Socket clientSocket, Server server) throws IOException {
         this.clientSocket = clientSocket;
@@ -28,14 +39,17 @@ public class ClientHandler implements Runnable {
         board = new Board();
         out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        gameType = chooseGameType();
+        startGameDTO = getStartGame();
+        gameType = startGameDTO.getGameType();
+        color = Converter.convertColor(startGameDTO.getCurrentColor());
+        botLevel = startGameDTO.getBotLevel();
+
+        System.out.println(gameType);
     }
 
     @Override
     public void run() {
         try {
-            handleGameStart(gameType);
-
             while (true) {
                 // serverPlayer.setMove(move); // передать игроку???
             }
@@ -52,6 +66,11 @@ public class ClientHandler implements Runnable {
                 e.printStackTrace();
             }
         }
+    }
+
+    public StartGameDTO getStartGame() throws IOException{
+        String clientInput = in.readLine();
+        return DeserializationService.convertJsonToStartGameDTO(clientInput);
     }
 
     public Move getMove() throws IOException {
@@ -132,30 +151,6 @@ public class ClientHandler implements Runnable {
         return board.getPiece(move.startPosition()).canMoveAt(move.endPosition(), board);
     }
 
-    private GameType chooseGameType() throws IOException {
-        sendMessageToClient("Choose game type: bot-bot / human-bot / human-human");
-        String response = in.readLine();
-
-        if (response.equalsIgnoreCase("bot-bot")) {
-            sendMessageToClient("Welcome to the chess bot-bot");
-            gameType = GameType.BotVsBot;
-        } else if (response.equalsIgnoreCase("human-bot")) {
-            sendMessageToClient("Welcome to the chess human-bot");
-            gameType = GameType.HumanVsBot;
-        } else if (response.equalsIgnoreCase("human-human")) {
-            sendMessageToClient("Waiting for player 2");
-            gameType = GameType.HumanVsHuman;
-        } else {
-            logger.info("Игрок не согласился на игру");
-        }
-
-        return gameType;
-    }
-
     private void handleGameStart(GameType gameType) { // обработать запрос на старт игры
-    }
-
-    public GameType getGameType() {
-        return gameType;
     }
 }

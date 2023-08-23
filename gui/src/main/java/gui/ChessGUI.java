@@ -2,6 +2,7 @@ package gui;
 
 import gui.model.PieceColorIcon;
 import gui.service.BoardService;
+import io.deeplay.client.Client;
 import io.deeplay.domain.MoveType;
 import io.deeplay.domain.SwitchPieceType;
 import io.deeplay.engine.GameInfo;
@@ -10,12 +11,11 @@ import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
 import io.deeplay.model.piece.*;
+import io.deeplay.model.player.Human;
 import io.deeplay.model.player.Player;
-import io.deeplay.server.ServerPlayer;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,10 +38,12 @@ public class ChessGUI extends JFrame {
     private Player player;
     private List<Coordinates> possibleMoves;
     private Map<Coordinates, Boolean> possibleMoveCells = null;
+    private Client client;
 
+    // Поменять передачу цвета на передачу Player в конструкторе
     public ChessGUI(String gameType, String whitePlayerChoice, String botLevel) {
         gameInfo = new GameInfo();
-        player = new ServerPlayer(getColor(whitePlayerChoice));
+        player = new Human(getColor(whitePlayerChoice));
         initUI();
     }
 
@@ -94,7 +96,6 @@ public class ChessGUI extends JFrame {
             }
 
             if (selectedSquare == null) {
-                System.out.println("Click to the cell: x = " + x + ", y = " + y);
                 prevSelectedPiece = selectedPiece;
                 selectedSquare = clickedSquare;
                 selectedSquare.setBackground(HIGHLIGHT_COLOR);
@@ -106,7 +107,6 @@ public class ChessGUI extends JFrame {
                     }
                 }
             } else if (selectedSquare == chessBoardSquares[x][y]) {
-                System.out.println("deselect cell");
 
                 if (possibleMoves != null) {
                     for (Coordinates coordinates : possibleMoves) {
@@ -247,8 +247,8 @@ public class ChessGUI extends JFrame {
     io.deeplay.domain.Color getColor(String whitePlayerChoice) {
         boolean isWhiteFirst;
         switch (whitePlayerChoice) {
-            case "Игрок 1" -> isWhiteFirst = true;
-            case "Игрок 2" -> isWhiteFirst = false;
+            case "Белый" -> isWhiteFirst = true;
+            case "Черный" -> isWhiteFirst = false;
             default -> throw new IllegalArgumentException("Wrong white player selection");
         }
 

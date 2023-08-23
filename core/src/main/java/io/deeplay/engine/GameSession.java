@@ -5,6 +5,7 @@ import io.deeplay.domain.GameStates;
 import io.deeplay.domain.GameType;
 import io.deeplay.model.move.Move;
 import io.deeplay.model.player.Player;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import static io.deeplay.model.Board.printBoardOnce;
@@ -14,11 +15,14 @@ public class GameSession {
     private final Player player1;
     private final Player player2;
     private final GameType gameType;
+    @Getter
+    private GameInfo gameInfo;
 
     public GameSession(Player player1, Player player2, GameType gameType) {
         this.player1 = player1;
         this.player2 = player2;
         this.gameType = gameType;
+        this.gameInfo = new GameInfo();
     }
 
     /**
@@ -27,7 +31,6 @@ public class GameSession {
      * и передача его в GameInfo. Также отвечает за завершение игры.
      */
     public void startGameSession() {
-        GameInfo gameInfo = new GameInfo();
         printBoardOnce(gameInfo.getCurrentBoard());
 
         while (true) {

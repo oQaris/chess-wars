@@ -1,5 +1,6 @@
 dependencies{
     implementation(project(":core"))
+    implementation(project(":client"))
     implementation(project(":communication"))
 
     implementation ("com.fasterxml.jackson.core:jackson-core:2.15.1")
