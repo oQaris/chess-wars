@@ -1,8 +1,7 @@
 package io.deeplay.client;
 
 import io.deeplay.communication.converter.Converter;
-import io.deeplay.communication.dto.MoveDTO;
-import io.deeplay.communication.dto.StartGameDTO;
+import io.deeplay.communication.dto.*;
 import io.deeplay.communication.model.Color;
 import io.deeplay.communication.model.GameType;
 import io.deeplay.communication.service.DeserializationService;
@@ -11,7 +10,6 @@ import io.deeplay.model.move.Move;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.List;
@@ -72,16 +70,37 @@ public class Client implements Runnable {
             out.flush();
 
             String request = in.readLine();
+
+            if (request != null) {
+                processJson(request);
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Проблема с подключением к серверу");
         }
-//        finally {
-//            try {
-//                socket.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
+    }
+
+    public void processJson(String json) {
+        Gson gson = new Gson();
+        JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
+
+        if (jsonObject.has("endGameStateType")) {
+            EndGameDTO endGameDTO = DeserializationService.convertJsonToEndGameDTO(json);
+            // обработать конец игры
+        } else if (jsonObject.has("exception")) {
+            ErrorResponseDTO errorResponseDTO = DeserializationService.convertJsonToErrorResponseDTO(json);
+            // обработать ошибку
+        } else if (jsonObject.has("startPosition")) {
+            MoveDTO moveDTO = DeserializationService.convertJsonToMoveDTO(json);
+            Move move = getMove(moveDTO);
+            // обработка хода
+        } else if (jsonObject.has("currentMoveColor")) {
+            MoveTransferDTO moveTransferDTO = DeserializationService.convertJsonToMoveTransferDTO(json);
+            // обработать moveTransferDTO
+        } else if (jsonObject.has("botLevel")) {
+            StartGameDTO startGameDTO = DeserializationService.convertJsonToStartGameDTO(json);
+        } else {
+            throw new JsonSyntaxException("Тип Json не найден");
+        }
     }
 
     public void sendMove(Move move) {
@@ -90,22 +109,31 @@ public class Client implements Runnable {
             out.write(moveJson);
             out.flush();
         } catch (IOException e) {
+            logger.error("Ошибка отправки хода от клиента");
             throw new RuntimeException(e);
         }
     }
 
-    public Move getMove(String serverMove) { // с сервака берем ход
-        return Converter.convertDTOToMove(DeserializationService.convertJsonToMoveDTO(serverMove));
+    public Move getMove(MoveDTO moveDTO) {
+        Move move;
+
+        try {
+            move = Converter.convertDTOToMove(moveDTO);
+        } catch (IOException e) {
+            logger.error("Ошибка получение хода клиентом");
+            throw new RuntimeException(e);
+        }
+
+        return move;
     }
 
     public static void main(String[] args) {
 //        Client client = new Client();
 //        client.connectToServer();
-       // gui.getMove();
+        // gui.getMove();
     }
 
     @Override
     public void run() {
-
     }
 }
