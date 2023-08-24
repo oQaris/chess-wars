@@ -13,6 +13,7 @@ import static io.deeplay.model.Board.printBoardOnce;
 public class GameSession {
     private final Player player1;
     private final Player player2;
+    @Getter
     private final GameType gameType;
     @Getter
     private GameInfo gameInfo;
@@ -44,7 +45,7 @@ public class GameSession {
 
             Move move = getMove(playerWhoMoves, currentColor);
             System.out.println(move);
-            sendMove(); // реализовать на сервере
+            sendMove(move);
 
             gameInfo.move(move);
             printBoardOnce(gameInfo.getCurrentBoard());
@@ -92,11 +93,7 @@ public class GameSession {
         System.out.println("Game ended due to: " + textMessage);
     }
 
-    public GameType getGameType() {
-        return gameType;
-    }
-
-    public void sendMove() {
+    public void sendMove(Move move) {
 
     }
 

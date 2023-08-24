@@ -74,8 +74,17 @@ public class ChessGUI extends JFrame {
 
         this.player = new Human(getColor(playerColor), guiUserCommunicationService);
         this.client = new Client(gameSettings);
-        initUI();
         client.connectToServer();
+        initUI();
+
+        while (true) {
+            if (!isPlayerMove) {
+                Move move = (Move) client.startListening();
+                updateGameInfo(move);
+            } else {
+                break;
+            }
+        }
     }
 
     private void initUI() {
@@ -217,10 +226,10 @@ public class ChessGUI extends JFrame {
         }
     }
 
-    public void updateGameInfo() {
-        Move incomingMove = client.getMove();
+    public void updateGameInfo(Move incomingMove) {
         gameInfo.move(incomingMove);
         isPlayerMove = true;
+        addToMoveHistory(player.getColor().opposite(), incomingMove.startPosition(), incomingMove.endPosition());
         paintBoard(gameInfo.getCurrentBoard().getBoard());
     }
 

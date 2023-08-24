@@ -98,8 +98,8 @@ public class Server {
                     break;
                 }
             } else if (clients.size() == 2 && !isGameStarted) {
-                String startMessage = "Game human-human has started";
-                broadcast(startMessage);
+//                String startMessage = "Game human-human has started";
+//                broadcast(startMessage);
                 isGameStarted = true;
 
                 startGame(); // сделать start
@@ -110,12 +110,26 @@ public class Server {
 
     private void startGame() {
         gameSession = new GameSession(serverPlayer1, serverPlayer2, convertGameTypeDTO(gameType)) {
-            @Override
-            public void sendMove() {
-                if (getGameInfo().getCurrentMoveColor().equals(serverPlayer1.getColor())) {
-                    Server.this.sendMove(serverPlayer2.getMove(gameSession.getGameInfo().getCurrentBoard(), gameSession.getGameInfo().getCurrentMoveColor()));
-                } else if (getGameInfo().getCurrentMoveColor().equals(serverPlayer2.getColor())) {
-                    Server.this.sendMove(serverPlayer1.getMove(gameSession.getGameInfo().getCurrentBoard(), gameSession.getGameInfo().getCurrentMoveColor()));
+            public void sendMove(Move move) {
+                Color moveColor = getGameInfo().getCurrentMoveColor();
+                if(moveColor.equals(serverPlayer1.getColor())) {
+                    if(clients.get(0).getColor().equals(moveColor)) {
+                        clients.get(1).sendMoveToClient((SerializationService
+                                .convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
+                        System.out.println("We sent move to other client: " + clients.get(1).getColor());
+                    } if(clients.get(1).getColor().equals(moveColor)){
+                        clients.get(0).sendMoveToClient((SerializationService
+                                .convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
+                        System.out.println("We sent move to other client: " + clients.get(0).getColor());
+                    } else logger.error("Не удалось найти ход игрока");
+                } else if(getGameInfo().getCurrentMoveColor().equals(serverPlayer2.getColor())){
+                    if(clients.get(0).getColor().equals(moveColor)) {
+                        clients.get(1).sendMoveToClient((SerializationService
+                                .convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
+                    } if(clients.get(1).getColor().equals(moveColor)) {
+                        clients.get(0).sendMoveToClient((SerializationService
+                                .convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
+                    } else logger.error("Не удалось найти ход игрока");
                 }
             }
 
@@ -143,26 +157,6 @@ public class Server {
         };
 
         gameSession.startGameSession();
-    }
-
-    public void sendMove(Move move) {
-        Color color = gameSession.getGameInfo().getCurrentMoveColor();
-        if (clients.get(0).getColor().equals(color)) {
-            clients.get(1).sendMove((SerializationService.convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
-        }
-
-        if (clients.get(1).getColor().equals(color)) {
-            clients.get(0).sendMove((SerializationService.convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
-        } else {
-            logger.error("Не удалось найти ход игрока");
-        }
-    }
-
-    public void broadcastMove(MoveDTO move) {
-        for (ClientHandler client : clients) {
-            String serializedMoveDTO = SerializationService.convertMoveDTOToJson(move);
-            client.sendMove(serializedMoveDTO); //теперь можно отправить мувы
-        }
     }
 
     public void broadcast(String message) { // сообщения обоим игрокам
