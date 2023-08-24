@@ -31,6 +31,7 @@ public class GameSession {
      */
     public void startGameSession() {
         printBoardOnce(gameInfo.getCurrentBoard());
+
         while (true) {
             Color currentColor = gameInfo.getCurrentMoveColor();
             Color enemyColor = gameInfo.getCurrentMoveColor().opposite();
@@ -41,8 +42,8 @@ public class GameSession {
             log.info("Текущий игрок: {}", playerWhoMoves.getClass().getSimpleName());
             System.out.println("current player: " + playerWhoMoves.getClass().getSimpleName());
 
-            Move move = playerWhoMoves.getMove(gameInfo.getCurrentBoard(), currentColor);
-
+            Move move = getMove(playerWhoMoves, currentColor);
+            System.out.println(move);
             sendMove(); // реализовать на сервере
 
             gameInfo.move(move);
@@ -97,5 +98,9 @@ public class GameSession {
 
     public void sendMove() {
 
+    }
+
+    public Move getMove(Player player, Color color) {
+        return player.getMove(gameInfo.getCurrentBoard(), color);
     }
 }

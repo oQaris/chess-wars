@@ -3,11 +3,9 @@ package io.deeplay.server;
 import io.deeplay.communication.converter.Converter;
 import io.deeplay.communication.dto.MoveDTO;
 import io.deeplay.communication.model.GameType;
-import io.deeplay.communication.service.DeserializationService;
 import io.deeplay.communication.service.SerializationService;
 import io.deeplay.domain.Color;
 import io.deeplay.engine.GameSession;
-import io.deeplay.model.Board;
 import io.deeplay.model.move.Move;
 import io.deeplay.model.player.Bot;
 import io.deeplay.model.player.Human;
@@ -63,10 +61,13 @@ public class Server {
             System.out.println("Client " + clients.size() + 1 + " connected");
 
             ClientHandler clientHandler = new ClientHandler(socket, this);
+
             if (clientHandler.getGameType() == GameType.HumanVsHuman) {
-                if (serverPlayer1 == null) serverPlayer1 = new Human(clientHandler.getColor(), new GuiUserCommunicationService());
+                if (serverPlayer1 == null)
+                    serverPlayer1 = new Human(clientHandler.getColor(), new GuiUserCommunicationService());
                 else serverPlayer2 = new Human(clientHandler.getColor(), new GuiUserCommunicationService());
             }
+
             clients.add(clientHandler);
             new Thread(clientHandler).start();
             logger.info("New client connected");
@@ -107,15 +108,37 @@ public class Server {
         }
     }
 
-    private void startGame() throws IOException {
+    private void startGame() {
         gameSession = new GameSession(serverPlayer1, serverPlayer2, convertGameTypeDTO(gameType)) {
             @Override
             public void sendMove() {
-                if(getGameInfo().getCurrentMoveColor().equals(serverPlayer1.getColor())){
+                if (getGameInfo().getCurrentMoveColor().equals(serverPlayer1.getColor())) {
                     Server.this.sendMove(serverPlayer2.getMove(gameSession.getGameInfo().getCurrentBoard(), gameSession.getGameInfo().getCurrentMoveColor()));
-                }else if(getGameInfo().getCurrentMoveColor().equals(serverPlayer2.getColor())){
+                } else if (getGameInfo().getCurrentMoveColor().equals(serverPlayer2.getColor())) {
                     Server.this.sendMove(serverPlayer1.getMove(gameSession.getGameInfo().getCurrentBoard(), gameSession.getGameInfo().getCurrentMoveColor()));
                 }
+            }
+
+            // добавить concurrent queue
+            @Override
+            public Move getMove(Player player, Color color) {
+                if (clients.get(0).getColor().equals(color)) {
+                    try {
+                        return clients.get(0).getMove();
+                    } catch (IOException e) {
+                        logger.error("cannot get move");
+                    }
+                }
+
+                if (clients.get(1).getColor().equals(color)) {
+                    try {
+                        return clients.get(1).getMove();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+
+                throw new IllegalStateException();
             }
         };
 
@@ -124,11 +147,15 @@ public class Server {
 
     public void sendMove(Move move) {
         Color color = gameSession.getGameInfo().getCurrentMoveColor();
-        if(clients.get(0).getColor().equals(color)){
-            clients.get(0).sendMove((SerializationService.convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
-        }if(clients.get(1).getColor().equals(color)){
+        if (clients.get(0).getColor().equals(color)) {
             clients.get(1).sendMove((SerializationService.convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
-        } else logger.error("Не удалось найти ход игрока");
+        }
+
+        if (clients.get(1).getColor().equals(color)) {
+            clients.get(0).sendMove((SerializationService.convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
+        } else {
+            logger.error("Не удалось найти ход игрока");
+        }
     }
 
     public void broadcastMove(MoveDTO move) {

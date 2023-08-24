@@ -19,4 +19,13 @@ public class StartGameDTO {
     public void setGameType(GameType gameType) {
         this.gameType = gameType;
     }
+
+    @Override
+    public String toString() {
+        return "StartGameDTO{" +
+                "gameType=" + gameType +
+                ", currentColor=" + currentColor +
+                ", botLevel=" + botLevel +
+                '}';
+    }
 }

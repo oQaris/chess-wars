@@ -75,13 +75,6 @@ public class Client {
         } catch (IOException e) {
             logger.error("Проблема с подключением к серверу");
         }
-//        finally {
-//            try {
-//                socket.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
     }
 
     public void processJson(String json) {
@@ -110,9 +103,12 @@ public class Client {
 
     public void startListening() throws IOException {
 //        String request = in.readLine();
+//        processJson(request);
     }
 
     public void sendMove(Move move) {
+        System.out.println("send move in client");
+
         String moveJson = SerializationService.convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move));
         try {
             out.write(moveJson);
