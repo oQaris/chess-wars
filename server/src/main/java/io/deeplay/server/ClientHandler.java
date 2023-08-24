@@ -51,14 +51,7 @@ public class ClientHandler implements Runnable {
     public void run() {
         try {
             while (true) {
-                System.out.println("client handler run");
-                System.out.println("getMove in ClientHandler");
-                String clientInput = in.readLine();
-                MoveDTO moveDTO = DeserializationService.convertJsonToMoveDTO(clientInput);
-                System.out.println("received move:" + moveDTO);
-                Move move = Converter.convertDTOToMove(moveDTO);
-                System.out.println("getMove in run method");
-                movesQueue.offer(move);
+
             }
         } catch (Exception e) {
             logger.error("Ошибка при подключении игрока: ", e);
@@ -79,24 +72,30 @@ public class ClientHandler implements Runnable {
     }
 
     public Move getMove() throws IOException {
-        return movesQueue.poll();
+        String clientInput = in.readLine();
+        MoveDTO moveDTO = DeserializationService.convertJsonToMoveDTO(clientInput);
+        System.out.println("received move:" + moveDTO);
+        Move move = Converter.convertDTOToMove(moveDTO);
+        System.out.println("getMove in run method");
+        return move;
     }
 
     public void sendMessage(String message) {
         try {
             out.write(message);
-            out.flush();
             out.newLine();
+            out.flush();
         } catch (IOException e) {
             logger.error("Не получилось отправить сообщение ", e);
         }
     }
 
-    public void sendMove(String serializedMoveDTO) {
+    public void sendMoveToClient(String serializedMoveDTO) {
         try {
             out.write(serializedMoveDTO);
             out.newLine();
             out.flush();
+            System.out.println("Sent move to client from a server!");
         } catch (IOException e) {
             logger.error("Не получилось отправить ход: ", e);
         }

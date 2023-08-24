@@ -71,39 +71,50 @@ public class Client {
             out.newLine();
             out.flush();
 
-            startListening();
         } catch (IOException e) {
             logger.error("Проблема с подключением к серверу");
         }
     }
 
-    public void processJson(String json) {
-        Gson gson = new Gson();
-        JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
-
-        if (jsonObject.has("endGameStateType")) {
-            EndGameDTO endGameDTO = DeserializationService.convertJsonToEndGameDTO(json);
-            // обработать конец игры
-        } else if (jsonObject.has("exception")) {
-            ErrorResponseDTO errorResponseDTO = DeserializationService.convertJsonToErrorResponseDTO(json);
-            // обработать ошибку
-        } else if (jsonObject.has("startPosition")) {
-            MoveDTO moveDTO = DeserializationService.convertJsonToMoveDTO(json);
-            Move move = receiveMove(moveDTO);
-            // обработка хода
-        } else if (jsonObject.has("currentMoveColor")) {
-            MoveTransferDTO moveTransferDTO = DeserializationService.convertJsonToMoveTransferDTO(json);
-            // обработать moveTransferDTO
-        } else if (jsonObject.has("botLevel")) {
-            StartGameDTO startGameDTO = DeserializationService.convertJsonToStartGameDTO(json);
-        } else {
-            throw new JsonSyntaxException("Тип Json не найден");
+    public Object startListening() {
+        String request = null;
+        try {
+            request = in.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
+        return processJson(request);
     }
 
-    public void startListening() throws IOException {
-//        String request = in.readLine();
-//        processJson(request);
+    public Move processJson(String json) {
+        return Converter.convertDTOToMove(DeserializationService.convertJsonToMoveDTO(json));
+//        Gson gson = new Gson();
+//        JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
+//
+//        if (jsonObject.has("endGameStateType")) {
+//            EndGameDTO endGameDTO = DeserializationService.convertJsonToEndGameDTO(json);
+//            return endGameDTO;
+//            // обработать конец игры
+//        } else if (jsonObject.has("exception")) {
+//            ErrorResponseDTO errorResponseDTO = DeserializationService.convertJsonToErrorResponseDTO(json);
+//            return errorResponseDTO;
+//            // обработать ошибку
+//        } else if (jsonObject.has("startPosition")) {
+//            MoveDTO moveDTO = DeserializationService.convertJsonToMoveDTO(json);
+//            Move move = receiveMove(moveDTO);
+//            return move;
+//            // обработка хода
+//        } else if (jsonObject.has("currentMoveColor")) {
+//            MoveTransferDTO moveTransferDTO = DeserializationService.convertJsonToMoveTransferDTO(json);
+//            return moveTransferDTO;
+//            // обработать moveTransferDTO
+//        } else if (jsonObject.has("botLevel")) {
+//            StartGameDTO startGameDTO = DeserializationService.convertJsonToStartGameDTO(json);
+//            return startGameDTO;
+//        } else {
+//            throw new JsonSyntaxException("Тип Json не найден");
+//        }
     }
 
     public void sendMove(Move move) {
@@ -112,6 +123,7 @@ public class Client {
         String moveJson = SerializationService.convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move));
         try {
             out.write(moveJson);
+            out.newLine();
             out.flush();
         } catch (IOException e) {
             logger.error("Ошибка отправки хода от клиента");
@@ -125,11 +137,5 @@ public class Client {
 
     public Move getMove() {
         return null;
-    }
-
-    public static void main(String[] args) {
-//        Client client = new Client();
-//        client.connectToServer();
-        // gui.getMove();
     }
 }
