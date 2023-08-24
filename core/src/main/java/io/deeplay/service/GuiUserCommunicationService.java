@@ -9,14 +9,15 @@ import io.deeplay.model.piece.Piece;
 import java.util.List;
 
 public class GuiUserCommunicationService implements IUserCommunication {
+
     @Override
     public GameSession getGameSessionInfo() {
-        return null;
+        throw new IllegalStateException();
     }
 
     @Override
     public Piece selectPiece(List<Piece> possiblePiecesToMove) {
-        return null;
+        throw new IllegalStateException();
     }
 
     @Override
@@ -36,11 +37,11 @@ public class GuiUserCommunicationService implements IUserCommunication {
 
     @Override
     public Coordinates selectCoordinates(List<Coordinates> availableMoves) {
-        return null;
+        throw new IllegalStateException();
     }
 
     @Override
     public SwitchPieceType selectSwitchPiece() {
-        return null;
+        throw new IllegalStateException();
     }
 }

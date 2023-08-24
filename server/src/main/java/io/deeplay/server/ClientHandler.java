@@ -12,10 +12,8 @@ import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
-import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ClientHandler implements Runnable {
@@ -43,19 +41,22 @@ public class ClientHandler implements Runnable {
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         movesQueue = new ConcurrentLinkedQueue<>();
         startGameDTO = getStartGame();
+        System.out.println(startGameDTO.toString());
         gameType = startGameDTO.getGameType();
         color = Converter.convertColor(startGameDTO.getCurrentColor());
         botLevel = startGameDTO.getBotLevel();
-
-        System.out.println(gameType);
     }
 
     @Override
     public void run() {
         try {
             while (true) {
-                // serverPlayer.setMove(move); // передать игроку???
-                Move move = getMove();
+                System.out.println("client handler run");
+                System.out.println("getMove in ClientHandler");
+                String clientInput = in.readLine();
+                MoveDTO moveDTO = DeserializationService.convertJsonToMoveDTO(clientInput);
+                System.out.println("received move:" + moveDTO);
+                Move move = Converter.convertDTOToMove(moveDTO);
                 System.out.println("getMove in run method");
                 movesQueue.offer(move);
             }
@@ -72,16 +73,13 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public StartGameDTO getStartGame() throws IOException{
+    public StartGameDTO getStartGame() throws IOException {
         String clientInput = in.readLine();
         return DeserializationService.convertJsonToStartGameDTO(clientInput);
     }
 
     public Move getMove() throws IOException {
-        String clientInput = in.readLine();
-        MoveDTO moveDTO = DeserializationService.convertJsonToMoveDTO(clientInput);
-        System.out.println("received move:" + moveDTO);
-        return Converter.convertDTOToMove(moveDTO);
+        return movesQueue.poll();
     }
 
     public void sendMessage(String message) {

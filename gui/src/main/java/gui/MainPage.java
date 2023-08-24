@@ -1,7 +1,6 @@
 package gui;
 
 import io.deeplay.client.Client;
-import io.deeplay.domain.GameType;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -44,7 +43,7 @@ public class MainPage {
                             String.valueOf(botLevels.getSelectedItem()));
                     System.out.println("created new client");
                 } else {
-                    new Client(gameSettings);
+                    new Client(gameSettings).connectToServer();
                     System.out.println("created new client");
                 }
             } catch (NullPointerException exception) {

@@ -1,7 +1,6 @@
 package io.deeplay.model.player;
 
 import io.deeplay.domain.Color;
-import io.deeplay.domain.GameStates;
 import io.deeplay.domain.MoveType;
 import io.deeplay.domain.SwitchPieceType;
 import io.deeplay.engine.GameState;
@@ -10,13 +9,8 @@ import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
 import io.deeplay.model.piece.Piece;
 import io.deeplay.service.IUserCommunication;
-import io.deeplay.service.UserCommunicationService;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static io.deeplay.model.Board.BOARD_HEIGHT;
-import static io.deeplay.model.Board.BOARD_LENGTH;
 
 public class Human extends Player {
     private final IUserCommunication iUserCommunication;

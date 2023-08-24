@@ -10,11 +10,11 @@ import io.deeplay.engine.GameState;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
-import io.deeplay.model.piece.*;
+import io.deeplay.model.piece.Empty;
+import io.deeplay.model.piece.Piece;
 import io.deeplay.model.player.Human;
 import io.deeplay.model.player.Player;
 import io.deeplay.service.GuiUserCommunicationService;
-import io.deeplay.service.UserCommunicationService;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -22,8 +22,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class ChessGUI extends JFrame {
 
@@ -42,12 +44,35 @@ public class ChessGUI extends JFrame {
     private GameInfo gameInfo;
     private Player player;
     private Client client;
+    private Coordinates selectedMoveCoordinates;
 
     // Поменять передачу цвета на передачу Player в конструкторе
     public ChessGUI(List<String> gameSettings, String gameType, String playerColor, String botLevel) {
         isPlayerMove = getColor(playerColor) == io.deeplay.domain.Color.WHITE;
         this.gameInfo = new GameInfo(getColor(playerColor));
-        this.player = new Human(getColor(playerColor), new GuiUserCommunicationService());
+        GuiUserCommunicationService guiUserCommunicationService = new GuiUserCommunicationService() {
+            @Override
+            public Piece selectPiece(List<Piece> possiblePiecesToMove) {
+                if (prevSelectedPiece == null) {
+                    // очередь
+                }
+
+                return prevSelectedPiece;
+            }
+
+            @Override
+            public Coordinates selectCoordinates(List<Coordinates> availableMoves) {
+                // очередь
+                return selectedMoveCoordinates;
+            }
+
+            @Override
+            public SwitchPieceType selectSwitchPiece() {
+                return ChessSquareListener.getSwitchPieceType();
+            }
+        };
+
+        this.player = new Human(getColor(playerColor), guiUserCommunicationService);
         this.client = new Client(gameSettings);
         initUI();
         client.connectToServer();
@@ -129,6 +154,7 @@ public class ChessGUI extends JFrame {
                 for (Map.Entry<Coordinates, Boolean> coordinates : possibleMoveCells.entrySet()) {
                     if (selectedPiece.getCoordinates().getX() == coordinates.getKey().getX()
                             && selectedPiece.getCoordinates().getY() == coordinates.getKey().getY()) {
+                        selectedMoveCoordinates = selectedPiece.getCoordinates();
                         Move move = player.getMove(currentBoard, player.getColor(),
                                 prevSelectedPiece.getCoordinates(), selectedPiece.getCoordinates());
                         if (move.moveType() == MoveType.PROMOTION) {
@@ -137,6 +163,7 @@ public class ChessGUI extends JFrame {
                                     move.moveType(), switchPieceType);
                             gameInfo.move(promotionMove);
                             client.sendMove(promotionMove);
+                            isPlayerMove = false;
                         } else {
                             gameInfo.move(move);
                             client.sendMove(move);
@@ -154,7 +181,7 @@ public class ChessGUI extends JFrame {
             }
         }
 
-        private SwitchPieceType getSwitchPieceType() {
+        public static SwitchPieceType getSwitchPieceType() {
             String result = new PromotionOptionPane().getResult();
             SwitchPieceType switchPieceType;
             switch (result) {
