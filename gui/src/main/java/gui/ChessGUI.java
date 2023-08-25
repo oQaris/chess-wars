@@ -41,12 +41,11 @@ public class ChessGUI extends JFrame {
     private List<Coordinates> possibleMoves;
     private Map<Coordinates, Boolean> possibleMoveCells = null;
     private boolean isPlayerMove;
-    private GameInfo gameInfo;
-    private Player player;
-    private Client client;
+    private final GameInfo gameInfo;
+    private final Player player;
+    private final Client client;
     private Coordinates selectedMoveCoordinates;
 
-    // Поменять передачу цвета на передачу Player в конструкторе
     public ChessGUI(List<String> gameSettings, String gameType, String playerColor, String botLevel) {
         isPlayerMove = getColor(playerColor) == io.deeplay.domain.Color.WHITE;
         this.gameInfo = new GameInfo(getColor(playerColor)) {
@@ -82,13 +81,8 @@ public class ChessGUI extends JFrame {
         client.connectToServer();
         initUI();
 
-        while (true) {
-            if (!isPlayerMove) {
-                Move move = (Move) client.startListening();
-                updateGameInfo(move);
-            } else {
-                break;
-            }
+        if (!isPlayerMove) {
+            waitAndUpdate();
         }
     }
 
@@ -191,7 +185,8 @@ public class ChessGUI extends JFrame {
                 selectedSquare = null;
                 prevSelectedPiece = null;
                 paintBoard(gameInfo.getCurrentBoard().getBoard());
-                Board.printBoardOnce(gameInfo.getCurrentBoard());
+
+                waitAndUpdate();
             }
         }
 
@@ -207,6 +202,13 @@ public class ChessGUI extends JFrame {
             }
             return switchPieceType;
         }
+    }
+
+    public void waitAndUpdate() {
+        new Thread(() -> {
+            Move move = (Move) client.startListening();
+            updateGameInfo(move);
+        }).start();
     }
 
     private void paintBoard(Piece[][] board) {
