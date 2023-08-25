@@ -26,8 +26,12 @@ public class GameInfo {
      */
     public void move(Move move) {
         currentBoard.move(move);
-//        if (currentMoveColor == Color.WHITE) currentMoveColor = Color.BLACK;
-//        else currentMoveColor = Color.WHITE;
+        changeCurrentMoveColor();
+    }
+
+    protected void changeCurrentMoveColor() {
+        if (currentMoveColor == Color.WHITE) currentMoveColor = Color.BLACK;
+        else currentMoveColor = Color.WHITE;
     }
 
     public Color getCurrentMoveColor() {

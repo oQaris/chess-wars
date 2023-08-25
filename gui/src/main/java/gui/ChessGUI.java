@@ -49,7 +49,12 @@ public class ChessGUI extends JFrame {
     // Поменять передачу цвета на передачу Player в конструкторе
     public ChessGUI(List<String> gameSettings, String gameType, String playerColor, String botLevel) {
         isPlayerMove = getColor(playerColor) == io.deeplay.domain.Color.WHITE;
-        this.gameInfo = new GameInfo(getColor(playerColor));
+        this.gameInfo = new GameInfo(getColor(playerColor)) {
+            @Override
+            protected void changeCurrentMoveColor() {
+
+            }
+        };
         GuiUserCommunicationService guiUserCommunicationService = new GuiUserCommunicationService() {
             @Override
             public Piece selectPiece(List<Piece> possiblePiecesToMove) {
