@@ -65,11 +65,10 @@ public class GameState {
                     for (Coordinates coordinates : piece.getPossibleMoves(board)) {
                         Board duplicateBoard = new Board();
                         BoardUtil.duplicateBoard(board).accept(duplicateBoard);
-                        Human tempHuman = new Human(color, new UserCommunicationService(System.in, System.out));
 
-                        MoveType moveType = tempHuman.getType(piece, coordinates, duplicateBoard);
+                        MoveType moveType = Player.getType(piece, coordinates, duplicateBoard);
                         if (moveType == MoveType.PROMOTION) {
-                            for (int i = 0; i < SwitchPieceType.values().length; i++) {
+                            for (int i = 0; i < SwitchPieceType.values().length - 1; i++) {
                                 SwitchPieceType switchPieceType = SwitchPieceType.values()[i];
                                 duplicateBoard.move(new Move(piece.getCoordinates(), coordinates,
                                         moveType, switchPieceType));
@@ -112,7 +111,7 @@ public class GameState {
 
                         MoveType moveType = Player.getType(piece, coordinates, duplicateBoard);
                         if (moveType == MoveType.PROMOTION) {
-                            for (int i = 0; i < SwitchPieceType.values().length; i++) {
+                            for (int i = 0; i < SwitchPieceType.values().length - 1; i++) {
                                 SwitchPieceType switchPieceType = SwitchPieceType.values()[i];
                                 duplicateBoard.move(new Move(piece.getCoordinates(), coordinates,
                                         moveType, switchPieceType));
@@ -156,7 +155,8 @@ public class GameState {
 
             MoveType moveType = Player.getType(piece, coordinates, duplicateBoard);
             if (moveType == MoveType.PROMOTION) {
-                for (int i = 0; i < SwitchPieceType.values().length; i++) {
+                for (int i = 0; i < SwitchPieceType.values().length - 1; i++) {
+                    BoardUtil.duplicateBoard(board).accept(duplicateBoard);
                     SwitchPieceType switchPieceType = SwitchPieceType.values()[i];
                     duplicateBoard.move(new Move(piece.getCoordinates(), coordinates,
                             moveType, switchPieceType));
