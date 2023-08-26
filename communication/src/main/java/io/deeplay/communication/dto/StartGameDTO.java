@@ -3,21 +3,19 @@ package io.deeplay.communication.dto;
 import io.deeplay.communication.model.Color;
 import io.deeplay.communication.model.GameType;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class StartGameDTO {
     private GameType gameType;
-    private final Color currentColor;
+    private Color currentColor;
     private int botLevel;
 
     public StartGameDTO(GameType gameType, Color color, int botLevel) {
         this.gameType = gameType;
         this.currentColor = color;
         this.botLevel = botLevel;
-    }
-
-    public void setGameType(GameType gameType) {
-        this.gameType = gameType;
     }
 
     @Override

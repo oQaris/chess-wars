@@ -24,38 +24,10 @@ public class Client {
     private BufferedWriter out;
     private BufferedReader in;
     private static final Logger logger = LogManager.getLogger(Client.class);
-    private StartGameDTO gameSettings;
+    private final StartGameDTO gameSettings;
 
-    public Client(List<String> gameSettings) {
-        this.gameSettings = getStartGameSettings(gameSettings);
-    }
-
-    private StartGameDTO getStartGameSettings(List<String> gameSettings) {
-        GameType clientGameType;
-        Color clientColor;
-        int clientBotLevel;
-
-        switch (gameSettings.get(0)) {
-            case "Человек vs. Человек" -> clientGameType = GameType.HumanVsHuman;
-            case "Человек vs. Бот" -> clientGameType = GameType.HumanVsBot;
-            case "Бот vs. Бот" -> clientGameType = GameType.BotVsBot;
-            default -> throw new IllegalArgumentException("Wrong Game Type selection");
-        }
-
-        switch (gameSettings.get(1)) {
-            case "Белый" -> clientColor = Color.WHITE;
-            case "Черный" -> clientColor = Color.BLACK;
-            default -> throw new IllegalArgumentException("Wrong Color selection");
-        }
-
-        switch (gameSettings.get(2)) {
-            case "Легкий" -> clientBotLevel = 1;
-            case "Средний" -> clientBotLevel = 2;
-            case "Сложный" -> clientBotLevel = 3;
-            default -> throw new IllegalArgumentException("Wrong Bot Level selection");
-        }
-
-        return new StartGameDTO(clientGameType, clientColor, clientBotLevel);
+    public Client(StartGameDTO gameSettings) {
+        this.gameSettings = gameSettings;
     }
 
     public void connectToServer() {

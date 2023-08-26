@@ -4,5 +4,6 @@ public enum GameStates {
     CHECK,
     CHECKMATE,
     STALEMATE,
+    DRAW,
     DEFAULT;
 }

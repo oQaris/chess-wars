@@ -7,6 +7,7 @@ import io.deeplay.domain.*;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
 
+import java.util.List;
 import java.util.Objects;
 
 
@@ -67,6 +68,34 @@ public class Converter {
             return SwitchPieceType.NULL;
         }
         throw new IllegalArgumentException("Illegal parameter converting");
+    }
+
+    public static StartGameDTO getStartGameSettings(List<String> gameSettings) {
+        io.deeplay.communication.model.GameType clientGameType;
+        io.deeplay.communication.model.Color clientColor;
+        int clientBotLevel;
+
+        switch (gameSettings.get(0)) {
+            case "Человек vs. Человек" -> clientGameType = io.deeplay.communication.model.GameType.HumanVsHuman;
+            case "Человек vs. Бот" -> clientGameType = io.deeplay.communication.model.GameType.HumanVsBot;
+            case "Бот vs. Бот" -> clientGameType = io.deeplay.communication.model.GameType.BotVsBot;
+            default -> throw new IllegalArgumentException("Wrong Game Type selection");
+        }
+
+        switch (gameSettings.get(1)) {
+            case "Белый" -> clientColor = io.deeplay.communication.model.Color.WHITE;
+            case "Черный" -> clientColor = io.deeplay.communication.model.Color.BLACK;
+            default -> throw new IllegalArgumentException("Wrong Color selection");
+        }
+
+        switch (gameSettings.get(2)) {
+            case "Легкий" -> clientBotLevel = 1;
+            case "Средний" -> clientBotLevel = 2;
+            case "Сложный" -> clientBotLevel = 3;
+            default -> throw new IllegalArgumentException("Wrong Bot Level selection");
+        }
+
+        return new StartGameDTO(clientGameType, clientColor, clientBotLevel);
     }
 
     public static io.deeplay.communication.model.SwitchPieceType getSwitchPieceTypeDTO(Move move) {
