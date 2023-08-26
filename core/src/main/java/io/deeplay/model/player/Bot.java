@@ -3,6 +3,7 @@ package io.deeplay.model.player;
 import io.deeplay.domain.Color;
 import io.deeplay.domain.MoveType;
 import io.deeplay.domain.SwitchPieceType;
+import io.deeplay.engine.GameState;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
@@ -40,6 +41,8 @@ public class Bot extends Player {
         else randomPiece = possiblePiecesToMove.get(random.nextInt(possiblePiecesToMove.size() - 1));
 
         List<Coordinates> availableMoves = randomPiece.getPossibleMoves(board);
+        List<Coordinates> movesWithoutCheck = GameState.getMovesWithoutMakingCheck(board, randomPiece, availableMoves);
+        availableMoves.retainAll(movesWithoutCheck);
 
         System.out.println("Number of moves you can do using this Piece: " + availableMoves.size());
 

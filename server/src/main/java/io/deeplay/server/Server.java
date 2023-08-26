@@ -28,12 +28,11 @@ public class Server {
     private static final Logger logger = LogManager.getLogger(Server.class);
     private static final int PORT = 8080;
     private ServerSocket serverSocket;
-    private List<ClientHandler> clients = new ArrayList<>();
-    private GameSession gameSession;
+    private final List<ClientHandler> clients = new ArrayList<>();
     private boolean isGameStarted;
     private GameType gameType;
-    Player serverPlayer1;
-    Player serverPlayer2;
+    private Player serverPlayer1;
+    private Player serverPlayer2;
 
     public Server(int port) {
     }
@@ -62,78 +61,72 @@ public class Server {
 
             ClientHandler clientHandler = new ClientHandler(socket, this);
 
-            if (clientHandler.getGameType() == GameType.HumanVsHuman) {
-                if (serverPlayer1 == null)
-                    serverPlayer1 = new Human(clientHandler.getColor(), new GuiUserCommunicationService());
-                else serverPlayer2 = new Human(clientHandler.getColor(), new GuiUserCommunicationService());
+            gameType = clientHandler.getGameType();
+            switch (clientHandler.getGameType()) {
+                case HumanVsHuman -> {
+                    if (serverPlayer1 == null) {
+                        serverPlayer1 = new Human(clientHandler.getColor(), new GuiUserCommunicationService());
+                    } else {
+                        serverPlayer2 = new Human(clientHandler.getColor(), new GuiUserCommunicationService());
+                    }
+                }
+                case HumanVsBot -> {
+                    if (serverPlayer1 == null) {
+                        serverPlayer1 = new Human(clientHandler.getColor(), new GuiUserCommunicationService());
+                    } else {
+                        serverPlayer2 = new Bot(clientHandler.getColor(), clientHandler.getBotLevel(), new GuiUserCommunicationService());
+                    }
+                }
+                case BotVsBot -> {
+                    if (serverPlayer1 == null) {
+                        serverPlayer1 = new Bot(clientHandler.getColor(), clientHandler.getBotLevel(), new GuiUserCommunicationService());
+                    } else {
+                        serverPlayer2 = new Bot(clientHandler.getColor(), clientHandler.getBotLevel(), new GuiUserCommunicationService());
+                    }
+                }
+                default -> throw new IllegalArgumentException("Тип игры не был распознан");
             }
 
             clients.add(clientHandler);
             new Thread(clientHandler).start();
             logger.info("New client connected");
 
-            if (clients.size() == 1) {
-                gameType = clientHandler.getGameType();
-
-                if (gameType == GameType.HumanVsHuman) {
-                    logger.info("Один игрок подключен, ожидание второго");
-                } else if (gameType == GameType.BotVsBot) {
-                    String startMessage = "Game bot-bot has started";
-                    serverPlayer1 = new Bot(Color.WHITE, 1, new UserCommunicationService(System.in, System.out));
-                    serverPlayer2 = new Bot(Color.BLACK, 1, new UserCommunicationService(System.in, System.out));
-                    broadcast(startMessage);
-                    isGameStarted = true;
-
-                    startGame(); // сделать start
-                    break;
-                } else if (gameType == GameType.HumanVsBot) {
-                    String startMessage = "Game human-bot has started";
-                    broadcast(startMessage);
-
-                    serverPlayer1 = new Human(clientHandler.getColor(), new GuiUserCommunicationService());
-                    serverPlayer2 = new Bot(clientHandler.getColor().opposite(), 1, new UserCommunicationService(System.in, System.out));
-
-                    isGameStarted = true;
-                    startGame(); // сделать start
-                    break;
-                }
-            } else if (clients.size() == 2 && !isGameStarted) {
-//                String startMessage = "Game human-human has started";
-//                broadcast(startMessage);
+            if (clients.size() == 2 && !isGameStarted) {
                 isGameStarted = true;
 
-                startGame(); // сделать start
+                startGame();
                 break;
             }
         }
     }
 
     private void startGame() {
-        gameSession = new GameSession(serverPlayer1, serverPlayer2, convertGameTypeDTO(gameType)) {
+        GameSession gameSession = new GameSession(serverPlayer1, serverPlayer2, convertGameTypeDTO(gameType)) {
             public void sendMove(Move move) {
                 Color moveColor = getGameInfo().getCurrentMoveColor();
-                if(moveColor.equals(serverPlayer1.getColor())) {
-                    if(clients.get(0).getColor().equals(moveColor)) {
+                if (moveColor.equals(serverPlayer1.getColor())) {
+                    if (clients.get(0).getColor().equals(moveColor)) {
                         clients.get(1).sendMoveToClient((SerializationService
                                 .convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
                         System.out.println("We sent move to other client: " + clients.get(1).getColor());
-                    } if(clients.get(1).getColor().equals(moveColor)){
+                    }
+                    if (clients.get(1).getColor().equals(moveColor)) {
                         clients.get(0).sendMoveToClient((SerializationService
                                 .convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
                         System.out.println("We sent move to other client: " + clients.get(0).getColor());
                     } else logger.error("Не удалось найти ход игрока");
-                } else if(getGameInfo().getCurrentMoveColor().equals(serverPlayer2.getColor())){
-                    if(clients.get(0).getColor().equals(moveColor)) {
+                } else if (getGameInfo().getCurrentMoveColor().equals(serverPlayer2.getColor())) {
+                    if (clients.get(0).getColor().equals(moveColor)) {
                         clients.get(1).sendMoveToClient((SerializationService
                                 .convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
-                    } if(clients.get(1).getColor().equals(moveColor)) {
+                    }
+                    if (clients.get(1).getColor().equals(moveColor)) {
                         clients.get(0).sendMoveToClient((SerializationService
                                 .convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
                     } else logger.error("Не удалось найти ход игрока");
                 }
             }
 
-            // добавить concurrent queue
             @Override
             public Move getMove(Player player, Color color) {
                 if (clients.get(0).getColor().equals(color)) {

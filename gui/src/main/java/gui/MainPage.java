@@ -1,6 +1,9 @@
 package gui;
 
+import gui.model.PlayerType;
 import io.deeplay.client.Client;
+import io.deeplay.communication.converter.Converter;
+import io.deeplay.communication.dto.StartGameDTO;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
@@ -35,16 +38,21 @@ public class MainPage {
                 gameSettings.add(String.valueOf(gameTypesBox.getSelectedItem()));
                 gameSettings.add(String.valueOf(String.valueOf(playerColor.getSelectedItem())));
                 gameSettings.add(String.valueOf(String.valueOf(botLevels.getSelectedItem())));
+                StartGameDTO startGameDTO = Converter.getStartGameSettings(gameSettings);
 
                 System.out.println("creating new client ----- " + gameSettings);
 
-                if (!gameSettings.get(0).equals("BotVsBot")) {
-                    new ChessGUI(gameSettings, String.valueOf(gameTypesBox.getSelectedItem()), String.valueOf(playerColor.getSelectedItem()),
-                            String.valueOf(botLevels.getSelectedItem()));
-                    System.out.println("created new client");
-                } else {
-                    new Client(gameSettings).connectToServer();
-                    System.out.println("created new client");
+                if (gameSettings.get(0).equals("Человек vs. Человек")) {
+                    new ChessGUI(startGameDTO, PlayerType.HUMAN);
+                } else if (gameSettings.get(0).equals("Человек vs. Бот")) {
+                    new ChessGUI(startGameDTO, PlayerType.HUMAN);
+                    startGameDTO.setCurrentColor(startGameDTO.getCurrentColor().opposite());
+                    new Thread(() -> new BotStarter(startGameDTO).startBot()).start();
+                }
+                else {
+                    new ChessGUI(startGameDTO, PlayerType.BOT);
+                    startGameDTO.setCurrentColor(startGameDTO.getCurrentColor().opposite());
+                    new Thread(() -> new BotStarter(startGameDTO).startBot()).start();
                 }
             } catch (NullPointerException exception) {
                 log.error("Can't find any frame!" + exception);
@@ -63,6 +71,15 @@ public class MainPage {
 
         frame.pack();
         frame.setVisible(true);
+    }
+
+    private String getOppositeColor(String curColor) {
+        String oppositeColor = null;
+        switch (curColor) {
+            case "Белый" -> oppositeColor = "Черный";
+            case "Черный" -> oppositeColor = "Белый";
+        }
+        return oppositeColor;
     }
 
     private void createUIComponents() {
