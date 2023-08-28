@@ -3,13 +3,14 @@ package io.deeplay.communication.converter;
 import io.deeplay.communication.dto.EndGameDTO;
 import io.deeplay.communication.dto.MoveDTO;
 import io.deeplay.communication.dto.StartGameDTO;
+import io.deeplay.communication.model.GameStateType;
 import io.deeplay.domain.*;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 
 public class Converter {
 
@@ -130,19 +131,87 @@ public class Converter {
         throw new IllegalArgumentException("Illegal parameter converting");
     }
 
-    public static GameStates convertGameStateDTO(EndGameDTO gameStateType) {
-        if (Objects.equals(gameStateType.getEndGameStateType().toString(), GameStates.CHECK.toString())) {
+    public static io.deeplay.communication.model.Color convertColorFromString(String color) {
+        if (color.equals("WHITE")){
+            return io.deeplay.communication.model.Color.WHITE ;
+        }
+
+        if (color.equals("BLACK")){
+            return io.deeplay.communication.model.Color.BLACK;
+        }
+
+        throw new IllegalArgumentException("Illegal parameter converting");
+    }
+
+    public static GameStates convertEndGameDTOToGameStates(EndGameDTO endGameDTO) {
+        if (Objects.equals(endGameDTO.getEndGameStateType().toString(), GameStates.CHECK.toString())) {
             return GameStates.CHECK;
         }
-        if (Objects.equals(gameStateType.getEndGameStateType().toString(), GameStates.CHECKMATE.toString())) {
+
+        if (Objects.equals(endGameDTO.getEndGameStateType().toString(), GameStates.CHECKMATE.toString())) {
             return GameStates.CHECKMATE;
         }
-        if (Objects.equals(gameStateType.getEndGameStateType().toString(), GameStates.STALEMATE.toString())) {
+
+        if (Objects.equals(endGameDTO.getEndGameStateType().toString(), GameStates.STALEMATE.toString())) {
             return GameStates.STALEMATE;
         }
-        if (Objects.equals(gameStateType.getEndGameStateType().toString(), GameStates.DEFAULT.toString())) {
+
+        if (Objects.equals(endGameDTO.getEndGameStateType().toString(), GameStates.DEFAULT.toString())) {
             return GameStates.DEFAULT;
         }
+
+        if (Objects.equals(endGameDTO.getEndGameStateType().toString(), GameStates.DRAW.toString())) {
+            return GameStates.DRAW;
+        }
+
+        throw new IllegalArgumentException("Illegal parameter converting");
+    }
+
+    public static EndGameDTO convertListEndGameToEndGameDTO(List<String> gameEnd) {
+        if (gameEnd.get(0).equals(GameStates.DRAW.toString())) {
+            return new EndGameDTO(GameStateType.DRAW, convertColorFromString(gameEnd.get(1)));
+        }
+
+        if (gameEnd.get(0).equals(GameStates.DEFAULT.toString())) {
+            return new EndGameDTO(GameStateType.DEFAULT, convertColorFromString(gameEnd.get(1)));
+        }
+
+        if (gameEnd.get(0).equals(GameStates.STALEMATE.toString())) {
+            return new EndGameDTO(GameStateType.STALEMATE, convertColorFromString(gameEnd.get(1)));
+        }
+
+        if (gameEnd.get(0).equals(GameStates.CHECK.toString())) {
+            return new EndGameDTO(GameStateType.CHECK, convertColorFromString(gameEnd.get(1)));
+        }
+
+        if (gameEnd.get(0).equals(GameStates.CHECKMATE.toString())) {
+            return new EndGameDTO(GameStateType.MATE, convertColorFromString(gameEnd.get(1)));
+        }
+
+        throw new IllegalArgumentException("Illegal parameter converting");
+    }
+
+    public static GameStates convertGameStateTypeToGameStates(io.deeplay.communication.model.GameStateType gameStateType) {
+        if (Objects.equals(gameStateType.toString(), "CHECK")) {
+            return GameStates.CHECK;
+        }
+
+        if (Objects.equals(gameStateType.toString(), "DRAW")) {
+            return GameStates.DRAW;
+        }
+
+        if (Objects.equals(gameStateType.toString(), "DEFAULT")) {
+            return GameStates.DEFAULT;
+        }
+
+        if (Objects.equals(gameStateType.toString(), "MATE")) {
+            return GameStates.CHECKMATE;
+        }
+
+        if (Objects.equals(gameStateType.toString(), "STALEMATE")) {
+            return GameStates.STALEMATE;
+        }
+
         throw new IllegalArgumentException("Illegal parameter converting");
     }
 
@@ -150,12 +219,15 @@ public class Converter {
         if (Objects.equals(gameType.toString(), "BotVsBot")) {
             return GameType.BotVsBot;
         }
+
         if (Objects.equals(gameType.toString(), "HumanVsBot")) {
             return GameType.HumanVsBot;
         }
+
         if (Objects.equals(gameType.toString(), "HumanVsHuman")) {
             return GameType.HumanVsHuman;
         }
+
         throw new IllegalArgumentException("Illegal parameter converting");
     }
 
@@ -164,7 +236,8 @@ public class Converter {
         int startPositionY = moveDTO.getStartPosition().getY();
         int endPositionX = moveDTO.getEndPosition().getX();
         int endPositionY = moveDTO.getEndPosition().getY();
-        return new Move(new Coordinates(startPositionX, startPositionY), new Coordinates(endPositionX, endPositionY), getMoveTypeFromDTO(moveDTO), getSwitchPieceType(moveDTO));
+        return new Move(new Coordinates(startPositionX, startPositionY), new Coordinates(endPositionX, endPositionY),
+                getMoveTypeFromDTO(moveDTO), getSwitchPieceType(moveDTO));
     }
 
     public static MoveDTO convertMoveToMoveDTO(Move move) {
@@ -177,11 +250,19 @@ public class Converter {
                 getMoveTypeFromMove(move), getSwitchPieceTypeDTO(move));
     }
 
-    public static String convertEndGameStateDTO(EndGameDTO endGameDTO) {
-        return Objects.requireNonNull(convertGameStateDTO(endGameDTO)) + "," + convertColor(endGameDTO.getWinColor());
+    public static List<String> convertEndGameStateDTO(EndGameDTO endGameDTO){
+        List<String> result = new ArrayList<>();
+        String gameStates = convertEndGameDTOToGameStates(endGameDTO).toString();
+        String winColor = convertColor(endGameDTO.getWinColor()).toString();
+
+        result.add(gameStates);
+        result.add(winColor);
+
+        return result;
     }
 
     public static String convertStartGameDTO(StartGameDTO startGameDTO) {
-        return Objects.requireNonNull(convertGameTypeDTO(startGameDTO.getGameType())) + "," + Objects.requireNonNull(convertColor(startGameDTO.getCurrentColor()));
+        return Objects.requireNonNull(convertGameTypeDTO(startGameDTO.getGameType()))
+                + "," + Objects.requireNonNull(convertColor(startGameDTO.getCurrentColor()));
     }
 }

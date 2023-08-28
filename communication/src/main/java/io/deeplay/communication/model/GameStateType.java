@@ -4,5 +4,6 @@ public enum GameStateType {
     CHECK,
     MATE,
     STALEMATE,
-    DRAW;
+    DRAW,
+    DEFAULT;
 }

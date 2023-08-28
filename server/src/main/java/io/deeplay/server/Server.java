@@ -1,7 +1,7 @@
 package io.deeplay.server;
 
 import io.deeplay.communication.converter.Converter;
-import io.deeplay.communication.dto.MoveDTO;
+import io.deeplay.communication.dto.EndGameDTO;
 import io.deeplay.communication.model.GameType;
 import io.deeplay.communication.service.SerializationService;
 import io.deeplay.domain.Color;
@@ -146,6 +146,26 @@ public class Server {
                 }
 
                 throw new IllegalStateException();
+            }
+
+            @Override
+            public void sendGameEnd(List<String> gameEnd) {
+                Color moveColor = getGameInfo().getCurrentMoveColor();
+                if (clients.get(0).getColor().equals(moveColor)) {
+                    EndGameDTO endGameDTO1 = clients.get(0).getEndGame(gameEnd);
+                    String jsonEndGameDTO1 = SerializationService.convertEndGameDTOtoJSON(endGameDTO1);
+
+                    clients.get(0).sendEndGameToClient(jsonEndGameDTO1);
+                    clients.get(1).sendEndGameToClient(jsonEndGameDTO1);
+                } else if (clients.get(1).getColor().equals(moveColor)) {
+                    EndGameDTO endGameDTO2 = clients.get(1).getEndGame(gameEnd);
+                    String jsonEndGameDTO2 = SerializationService.convertEndGameDTOtoJSON(endGameDTO2);
+
+                    clients.get(0).sendEndGameToClient(jsonEndGameDTO2);
+                    clients.get(1).sendEndGameToClient(jsonEndGameDTO2);
+                } else {
+                    logger.error("Ошибка отправки конца игры клиенту");
+                }
             }
         };
 
