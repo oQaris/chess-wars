@@ -213,6 +213,7 @@ public class UserCommunicationService implements IUserCommunication {
     public boolean continueToPlay() {
         printStream.println("Do you want to continue playing? (yes/no)");
         String userResponse = scanner.nextLine();
+
         if (userResponse.equals("yes")) {
             return true;
         } else if (userResponse.equals("no")) {

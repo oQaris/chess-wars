@@ -215,9 +215,39 @@ public class ChessGUI extends JFrame {
 
     public void waitAndUpdate() {
         new Thread(() -> {
-            Move move = (Move) client.startListening();
-            updateGameInfo(move);
+            Object playerAction = client.startListening();
+
+            if (playerAction instanceof Move) {
+                Move move = (Move) playerAction;
+                updateGameInfo(move);
+            } else if (playerAction instanceof List<?>) {
+                System.out.println("game over in wait and update");
+
+                List<String> endGameInfo = (List<String>) playerAction;
+                endGame(endGameInfo);
+            }
+
         }).start();
+    }
+
+    public void endGame(List<String> endGameInfo) {
+        String gameStates = endGameInfo.get(0);
+        String winColor = endGameInfo.get(1);
+
+        JFrame frame = new JFrame("Игра завершена");
+
+        JLabel gameStatesLabel = new JLabel("Состояние игры: " + gameStates);
+        JLabel winColorLabel = new JLabel("Победитель: " + winColor);
+
+        JPanel panel = new JPanel();
+        panel.add(gameStatesLabel);
+        panel.add(winColorLabel);
+
+        frame.getContentPane().add(panel);
+        frame.setSize(200, 100);
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
     }
 
     private void paintBoard(Piece[][] board) {

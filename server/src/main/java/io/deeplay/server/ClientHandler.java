@@ -1,8 +1,10 @@
 package io.deeplay.server;
 
 import io.deeplay.communication.converter.Converter;
+import io.deeplay.communication.dto.EndGameDTO;
 import io.deeplay.communication.dto.MoveDTO;
 import io.deeplay.communication.dto.StartGameDTO;
+import io.deeplay.communication.model.GameStateType;
 import io.deeplay.communication.model.GameType;
 import io.deeplay.communication.service.DeserializationService;
 import io.deeplay.domain.Color;
@@ -14,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ClientHandler implements Runnable {
@@ -66,10 +69,29 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public StartGameDTO getStartGame() throws IOException {
-        String clientInput = in.readLine();
+    public StartGameDTO getStartGame() {
+        String clientInput;
+
+        try {
+            clientInput = in.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         return DeserializationService.convertJsonToStartGameDTO(clientInput);
     }
+
+//    public EndGameDTO getEndGame() {
+//        String clientInput;
+//
+//        try {
+//            clientInput = in.readLine();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        return DeserializationService.convertJsonToEndGameDTO(clientInput);
+//    }
 
     public Move getMove() throws IOException {
         String clientInput = in.readLine();
@@ -99,6 +121,39 @@ public class ClientHandler implements Runnable {
         } catch (IOException e) {
             logger.error("Не получилось отправить ход: ", e);
         }
+    }
+
+    public void sendEndGameToClient(String serializedEndGameDTO) {
+        try {
+            out.write(serializedEndGameDTO);
+            out.newLine();
+            out.flush();
+            System.out.println("Sent end game to client from a server!");
+        } catch (IOException e) {
+            logger.error("Не получилось отправить ход: ", e);
+        }
+        // TODO: реализовать метод (используется в переопределенном методе сервера из гейм сессии)
+    }
+
+    public EndGameDTO getEndGame(List<String> gameEnd) {
+        GameStateType endGameStateType;
+        io.deeplay.communication.model.Color winColor;
+
+        switch (gameEnd.get(0)) {
+            case "CHECK" -> endGameStateType = GameStateType.CHECK;
+            case "MATE" -> endGameStateType = GameStateType.MATE;
+            case "CHECKMATE" -> endGameStateType = GameStateType.STALEMATE;
+            case "DRAW" -> endGameStateType = GameStateType.DRAW;
+            default -> throw new IllegalArgumentException("Wrong game ending");
+        }
+
+        switch (gameEnd.get(1)) {
+            case "WHITE" -> winColor = io.deeplay.communication.model.Color.WHITE;
+            case "BLACK" -> winColor = io.deeplay.communication.model.Color.BLACK;
+            default -> throw new IllegalArgumentException("Wrong Color");
+        }
+
+        return new EndGameDTO(endGameStateType, winColor);
     }
 
     /*public Move getMove(String serializedMoveDTO) {

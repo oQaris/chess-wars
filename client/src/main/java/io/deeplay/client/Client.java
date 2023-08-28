@@ -1,12 +1,9 @@
 package io.deeplay.client;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
 import io.deeplay.communication.converter.Converter;
-import io.deeplay.communication.dto.*;
-import io.deeplay.communication.model.Color;
-import io.deeplay.communication.model.GameType;
+import io.deeplay.communication.dto.EndGameDTO;
+import io.deeplay.communication.dto.MoveDTO;
+import io.deeplay.communication.dto.StartGameDTO;
 import io.deeplay.communication.service.DeserializationService;
 import io.deeplay.communication.service.SerializationService;
 import io.deeplay.model.move.Move;
@@ -15,7 +12,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.List;
 
 public class Client {
     private static final String HOST = "localhost";
@@ -25,6 +21,7 @@ public class Client {
     private BufferedReader in;
     private static final Logger logger = LogManager.getLogger(Client.class);
     private final StartGameDTO gameSettings;
+    private EndGameDTO endGameDTO;
 
     public Client(StartGameDTO gameSettings) {
         this.gameSettings = gameSettings;
@@ -49,7 +46,8 @@ public class Client {
     }
 
     public Object startListening() {
-        String request = null;
+        String request;
+
         try {
             request = in.readLine();
         } catch (IOException e) {
@@ -59,8 +57,20 @@ public class Client {
         return processJson(request);
     }
 
-    public Move processJson(String json) {
-        return Converter.convertDTOToMove(DeserializationService.convertJsonToMoveDTO(json));
+    public Object processJson(String json) {
+        try {
+            return Converter.convertDTOToMove(DeserializationService.convertJsonToMoveDTO(json));
+        } catch (NullPointerException e1) {
+            try {
+                EndGameDTO endGameDTO = DeserializationService.convertJsonToEndGameDTO(json);
+
+                return Converter.convertEndGameStateDTO(endGameDTO);
+            } catch (NullPointerException e2) {
+                logger.error("wrong type DTO");
+            }
+        }
+
+        throw new NullPointerException("wrong type DTO");
 //        Gson gson = new Gson();
 //        JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
 //
@@ -90,9 +100,8 @@ public class Client {
     }
 
     public void sendMove(Move move) {
-        System.out.println("send move in client");
-
         String moveJson = SerializationService.convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move));
+
         try {
             out.write(moveJson);
             out.newLine();
