@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class ChessGUI extends JFrame implements EndpointUser {
     private final int BOARD_SIZE = 8;
@@ -84,8 +85,10 @@ public class ChessGUI extends JFrame implements EndpointUser {
         client.connectToServer();
         initialize();
 
-        if (!isPlayerMove) {
-            waitAndUpdate();
+        if (player instanceof Bot) {
+            startBot();
+        } else {
+            startPlayer();
         }
     }
 
@@ -211,20 +214,56 @@ public class ChessGUI extends JFrame implements EndpointUser {
         }
     }
 
+    public void startBot() {
+        new Thread(() -> {
+            while (true) {
+                if (!isPlayerMove) {
+                    Object playerAction = client.startListening();
+                    processClientInfo(playerAction);
+                } else {
+                    try {
+                        TimeUnit.SECONDS.sleep(2);
+                        Move move = player.getMove(gameInfo.getCurrentBoard(), player.getColor());
+
+                        gameInfo.move(move);
+                        isPlayerMove = false;
+                        switchColorAppearance();
+                        addToMoveHistory(player.getColor().opposite(), move.startPosition(), move.endPosition());
+                        paintBoard(gameInfo.getCurrentBoard().getBoard());
+
+                        client.sendMove(move);
+                        Object playerAction = client.startListening();
+                        processClientInfo(playerAction);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }).start();
+    }
+
+    public void startPlayer() {
+        if (!isPlayerMove) {
+            waitAndUpdate();
+        }
+    }
+
     public void waitAndUpdate() {
         new Thread(() -> {
             Object playerAction = client.startListening();
-
-            if (playerAction instanceof Move move) {
-                updateGameInfo(move);
-            } else if (playerAction instanceof List<?>) {
-                System.out.println("game over in wait and update");
-
-                List<String> endGameInfo = (List<String>) playerAction;
-                endGame(endGameInfo);
-            }
-
+            processClientInfo(playerAction);
         }).start();
+    }
+
+    public void processClientInfo(Object action) {
+        if (action instanceof Move move) {
+            updateGameInfo(move);
+        } else if (action instanceof List<?>) {
+            System.out.println("game over in wait and update");
+
+            List<String> endGameInfo = (List<String>) action;
+            endGame(endGameInfo);
+        }
     }
 
     public void endGame(List<String> endGameInfo) {

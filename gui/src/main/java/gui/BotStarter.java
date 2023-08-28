@@ -11,6 +11,7 @@ import io.deeplay.model.player.Player;
 import io.deeplay.service.GuiUserCommunicationService;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class BotStarter implements EndpointUser {
     private boolean isPlayerMove;
@@ -39,6 +40,11 @@ public class BotStarter implements EndpointUser {
     public void initialize() {
         while (true) {
             if (isPlayerMove) {
+                try {
+                    TimeUnit.SECONDS.sleep(2);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 Move move = player.getMove(gameInfo.getCurrentBoard(), player.getColor());
 
                 gameInfo.move(move);
@@ -50,7 +56,6 @@ public class BotStarter implements EndpointUser {
         }
     }
 
-    @Override
     public void endGame(List<String> endGameInfo) {
 
     }
