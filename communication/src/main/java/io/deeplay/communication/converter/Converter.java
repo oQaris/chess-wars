@@ -185,7 +185,7 @@ public class Converter {
         }
 
         if (gameEnd.get(0).equals(GameStates.CHECKMATE.toString())) {
-            return new EndGameDTO(GameStateType.MATE, convertColorFromString(gameEnd.get(1)));
+            return new EndGameDTO(GameStateType.CHECKMATE, convertColorFromString(gameEnd.get(1)));
         }
 
         throw new IllegalArgumentException("Illegal parameter converting");

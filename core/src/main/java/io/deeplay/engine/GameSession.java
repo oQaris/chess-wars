@@ -69,7 +69,7 @@ public class GameSession {
                 gameEnd.add(0, GameStates.CHECKMATE.toString());
                 gameEnd.add(1, currentColor.toString());
 
-                endGame("MATE, " + currentColor + " won");
+                endGame("CHECKMATE, " + currentColor + " won");
                 return;
             }
 
