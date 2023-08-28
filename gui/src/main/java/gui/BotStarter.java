@@ -1,24 +1,18 @@
 package gui;
 
-import gui.service.GamePropertiesService;
 import io.deeplay.client.Client;
 import io.deeplay.communication.converter.Converter;
 import io.deeplay.communication.dto.StartGameDTO;
 import io.deeplay.domain.Color;
-import io.deeplay.domain.MoveType;
-import io.deeplay.domain.SwitchPieceType;
 import io.deeplay.engine.GameInfo;
-import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
-import io.deeplay.model.piece.Piece;
 import io.deeplay.model.player.Bot;
 import io.deeplay.model.player.Player;
 import io.deeplay.service.GuiUserCommunicationService;
-import io.deeplay.service.UserCommunicationService;
 
 import java.util.List;
 
-public class BotStarter {
+public class BotStarter implements EndpointUser {
     private boolean isPlayerMove;
     private final GameInfo gameInfo;
     private final Player player;
@@ -42,7 +36,7 @@ public class BotStarter {
         }
     }
 
-    public void startBot() {
+    public void initialize() {
         while (true) {
             if (isPlayerMove) {
                 Move move = player.getMove(gameInfo.getCurrentBoard(), player.getColor());
@@ -56,7 +50,25 @@ public class BotStarter {
         }
     }
 
+    @Override
+    public void endGame(List<String> endGameInfo) {
+
+    }
+
     public void waitAndUpdate() {
+//        new Thread(() -> {
+//            Object playerAction = client.startListening();
+//
+//            if (playerAction instanceof Move move) {
+//                updateGameInfo(move);
+//            } else if (playerAction instanceof List<?>) {
+//                System.out.println("game over in wait and update");
+//
+//                List<String> endGameInfo = (List<String>) playerAction;
+//                endGame(endGameInfo);
+//            }
+//
+//        }).start();
         Move move = (Move) client.startListening();
         updateGameInfo(move);
     }

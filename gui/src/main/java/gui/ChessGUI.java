@@ -3,7 +3,6 @@ package gui;
 import gui.model.PieceColorIcon;
 import gui.model.PlayerType;
 import gui.service.BoardService;
-import gui.service.GamePropertiesService;
 import io.deeplay.client.Client;
 import io.deeplay.communication.converter.Converter;
 import io.deeplay.communication.dto.StartGameDTO;
@@ -32,18 +31,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class ChessGUI extends JFrame {
-
+public class ChessGUI extends JFrame implements EndpointUser {
+    private final int BOARD_SIZE = 8;
+    private final Color HIGHLIGHT_COLOR = Color.YELLOW;
+    private final Color POSSIBLEMOVE_COLOR = Color.GREEN;
     private JPanel chessBoardPanel;
     private JButton[][] chessBoardSquares;
     private Color[][] defaultCellColors;
     private JTextArea moveHistoryTextArea;
-    private final int BOARD_SIZE = 8;
-    private final Color HIGHLIGHT_COLOR = Color.YELLOW;
-    private final Color POSSIBLEMOVE_COLOR = Color.GREEN;
+    private JLabel currentPlayerLabel;
     private JButton selectedSquare = null;
     private Piece prevSelectedPiece = null;
-    private List<Coordinates> possibleMoves;
     private Map<Coordinates, Boolean> possibleMoveCells = null;
     private boolean isPlayerMove;
     private final GameInfo gameInfo;
@@ -63,10 +61,6 @@ public class ChessGUI extends JFrame {
         GuiUserCommunicationService guiUserCommunicationService = new GuiUserCommunicationService() {
             @Override
             public Piece selectPiece(List<Piece> possiblePiecesToMove) {
-                if (prevSelectedPiece == null) {
-
-                }
-
                 return prevSelectedPiece;
             }
 
@@ -88,14 +82,14 @@ public class ChessGUI extends JFrame {
         }
         this.client = new Client(startGameDTO);
         client.connectToServer();
-        initUI();
+        initialize();
 
         if (!isPlayerMove) {
             waitAndUpdate();
         }
     }
 
-    private void initUI() {
+    public void initialize() {
         setTitle("Chess Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -110,6 +104,10 @@ public class ChessGUI extends JFrame {
         moveHistoryTextArea = new JTextArea(20, 18);
         moveHistoryTextArea.setEditable(false);
 
+        currentPlayerLabel = new JLabel();
+        currentPlayerLabel.setText("Текущий ход: БЕЛЫЙ");
+        add(currentPlayerLabel, BorderLayout.NORTH);
+
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, chessBoardPanel, new JScrollPane(moveHistoryTextArea));
         splitPane.setDividerLocation(490);
         add(splitPane);
@@ -121,8 +119,8 @@ public class ChessGUI extends JFrame {
     }
 
     private class ChessSquareListener implements ActionListener {
-        private int x;
-        private int y;
+        private final int x;
+        private final int y;
 
         public ChessSquareListener(int x, int y) {
             this.x = x;
@@ -136,7 +134,7 @@ public class ChessGUI extends JFrame {
             Piece selectedPiece = currentBoard.getPiece(new Coordinates(x, y));
 
             io.deeplay.domain.Color currentColor = gameInfo.getCurrentMoveColor();
-            possibleMoves = null;
+            List<Coordinates> possibleMoves = null;
             if (selectedPiece.getColor() == currentColor) {
                 possibleMoves = selectedPiece.getPossibleMoves(currentBoard);
                 List<Coordinates> movesWithoutCheck = GameState.getMovesWithoutMakingCheck(gameInfo.getCurrentBoard(), selectedPiece, possibleMoves);
@@ -180,12 +178,11 @@ public class ChessGUI extends JFrame {
                                     move.moveType(), switchPieceType);
                             gameInfo.move(promotionMove);
                             client.sendMove(promotionMove);
-                            isPlayerMove = false;
                         } else {
                             gameInfo.move(move);
                             client.sendMove(move);
-                            isPlayerMove = false;
                         }
+                        isPlayerMove = false;
                         addToMoveHistory(currentColor, move.startPosition(), move.endPosition());
                         possibleMoveCells = new HashMap<>();
                     }
@@ -194,6 +191,7 @@ public class ChessGUI extends JFrame {
                 selectedSquare = null;
                 prevSelectedPiece = null;
                 paintBoard(gameInfo.getCurrentBoard().getBoard());
+                switchColorAppearance();
 
                 waitAndUpdate();
             }
@@ -217,8 +215,7 @@ public class ChessGUI extends JFrame {
         new Thread(() -> {
             Object playerAction = client.startListening();
 
-            if (playerAction instanceof Move) {
-                Move move = (Move) playerAction;
+            if (playerAction instanceof Move move) {
                 updateGameInfo(move);
             } else if (playerAction instanceof List<?>) {
                 System.out.println("game over in wait and update");
@@ -250,51 +247,10 @@ public class ChessGUI extends JFrame {
         frame.setVisible(true);
     }
 
-    private void paintBoard(Piece[][] board) {
-        boolean isLightSquare = false;
-
-        if (player.getColor() == io.deeplay.domain.Color.WHITE) {
-            for (int y = 7; y >= 0; y--) {
-                isLightSquare = !isLightSquare;
-                for (int x = 0; x < BOARD_SIZE; x++) {
-                    isLightSquare = !isLightSquare;
-                    if (board[x][y].getClass() != Empty.class) {
-                        chessBoardSquares[x][y].setIcon(setIcon(board[x][y].getClass().getSimpleName(), board[x][y].getColor()));
-                    } else {
-                        chessBoardSquares[x][y].setIcon(null);
-                    }
-
-                    if (isLightSquare) {
-                        chessBoardSquares[x][y].setBackground(new Color(0xFF5E1700, true));
-                    } else {
-                        chessBoardSquares[x][y].setBackground(new Color(0xFFB74D00, true));
-                    }
-                }
-            }
-        } else {
-            for (int y = 0; y <= 7; y++) {
-                isLightSquare = !isLightSquare;
-                for (int x = 0; x < BOARD_SIZE; x++) {
-                    isLightSquare = !isLightSquare;
-                    if (board[x][y].getClass() != Empty.class) {
-                        chessBoardSquares[x][y].setIcon(setIcon(board[x][y].getClass().getSimpleName(), board[x][y].getColor()));
-                    } else {
-                        chessBoardSquares[x][y].setIcon(null);
-                    }
-
-                    if (isLightSquare) {
-                        chessBoardSquares[x][y].setBackground(new Color(0xFF5E1700, true));
-                    } else {
-                        chessBoardSquares[x][y].setBackground(new Color(0xFFB74D00, true));
-                    }
-                }
-            }
-        }
-    }
-
     public void updateGameInfo(Move incomingMove) {
         gameInfo.move(incomingMove);
         isPlayerMove = true;
+        switchColorAppearance();
         addToMoveHistory(player.getColor().opposite(), incomingMove.startPosition(), incomingMove.endPosition());
         paintBoard(gameInfo.getCurrentBoard().getBoard());
     }
@@ -357,7 +313,49 @@ public class ChessGUI extends JFrame {
         }
     }
 
-    public Icon setIcon(String className, io.deeplay.domain.Color color) {
+    private void paintBoard(Piece[][] board) {
+        boolean isLightSquare = false;
+
+        if (player.getColor() == io.deeplay.domain.Color.WHITE) {
+            for (int y = 7; y >= 0; y--) {
+                isLightSquare = !isLightSquare;
+                for (int x = 0; x < BOARD_SIZE; x++) {
+                    isLightSquare = !isLightSquare;
+                    if (board[x][y].getClass() != Empty.class) {
+                        chessBoardSquares[x][y].setIcon(setIcon(board[x][y].getClass().getSimpleName(), board[x][y].getColor()));
+                    } else {
+                        chessBoardSquares[x][y].setIcon(null);
+                    }
+
+                    if (isLightSquare) {
+                        chessBoardSquares[x][y].setBackground(new Color(0xFF5E1700, true));
+                    } else {
+                        chessBoardSquares[x][y].setBackground(new Color(0xFFB74D00, true));
+                    }
+                }
+            }
+        } else {
+            for (int y = 0; y <= 7; y++) {
+                isLightSquare = !isLightSquare;
+                for (int x = 0; x < BOARD_SIZE; x++) {
+                    isLightSquare = !isLightSquare;
+                    if (board[x][y].getClass() != Empty.class) {
+                        chessBoardSquares[x][y].setIcon(setIcon(board[x][y].getClass().getSimpleName(), board[x][y].getColor()));
+                    } else {
+                        chessBoardSquares[x][y].setIcon(null);
+                    }
+
+                    if (isLightSquare) {
+                        chessBoardSquares[x][y].setBackground(new Color(0xFF5E1700, true));
+                    } else {
+                        chessBoardSquares[x][y].setBackground(new Color(0xFFB74D00, true));
+                    }
+                }
+            }
+        }
+    }
+
+    Icon setIcon(String className, io.deeplay.domain.Color color) {
         String path = "";
         if (color == io.deeplay.domain.Color.WHITE) {
             switch (className) {
@@ -385,5 +383,17 @@ public class ChessGUI extends JFrame {
             throw new RuntimeException(e);
         }
         return new ImageIcon(image);
+    }
+
+    private void switchColorAppearance() {
+        io.deeplay.domain.Color playerColor = player.getColor();
+
+        if (playerColor.equals(io.deeplay.domain.Color.WHITE)) {
+            if (isPlayerMove) currentPlayerLabel.setText("Текущий ход: БЕЛЫЙ");
+            else currentPlayerLabel.setText("Текущий ход: ЧЕРНЫЙ");
+        } else {
+            if (isPlayerMove) currentPlayerLabel.setText("Текущий ход: ЧЕРНЫЙ");
+            else currentPlayerLabel.setText("Текущий ход: БЕЛЫЙ");
+        }
     }
 }

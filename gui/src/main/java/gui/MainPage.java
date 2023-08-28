@@ -1,7 +1,6 @@
 package gui;
 
 import gui.model.PlayerType;
-import io.deeplay.client.Client;
 import io.deeplay.communication.converter.Converter;
 import io.deeplay.communication.dto.StartGameDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -47,12 +46,12 @@ public class MainPage {
                 } else if (gameSettings.get(0).equals("Человек vs. Бот")) {
                     new ChessGUI(startGameDTO, PlayerType.HUMAN);
                     startGameDTO.setCurrentColor(startGameDTO.getCurrentColor().opposite());
-                    new Thread(() -> new BotStarter(startGameDTO).startBot()).start();
+                    new Thread(() -> new BotStarter(startGameDTO).initialize()).start();
                 }
                 else {
                     new ChessGUI(startGameDTO, PlayerType.BOT);
                     startGameDTO.setCurrentColor(startGameDTO.getCurrentColor().opposite());
-                    new Thread(() -> new BotStarter(startGameDTO).startBot()).start();
+                    new Thread(() -> new BotStarter(startGameDTO).initialize()).start();
                 }
             } catch (NullPointerException exception) {
                 log.error("Can't find any frame!" + exception);
@@ -71,15 +70,6 @@ public class MainPage {
 
         frame.pack();
         frame.setVisible(true);
-    }
-
-    private String getOppositeColor(String curColor) {
-        String oppositeColor = null;
-        switch (curColor) {
-            case "Белый" -> oppositeColor = "Черный";
-            case "Черный" -> oppositeColor = "Белый";
-        }
-        return oppositeColor;
     }
 
     private void createUIComponents() {

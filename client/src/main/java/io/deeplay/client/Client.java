@@ -12,6 +12,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Client {
     private static final String HOST = "localhost";
@@ -110,13 +112,5 @@ public class Client {
             logger.error("Ошибка отправки хода от клиента");
             throw new RuntimeException(e);
         }
-    }
-
-    public Move receiveMove(MoveDTO moveDTO) {
-        return Converter.convertDTOToMove(moveDTO);
-    }
-
-    public Move getMove() {
-        return null;
     }
 }
