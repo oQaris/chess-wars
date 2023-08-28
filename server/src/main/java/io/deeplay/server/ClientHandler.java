@@ -141,8 +141,8 @@ public class ClientHandler implements Runnable {
 
         switch (gameEnd.get(0)) {
             case "CHECK" -> endGameStateType = GameStateType.CHECK;
-            case "MATE" -> endGameStateType = GameStateType.MATE;
-            case "CHECKMATE" -> endGameStateType = GameStateType.STALEMATE;
+            case "CHECKMATE" -> endGameStateType = GameStateType.CHECKMATE;
+            case "STALEMATE" -> endGameStateType = GameStateType.STALEMATE;
             case "DRAW" -> endGameStateType = GameStateType.DRAW;
             default -> throw new IllegalArgumentException("Wrong game ending");
         }
@@ -155,18 +155,6 @@ public class ClientHandler implements Runnable {
 
         return new EndGameDTO(endGameStateType, winColor);
     }
-
-    /*public Move getMove(String serializedMoveDTO) {
-        return Converter.convertDTOToMove(DeserializationService.convertJsonToMoveDTO(serializedMoveDTO));
-    }*/
-    //принимаем client.getMove() -> отправляем другому клиенту
-    //отправляет клиентам ход
-    //
-
-    /*private void sendMoveToServer(String move) throws IOException {
-        out.write(move);
-        out.flush();
-    }*/
 
     /**
      * Отправляет сообщение клиенту.

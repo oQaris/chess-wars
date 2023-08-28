@@ -2,7 +2,7 @@ package io.deeplay.communication.model;
 
 public enum GameStateType {
     CHECK,
-    MATE,
+    CHECKMATE,
     STALEMATE,
     DRAW,
     DEFAULT;
