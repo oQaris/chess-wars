@@ -328,10 +328,11 @@ public class ChessGUI extends JFrame implements EndpointUser {
         } else {
             for (int y = 0; y <= 7; y++) {
                 isLightSquare = !isLightSquare;
-                for (int x = 0; x < BOARD_SIZE; x++) {
+                for (int x = 7; x >= 0; x--) {
                     isLightSquare = !isLightSquare;
                     chessBoardSquares[x][y] = new JButton();
                     chessBoardSquares[x][y].setPreferredSize(new Dimension(60, 60));
+                    System.out.print("("+x+","+y+")");
 
                     if (board[x][y].getClass() != Empty.class) {
                         chessBoardSquares[x][y].setIcon(setIcon(board[x][y].getClass().getSimpleName(), board[x][y].getColor()));
@@ -348,6 +349,7 @@ public class ChessGUI extends JFrame implements EndpointUser {
                     chessBoardSquares[x][y].addActionListener(new ChessSquareListener(x, y));
                     chessBoardPanel.add(chessBoardSquares[x][y]);
                 }
+                System.out.println();
             }
         }
     }
@@ -376,7 +378,7 @@ public class ChessGUI extends JFrame implements EndpointUser {
         } else {
             for (int y = 0; y <= 7; y++) {
                 isLightSquare = !isLightSquare;
-                for (int x = 0; x < BOARD_SIZE; x++) {
+                for (int x = 7; x >= 0; x--) {
                     isLightSquare = !isLightSquare;
                     if (board[x][y].getClass() != Empty.class) {
                         chessBoardSquares[x][y].setIcon(setIcon(board[x][y].getClass().getSimpleName(), board[x][y].getColor()));
