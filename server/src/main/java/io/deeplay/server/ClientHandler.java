@@ -10,7 +10,9 @@ import io.deeplay.communication.service.DeserializationService;
 import io.deeplay.domain.Color;
 import io.deeplay.model.Board;
 import io.deeplay.model.move.Move;
+import io.deeplay.model.player.Player;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,8 +35,9 @@ public class ClientHandler implements Runnable {
     private Color color;
     @Getter
     private int botLevel;
-
-    private final ConcurrentLinkedQueue<Move> movesQueue;
+    @Setter
+    @Getter
+    private Player player;
 
     public ClientHandler(Socket clientSocket, Server server) throws IOException {
         this.clientSocket = clientSocket;
@@ -42,7 +45,6 @@ public class ClientHandler implements Runnable {
         board = new Board();
         out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        movesQueue = new ConcurrentLinkedQueue<>();
         startGameDTO = getStartGame();
         System.out.println(startGameDTO.toString());
         gameType = startGameDTO.getGameType();

@@ -19,17 +19,21 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static io.deeplay.communication.converter.Converter.convertGameTypeDTO;
 
 public class Server {
     private static final Logger logger = LogManager.getLogger(Server.class);
     private static final int PORT = 8080;
+    public static final ExecutorService GAMES = Executors.newFixedThreadPool(10);
+    private final List<ClientHandler> humanHumanClientList = new LinkedList<>();
+    private final List<ClientHandler> humanBotClientList = new LinkedList<>();
+    private final List<ClientHandler> botBotClientList = new LinkedList<>();
     private ServerSocket serverSocket;
     private final List<ClientHandler> clients = new ArrayList<>();
-    private boolean isGameStarted;
     private GameType gameType;
     private Player serverPlayer1;
     private Player serverPlayer2;
@@ -62,26 +66,39 @@ public class Server {
             ClientHandler clientHandler = new ClientHandler(socket, this);
 
             gameType = clientHandler.getGameType();
+
             switch (clientHandler.getGameType()) {
                 case HumanVsHuman -> {
                     if (serverPlayer1 == null) {
                         serverPlayer1 = new Human(clientHandler.getColor(), new GuiUserCommunicationService());
+                        clientHandler.setPlayer(serverPlayer1);
+                        humanHumanClientList.add(clientHandler);
                     } else {
                         serverPlayer2 = new Human(clientHandler.getColor(), new GuiUserCommunicationService());
+                        clientHandler.setPlayer(serverPlayer2);
+                        humanHumanClientList.add(clientHandler);
                     }
                 }
                 case HumanVsBot -> {
                     if (serverPlayer1 == null) {
                         serverPlayer1 = new Human(clientHandler.getColor(), new GuiUserCommunicationService());
+                        clientHandler.setPlayer(serverPlayer1);
+                        humanBotClientList.add(clientHandler);
                     } else {
                         serverPlayer2 = new Bot(clientHandler.getColor(), clientHandler.getBotLevel(), new GuiUserCommunicationService());
+                        clientHandler.setPlayer(serverPlayer2);
+                        humanBotClientList.add(clientHandler);
                     }
                 }
                 case BotVsBot -> {
                     if (serverPlayer1 == null) {
                         serverPlayer1 = new Bot(clientHandler.getColor(), clientHandler.getBotLevel(), new GuiUserCommunicationService());
+                        clientHandler.setPlayer(serverPlayer1);
+                        botBotClientList.add(clientHandler);
                     } else {
                         serverPlayer2 = new Bot(clientHandler.getColor(), clientHandler.getBotLevel(), new GuiUserCommunicationService());
+                        clientHandler.setPlayer(serverPlayer2);
+                        botBotClientList.add(clientHandler);
                     }
                 }
                 default -> throw new IllegalArgumentException("Тип игры не был распознан");
@@ -91,85 +108,33 @@ public class Server {
             new Thread(clientHandler).start();
             logger.info("New client connected");
 
-            if (clients.size() == 2 && !isGameStarted) {
-                isGameStarted = true;
-
-                startGame();
-                break;
+            if (botBotClientList.size() > 1) {
+                botBotClientList.retainAll(tryStartingGame(botBotClientList));
+            } else if (humanBotClientList.size() > 1) {
+                humanBotClientList.retainAll(tryStartingGame(humanBotClientList));
+            } else if (humanHumanClientList.size() > 1) {
+                humanHumanClientList.retainAll(tryStartingGame(humanHumanClientList));
             }
         }
     }
 
-    private void startGame() {
-        GameSession gameSession = new GameSession(serverPlayer1, serverPlayer2, convertGameTypeDTO(gameType)) {
-            public void sendMove(Move move) {
-                Color moveColor = getGameInfo().getCurrentMoveColor();
-                if (moveColor.equals(serverPlayer1.getColor())) {
-                    if (clients.get(0).getColor().equals(moveColor)) {
-                        clients.get(1).sendMoveToClient((SerializationService
-                                .convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
-                        System.out.println("We sent move to other client: " + clients.get(1).getColor());
+    private List<ClientHandler> tryStartingGame(List<ClientHandler> clientHandlerList) {
+        if (clientHandlerList.size() > 1) {
+            for (int i = 0; i < clientHandlerList.size(); i++) {
+                ClientHandler tempCH = clientHandlerList.get(i);
+                for (int j = i+1; j < clientHandlerList.size(); j++) {
+                    ClientHandler tempCH2 = clientHandlerList.get(j);
+                    if (tempCH.getColor() != tempCH2.getColor()) {
+                        List<ClientHandler> startGameClientHandlerList = new ArrayList<>(Arrays.asList(tempCH, tempCH2));
+                        GAMES.execute(new GameStarter(startGameClientHandlerList, gameType));
+                        clientHandlerList.remove(tempCH);
+                        clientHandlerList.remove(tempCH2);
+                        gameType = null;
                     }
-                    if (clients.get(1).getColor().equals(moveColor)) {
-                        clients.get(0).sendMoveToClient((SerializationService
-                                .convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
-                        System.out.println("We sent move to other client: " + clients.get(0).getColor());
-                    } else logger.error("Не удалось найти ход игрока");
-                } else if (getGameInfo().getCurrentMoveColor().equals(serverPlayer2.getColor())) {
-                    if (clients.get(0).getColor().equals(moveColor)) {
-                        clients.get(1).sendMoveToClient((SerializationService
-                                .convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
-                    }
-                    if (clients.get(1).getColor().equals(moveColor)) {
-                        clients.get(0).sendMoveToClient((SerializationService
-                                .convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
-                    } else logger.error("Не удалось найти ход игрока");
                 }
             }
-
-            @Override
-            public Move getMove(Player player, Color color) {
-                if (clients.get(0).getColor().equals(color)) {
-                    try {
-                        return clients.get(0).getMove();
-                    } catch (IOException e) {
-                        logger.error("cannot get move");
-                    }
-                }
-
-                if (clients.get(1).getColor().equals(color)) {
-                    try {
-                        return clients.get(1).getMove();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-
-                throw new IllegalStateException();
-            }
-
-            @Override
-            public void sendGameEnd(List<String> gameEnd) {
-                Color moveColor = getGameInfo().getCurrentMoveColor();
-                if (clients.get(0).getColor().equals(moveColor)) {
-                    EndGameDTO endGameDTO1 = clients.get(0).getEndGame(gameEnd);
-                    String jsonEndGameDTO1 = SerializationService.convertEndGameDTOtoJSON(endGameDTO1);
-
-                    clients.get(0).sendEndGameToClient(jsonEndGameDTO1);
-                    clients.get(1).sendEndGameToClient(jsonEndGameDTO1);
-                } else if (clients.get(1).getColor().equals(moveColor)) {
-                    EndGameDTO endGameDTO2 = clients.get(1).getEndGame(gameEnd);
-                    String jsonEndGameDTO2 = SerializationService.convertEndGameDTOtoJSON(endGameDTO2);
-
-                    clients.get(0).sendEndGameToClient(jsonEndGameDTO2);
-                    clients.get(1).sendEndGameToClient(jsonEndGameDTO2);
-                } else {
-                    logger.error("Ошибка отправки конца игры клиенту");
-                }
-            }
-        };
-
-        gameSession.startGameSession();
+        }
+        return clientHandlerList;
     }
 
     public void broadcast(String message) { // сообщения обоим игрокам
