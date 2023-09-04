@@ -7,6 +7,7 @@ import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.piece.Piece;
 import io.deeplay.model.player.Human;
+import io.deeplay.model.player.Player;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -46,8 +47,7 @@ class UserCommunicationServiceTest {
     @Test
     void testSelectPiece_expectNewPiece() {
         Board board = new Board();
-        Human human = new Human(Color.WHITE, new UserCommunicationService(System.in, System.out));
-        List<Piece> possiblePiecesToMove = human.getPiecesPossibleToMove(board, human.getColor());
+        List<Piece> possiblePiecesToMove = Player.getPiecesPossibleToMove(board, Color.WHITE);
 
         ByteArrayInputStream inputStream = new ByteArrayInputStream("1".getBytes(Charset.defaultCharset()));
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -66,8 +66,7 @@ class UserCommunicationServiceTest {
         UserCommunicationService userCommunicationService = new UserCommunicationService(inputStream, ps);
 
         Board board = new Board();
-        Human human = new Human(Color.WHITE, new UserCommunicationService(System.in, System.out));
-        List<Piece> possiblePiecesToMove = human.getPiecesPossibleToMove(board, human.getColor());
+        List<Piece> possiblePiecesToMove = Player.getPiecesPossibleToMove(board, Color.WHITE);
 
         IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class,
                 () -> userCommunicationService.selectPiece(possiblePiecesToMove));
