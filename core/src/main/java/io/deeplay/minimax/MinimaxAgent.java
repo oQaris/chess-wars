@@ -16,15 +16,14 @@ import java.util.*;
 import static io.deeplay.model.player.Player.getPiecesPossibleToMove;
 import static io.deeplay.model.player.Player.getType;
 
-public class MinimaxAgent {
+public class MinimaxAgent extends AbstractAiAgent {
     private Color maximizingColor;
     private Color minimizingColor;
 
     public Move getBestMove(Board board, int depth, double alpha, double beta, Color currentColor) {
         maximizingColor = currentColor;
         minimizingColor = currentColor.opposite();
-        boolean maximizingPlayer = true;
-        return (Move) minimax(board, depth, alpha, beta, currentColor, maximizingPlayer)[0];
+        return (Move) minimax(board, depth, alpha, beta, currentColor, true)[0];
     }
 
     public Object[] minimax(Board board, int depth, double alpha, double beta, Color currentColor, boolean maximizingPlayer) {
@@ -36,144 +35,75 @@ public class MinimaxAgent {
         }
 
         if (maximizingPlayer) {
-            List<Piece> possiblePiecesToMove = getPiecesPossibleToMove(board, maximizingColor);
-            Collections.shuffle(possiblePiecesToMove);
-            Move currentBestMove = randomMove(board, possiblePiecesToMove);
+            List<Move> allPossibleMoves = getAllPossibleMoves(board, maximizingColor);
+            Move currentBestMove = getRandomMove(allPossibleMoves);
             double maxEval = Double.MIN_VALUE;
 
-            for (Piece piece : possiblePiecesToMove) {
-                List<Coordinates> moveCoordinates = piece.getPossibleMoves(board);
-                List<Coordinates> movesWithoutCheck = GameState.getMovesWithoutMakingCheck(board, piece, moveCoordinates);
-                moveCoordinates.retainAll(movesWithoutCheck);
+            for (Move move : allPossibleMoves) {
+                Board duplicateBoard = new Board();
+                BoardUtil.duplicateBoard(board).accept(duplicateBoard);
 
-                for (Coordinates coordinates : moveCoordinates) {
-                    Board duplicateBoard = new Board();
-                    BoardUtil.duplicateBoard(board).accept(duplicateBoard);
+                duplicateBoard.move(move);
+                double currentEval = (double) minimax(duplicateBoard, depth - 1, alpha, beta, currentColor.opposite(), false)[1];
 
-                    MoveType moveType = Player.getType(piece, coordinates, duplicateBoard);
-                    double currentEval;
-                    SwitchPieceType switchPieceType;
-                    if (moveType == MoveType.PROMOTION) {
-                        for (int i = 0; i < SwitchPieceType.values().length - 1; i++) {
-                            BoardUtil.duplicateBoard(board).accept(duplicateBoard);
-                            switchPieceType = SwitchPieceType.values()[i];
-                            Move move = new Move(piece.getCoordinates(), coordinates, moveType, switchPieceType);
-                            duplicateBoard.move(move);
-                            currentEval = (double) minimax(duplicateBoard, depth - 1, alpha, beta, currentColor.opposite(), false)[1];
+                if (currentEval > maxEval) {
+                    maxEval = currentEval;
+                    currentBestMove = move;
+                }
 
-                            if (currentEval > maxEval) {
-                                maxEval = currentEval;
-                                currentBestMove = move;
-                            }
-
-                            alpha = Math.max(alpha, currentEval);
-                            if (beta <= alpha) {
-                                break; // Beta cut-off
-                            }
-                        }
-                    } else {
-                        switchPieceType = SwitchPieceType.NULL;
-                        Move move = new Move(piece.getCoordinates(), coordinates, moveType, switchPieceType);
-                        duplicateBoard.move(move);
-                        currentEval = (double) minimax(duplicateBoard, depth - 1, alpha, beta, currentColor.opposite(), false)[1];
-
-                        if (currentEval > maxEval) {
-                            maxEval = currentEval;
-                            currentBestMove = move;
-                        }
-
-                        alpha = Math.max(alpha, currentEval);
-                        if (beta <= alpha) {
-                            break; // Beta cut-off
-                        }
-                    }
+                alpha = Math.max(alpha, currentEval);
+                if (beta <= alpha) {
+                    break;
                 }
             }
             return new Object[]{currentBestMove, maxEval};
         } else {
-            List<Piece> possiblePiecesToMove = getPiecesPossibleToMove(board, minimizingColor);
-            Collections.shuffle(possiblePiecesToMove);
-            Move currentBestMove = randomMove(board, possiblePiecesToMove);
+            List<Move> allPossibleMoves = getAllPossibleMoves(board, minimizingColor);
+            Move currentBestMove = getRandomMove(allPossibleMoves);
             double minEval = Double.MAX_VALUE;
 
-            for (Piece piece : possiblePiecesToMove) {
-                List<Coordinates> moveCoordinates = piece.getPossibleMoves(board);
-                List<Coordinates> movesWithoutCheck = GameState.getMovesWithoutMakingCheck(board, piece, moveCoordinates);
-                moveCoordinates.retainAll(movesWithoutCheck);
+            for (Move move : allPossibleMoves) {
+                Board duplicateBoard = new Board();
+                BoardUtil.duplicateBoard(board).accept(duplicateBoard);
 
-                for (Coordinates coordinates : moveCoordinates) {
-                    Board duplicateBoard = new Board();
-                    BoardUtil.duplicateBoard(board).accept(duplicateBoard);
+                duplicateBoard.move(move);
+                double currentEval = (double) minimax(duplicateBoard, depth - 1, alpha, beta, currentColor.opposite(), true)[1];
 
-                    MoveType moveType = Player.getType(piece, coordinates, duplicateBoard);
-                    double currentEval;
-                    SwitchPieceType switchPieceType;
-                    if (moveType == MoveType.PROMOTION) {
-                        for (int i = 0; i < SwitchPieceType.values().length - 1; i++) {
-                            BoardUtil.duplicateBoard(board).accept(duplicateBoard);
-                            switchPieceType = SwitchPieceType.values()[i];
-                            Move move = new Move(piece.getCoordinates(), coordinates, moveType, switchPieceType);
-                            duplicateBoard.move(move);
-                            currentEval = (double) minimax(duplicateBoard, depth - 1, alpha, beta, currentColor.opposite(), true)[1];
+                if (currentEval < minEval) {
+                    minEval = currentEval;
+                    currentBestMove = move;
+                }
 
-                            if (currentEval < minEval) {
-                                minEval = currentEval;
-                                currentBestMove = move;
-                            }
-
-                            beta = Math.min(beta, currentEval);
-                            if (beta <= alpha) {
-                                break; // Alpha cut-off
-                            }
-                        }
-                    } else {
-                        switchPieceType = SwitchPieceType.NULL;
-                        Move move = new Move(piece.getCoordinates(), coordinates, moveType, switchPieceType);
-                        duplicateBoard.move(move);
-                        currentEval = (double) minimax(duplicateBoard, depth - 1, alpha, beta, currentColor.opposite(), true)[1];
-
-                        if (currentEval < minEval) {
-                            minEval = currentEval;
-                            currentBestMove = move;
-                        }
-
-                        beta = Math.min(beta, currentEval);
-                        if (beta <= alpha) {
-                            break; // Alpha cut-off
-                        }
-                    }
+                beta = Math.min(beta, currentEval);
+                if (beta <= alpha) {
+                    break;
                 }
             }
             return new Object[]{currentBestMove, minEval};
         }
     }
 
-    Move randomMove(Board board, List<Piece> randomPiecesList) {
-        Random random = new Random();
-        Piece randomPiece;
-        if (randomPiecesList.size() == 1) randomPiece = randomPiecesList.get(0);
-        else randomPiece = randomPiecesList.get(random.nextInt(randomPiecesList.size() - 1));
+    List<Move> getAllPossibleMoves(Board board, Color color) {
+        List<Piece> possiblePiecesToMove = getPiecesPossibleToMove(board, color);
+        Collections.shuffle(possiblePiecesToMove);
+        List<Move> allPossibleMoves = new ArrayList<>();
 
-        List<Coordinates> availableMoves = randomPiece.getPossibleMoves(board);
-        List<Coordinates> movesWithoutCheck = GameState.getMovesWithoutMakingCheck(board, randomPiece, availableMoves);
-        availableMoves.retainAll(movesWithoutCheck);
+        for (Piece piece : possiblePiecesToMove) {
+            List<Coordinates> movesCoordinatesWithoutCheck = GameState.getMovesWithoutMakingCheck(board, piece, piece.getPossibleMoves(board));
 
-        Coordinates randomMoveCoordinates = null;
-        if (availableMoves.size() == 1) randomMoveCoordinates = availableMoves.get(0);
-        else randomMoveCoordinates = availableMoves.get(random.nextInt(availableMoves.size() - 1));
-
-        MoveType moveType = getType(randomPiece, randomMoveCoordinates, board);
-        SwitchPieceType selectedSwitchPiece = SwitchPieceType.NULL;
-
-        if (moveType == MoveType.PROMOTION) {
-            switch (SwitchPieceType.getRandomPiece()) {
-                case BISHOP -> selectedSwitchPiece = SwitchPieceType.BISHOP;
-                case KNIGHT -> selectedSwitchPiece = SwitchPieceType.KNIGHT;
-                case QUEEN -> selectedSwitchPiece = SwitchPieceType.QUEEN;
-                case ROOK -> selectedSwitchPiece = SwitchPieceType.ROOK;
+            for (Coordinates coordinates : movesCoordinatesWithoutCheck) {
+                MoveType moveType = Player.getType(piece, coordinates, board);
+                if (moveType == MoveType.PROMOTION) {
+                    for (int i = 0; i < SwitchPieceType.values().length - 1; i++) {
+                        allPossibleMoves.add(new Move(piece.getCoordinates(), coordinates, moveType, SwitchPieceType.values()[i]));
+                    }
+                } else {
+                    allPossibleMoves.add(new Move(piece.getCoordinates(), coordinates, moveType, SwitchPieceType.NULL));
+                }
             }
         }
-        return new Move(randomPiece.getCoordinates(), randomMoveCoordinates, moveType, selectedSwitchPiece);
+
+        return allPossibleMoves;
     }
 
     double calculatePieces(Board board, Color currentColor) {
