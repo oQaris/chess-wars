@@ -63,7 +63,7 @@ public class GameState {
      *
      * @param board текущее состояние доски
      * @param color цвет игрока, которого проверяют
-     * @return есть ли мат
+     * @return есть ли пат
      */
     public static boolean isStaleMate(Board board, Color color) {
         for (int x = 0; x < 8; x++) {
