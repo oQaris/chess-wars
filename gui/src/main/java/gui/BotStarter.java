@@ -7,6 +7,7 @@ import io.deeplay.domain.Color;
 import io.deeplay.engine.GameInfo;
 import io.deeplay.model.move.Move;
 import io.deeplay.model.player.Bot;
+import io.deeplay.model.player.MinimaxBot;
 import io.deeplay.model.player.Player;
 import io.deeplay.service.GuiUserCommunicationService;
 
@@ -28,7 +29,7 @@ public class BotStarter implements EndpointUser {
             }
         };
 
-        this.player = new Bot(currentColor, startGameDTO.getBotLevel(), new GuiUserCommunicationService());
+        this.player = new MinimaxBot(currentColor, startGameDTO.getBotLevel(), new GuiUserCommunicationService());
         this.client = new Client(startGameDTO);
         client.connectToServer();
 
@@ -40,12 +41,12 @@ public class BotStarter implements EndpointUser {
     public void initialize() {
         while (true) {
             if (isPlayerMove) {
-                try {
-                    TimeUnit.SECONDS.sleep(2);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
                 Move move = player.getMove(gameInfo.getCurrentBoard(), player.getColor());
+//                try {
+//                    TimeUnit.SECONDS.sleep(2);
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
 
                 gameInfo.move(move);
                 client.sendMove(move);

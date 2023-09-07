@@ -12,6 +12,6 @@ public enum Color {
             return WHITE;
         }
 
-        return EMPTY;
+        throw new IllegalArgumentException("Can't define Color");
     }
 }

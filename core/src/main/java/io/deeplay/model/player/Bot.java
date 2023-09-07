@@ -44,7 +44,7 @@ public class Bot extends Player {
         List<Coordinates> movesWithoutCheck = GameState.getMovesWithoutMakingCheck(board, randomPiece, availableMoves);
         availableMoves.retainAll(movesWithoutCheck);
 
-        //     System.out.println("Number of moves you can do using this Piece: " + availableMoves.size());
+//        System.out.println("Number of moves you can do using this Piece: " + availableMoves.size());
 
         Coordinates randomMoveCoordinates = null;
         if (availableMoves.size() == 1) randomMoveCoordinates = availableMoves.get(0);
@@ -62,8 +62,8 @@ public class Bot extends Player {
             }
         }
 
-        //     System.out.println("Bot selected to move: " + randomPiece.getColor() + " " + randomPiece.getClass().getSimpleName()
-        //           + " to coordinates: x=" + randomMoveCoordinates.getX() + ", y=" + randomMoveCoordinates.getY());
+//        System.out.println("Bot selected to move: " + randomPiece.getColor() + " " + randomPiece.getClass().getSimpleName()
+//                + " to coordinates: x=" + randomMoveCoordinates.getX() + ", y=" + randomMoveCoordinates.getY());
 
         return new Move(randomPiece.getCoordinates(), randomMoveCoordinates, moveType, selectedSwitchPiece);
     }
