@@ -83,35 +83,12 @@ public class MinimaxAgent extends AbstractAiAgent {
         }
     }
 
-    List<Move> getAllPossibleMoves(Board board, Color color) {
-        List<Piece> possiblePiecesToMove = getPiecesPossibleToMove(board, color);
-        Collections.shuffle(possiblePiecesToMove);
-        List<Move> allPossibleMoves = new ArrayList<>();
-
-        for (Piece piece : possiblePiecesToMove) {
-            List<Coordinates> movesCoordinatesWithoutCheck = GameState.getMovesWithoutMakingCheck(board, piece, piece.getPossibleMoves(board));
-
-            for (Coordinates coordinates : movesCoordinatesWithoutCheck) {
-                MoveType moveType = Player.getType(piece, coordinates, board);
-                if (moveType == MoveType.PROMOTION) {
-                    for (int i = 0; i < SwitchPieceType.values().length - 1; i++) {
-                        allPossibleMoves.add(new Move(piece.getCoordinates(), coordinates, moveType, SwitchPieceType.values()[i]));
-                    }
-                } else {
-                    allPossibleMoves.add(new Move(piece.getCoordinates(), coordinates, moveType, SwitchPieceType.NULL));
-                }
-            }
-        }
-
-        return allPossibleMoves;
-    }
-
     double calculatePieces(Board board, Color currentColor) {
         if (GameState.isMate(board, currentColor)) {
-            if (currentColor.opposite() == maximizingColor) {
-                return 8000000;
-            } else if (currentColor.opposite() == minimizingColor) {
+            if (currentColor == maximizingColor) {
                 return -8000000;
+            } else if (currentColor == minimizingColor) {
+                return 8000000;
             }
         } else if (GameState.drawWithGameWithoutTakingAndAdvancingPawns(board) || GameState.isStaleMate(board, currentColor)) {
             return 0;
