@@ -36,10 +36,15 @@ public class NegamaxAgent extends AbstractAiAgent {
 
             int score = -(int) negamax(duplicateBoard, depth - 1, -beta, -alpha, currentColor.opposite())[1];
 
+            if (score > alpha) {
+                alpha = score;
+            }
             if (score > bestScore) {
                 bestScore = score;
                 bestMove = move;
             }
+
+            if (alpha >= beta) break;
         }
         return new Object[]{bestMove, bestScore};
     }
