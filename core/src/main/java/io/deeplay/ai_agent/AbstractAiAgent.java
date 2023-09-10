@@ -1,4 +1,4 @@
-package io.deeplay.minimax;
+package io.deeplay.ai_agent;
 
 import io.deeplay.domain.Color;
 import io.deeplay.domain.MoveType;
