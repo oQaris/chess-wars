@@ -1,4 +1,4 @@
-package io.deeplay.minimax;
+package io.deeplay.ai_agent;
 
 import io.deeplay.domain.Color;
 import io.deeplay.model.Board;
@@ -6,8 +6,6 @@ import io.deeplay.model.Coordinates;
 import io.deeplay.model.piece.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class NegamaxAgentTest {
 

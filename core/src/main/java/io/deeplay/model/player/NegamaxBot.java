@@ -1,7 +1,7 @@
 package io.deeplay.model.player;
 
 import io.deeplay.domain.Color;
-import io.deeplay.minimax.NegamaxAgent;
+import io.deeplay.ai_agent.NegamaxAgent;
 import io.deeplay.model.Board;
 import io.deeplay.model.move.Move;
 import io.deeplay.service.IUserCommunication;
