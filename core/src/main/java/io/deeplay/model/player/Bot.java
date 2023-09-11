@@ -68,6 +68,10 @@ public class Bot extends Player {
         return new Move(randomPiece.getCoordinates(), randomMoveCoordinates, moveType, selectedSwitchPiece);
     }
 
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
     public void chooseDifficultyLevel(int level) {
         switch (level) {
             case 1: // easy
