@@ -8,7 +8,7 @@ import io.deeplay.domain.GameType;
 import io.deeplay.engine.GameSession;
 import io.deeplay.model.CompetitivePlayer;
 import io.deeplay.model.player.Bot;
-import io.deeplay.model.player.ExpectiminimaxBot;
+import io.deeplay.model.player.ExpectimaxBot;
 import io.deeplay.model.player.MinimaxBot;
 import io.deeplay.model.player.NegamaxBot;
 import io.deeplay.service.GuiUserCommunicationService;
@@ -16,19 +16,27 @@ import io.deeplay.service.GuiUserCommunicationService;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class TestMain {
     public static void main(String[] args) {
         System.setOut(new java.io.PrintStream(System.out, true, StandardCharsets.UTF_8));
 
         long begin = System.currentTimeMillis();
-        long games = 40;
+        long games = 200;
 
+//        for (int i = 0; i < games; i++) {
+//            GameSession gameSession = new GameSession(
+//                    new NegamaxBot(Color.WHITE, 1, new GuiUserCommunicationService()),
+//                    new Bot(Color.BLACK, 1, new GuiUserCommunicationService()),
+//                    GameType.BotVsBot);
+//            gameSession.startGameSession();
+//        }
         RankingSystem rankingSystem = new RankingSystem();
 
         for (int i = 0; i < games; i++) {
             List<CompetitivePlayer> competitivePlayersList = rankingSystem.getTable();
-            System.out.println("\nNEW GAME!");
+            System.out.println("\nGAME №" + i);
 
             Collections.shuffle(competitivePlayersList);
 
@@ -40,7 +48,7 @@ public class TestMain {
 
             switch (competitivePlayer2.getBotType()) {
                 case EXPECTIMINIMAX ->
-                        tempBot = new ExpectiminimaxBot(oppositeColor, 1, new GuiUserCommunicationService());
+                        tempBot = new ExpectimaxBot(oppositeColor, 1, new GuiUserCommunicationService());
                 case MINIMAX -> tempBot = new MinimaxBot(oppositeColor, 1, new GuiUserCommunicationService());
                 case NEGAMAX -> tempBot = new NegamaxBot(oppositeColor, 1, new GuiUserCommunicationService());
                 default -> tempBot = new Bot(oppositeColor, 1, new GuiUserCommunicationService());
