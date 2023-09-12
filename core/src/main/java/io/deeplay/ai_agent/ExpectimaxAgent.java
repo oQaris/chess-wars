@@ -10,17 +10,17 @@ import io.deeplay.service.BoardUtil;
 
 import java.util.List;
 
-public class ExpectiminimaxAgent  extends AbstractAiAgent {
+public class ExpectimaxAgent extends AbstractAiAgent {
     private Color maximizingColor;
     private Color expectingColor;
 
     public Move getBestMove(Board board, int depth, Color currentColor) {
         maximizingColor = currentColor;
         expectingColor = currentColor.opposite();
-        return (Move) expectimax(board, depth, currentColor, true, true)[0];
+        return (Move) expectimax(board, depth, currentColor, true)[0];
     }
 
-    public Object[] expectimax(Board board, int depth, Color currentColor, boolean maximizingPlayer, boolean isChanceNode) {
+    public Object[] expectimax(Board board, int depth, Color currentColor, boolean maximizingPlayer) {
         if (depth == 0
                 || GameState.isMate(board, currentColor)
                 || GameState.isStaleMate(board, currentColor)
@@ -28,7 +28,7 @@ public class ExpectiminimaxAgent  extends AbstractAiAgent {
             return new Object[]{null, calculatePieces(board, currentColor)};
         }
 
-        if (maximizingPlayer && isChanceNode) {
+        if (maximizingPlayer) {
             List<Move> allPossibleMoves = getAllPossibleMoves(board, maximizingColor);
             Move currentBestMove = getRandomMove(allPossibleMoves);
             int maxEval = Integer.MIN_VALUE;
@@ -38,7 +38,7 @@ public class ExpectiminimaxAgent  extends AbstractAiAgent {
                 BoardUtil.duplicateBoard(board).accept(duplicateBoard);
 
                 duplicateBoard.move(move);
-                int currentEval = (int) expectimax(duplicateBoard, depth - 1, currentColor.opposite(), false, false)[1];
+                int currentEval = (int) expectimax(duplicateBoard, depth - 1, currentColor.opposite(), false)[1];
 
                 if (currentEval > maxEval) {
                     maxEval = currentEval;
@@ -46,22 +46,6 @@ public class ExpectiminimaxAgent  extends AbstractAiAgent {
                 }
             }
             return new Object[]{currentBestMove, maxEval};
-        } else if (maximizingPlayer) {
-            List<Move> allPossibleMoves = getAllPossibleMoves(board, maximizingColor);
-            int maxEval = Integer.MIN_VALUE;
-
-            for (Move move : allPossibleMoves) {
-                Board duplicateBoard = new Board();
-                BoardUtil.duplicateBoard(board).accept(duplicateBoard);
-
-                duplicateBoard.move(move);
-                int currentEval = (int) expectimax(duplicateBoard, depth - 1, currentColor.opposite(), false, false)[1];
-
-                if (currentEval > maxEval) {
-                    maxEval = currentEval;
-                }
-            }
-            return new Object[]{null, maxEval};
         } else {
             List<Move> allPossibleMoves = getAllPossibleMoves(board, expectingColor);
             int expectedMinEval = 0;
@@ -71,7 +55,7 @@ public class ExpectiminimaxAgent  extends AbstractAiAgent {
                 BoardUtil.duplicateBoard(board).accept(duplicateBoard);
 
                 duplicateBoard.move(move);
-                int currentEval = (int) expectimax(duplicateBoard, depth - 1, currentColor.opposite(), true, false)[1];
+                int currentEval = (int) expectimax(duplicateBoard, depth - 1, currentColor.opposite(), true)[1];
                 expectedMinEval += currentEval;
             }
 

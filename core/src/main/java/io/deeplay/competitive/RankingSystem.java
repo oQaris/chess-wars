@@ -5,7 +5,7 @@ import io.deeplay.domain.Color;
 import io.deeplay.domain.GameStates;
 import io.deeplay.model.CompetitivePlayer;
 import io.deeplay.model.player.Bot;
-import io.deeplay.model.player.ExpectiminimaxBot;
+import io.deeplay.model.player.ExpectimaxBot;
 import io.deeplay.model.player.MinimaxBot;
 import io.deeplay.model.player.NegamaxBot;
 import io.deeplay.service.GuiUserCommunicationService;
@@ -30,7 +30,7 @@ public class RankingSystem {
                 new GuiUserCommunicationService()), BotType.MINIMAX, 1000, 0, 0, 0));
         table.add(new CompetitivePlayer(new NegamaxBot(Color.WHITE, 1,
                 new GuiUserCommunicationService()), BotType.NEGAMAX, 1000, 0, 0, 0));
-        table.add(new CompetitivePlayer(new ExpectiminimaxBot(Color.WHITE, 1,
+        table.add(new CompetitivePlayer(new ExpectimaxBot(Color.WHITE, 1,
                 new GuiUserCommunicationService()), BotType.EXPECTIMINIMAX, 1000, 0, 0, 0));
     }
 

@@ -14,6 +14,6 @@ public class NegamaxBot extends Bot {
 
     @Override
     public Move getMove(Board board, Color currentColor) {
-        return new NegamaxAgent().getBestMove(board, DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE, getColor());
+        return new NegamaxAgent().getBestMove(board, DEPTH, Integer.MIN_VALUE + 10, Integer.MAX_VALUE - 10, getColor());
     }
 }
