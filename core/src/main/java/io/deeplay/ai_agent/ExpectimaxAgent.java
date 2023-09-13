@@ -7,11 +7,17 @@ import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
 import io.deeplay.model.piece.*;
 import io.deeplay.service.BoardUtil;
+import lombok.Setter;
 
 import java.util.List;
 
 public class ExpectimaxAgent extends AbstractAiAgent {
+    /**
+     * Setter для тестов функции оценки
+     */
+    @Setter
     private Color maximizingColor;
+    @Setter
     private Color expectingColor;
 
     public Move getBestMove(Board board, int depth, Color currentColor) {
