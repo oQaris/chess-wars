@@ -11,37 +11,39 @@ import io.deeplay.model.piece.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class MinimaxAgentTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class ExpectimaxAgentTest {
     @Test
     void calculatePieces_defaultBoard() {
-        final MinimaxAgent minimaxAgent = new MinimaxAgent();
+        final ExpectimaxAgent expectimaxAgent = new ExpectimaxAgent();
         final Board board = new Board();
         final Color currentColor = Color.WHITE;
 
-        Assertions.assertEquals(0, minimaxAgent.calculatePieces(board, currentColor));
+        Assertions.assertEquals(0, expectimaxAgent.calculatePieces(board, currentColor));
     }
 
     @Test
     void calculatePieces_removedBlackPiece() {
-        final MinimaxAgent minimaxAgent = new MinimaxAgent();
+        final ExpectimaxAgent expectimaxAgent = new ExpectimaxAgent();
         final Board board = new Board();
         final Color currentColor = Color.WHITE;
-        minimaxAgent.setMaximizingColor(currentColor);
-        minimaxAgent.setMinimizingColor(currentColor.opposite());
+        expectimaxAgent.setMaximizingColor(currentColor);
+        expectimaxAgent.setExpectingColor(currentColor.opposite());
 
         board.setPiece(new Coordinates(1, 7), new Empty(new Coordinates(1, 7)));
 
-        Assertions.assertEquals(30, minimaxAgent.calculatePieces(board, currentColor));
-        Assertions.assertNotEquals(-30, minimaxAgent.calculatePieces(board, currentColor));
+        Assertions.assertEquals(30, expectimaxAgent.calculatePieces(board, currentColor));
+        Assertions.assertNotEquals(-30, expectimaxAgent.calculatePieces(board, currentColor));
     }
 
     @Test
     void calculatePieces_childMate() {
-        final MinimaxAgent minimaxAgent = new MinimaxAgent();
+        final ExpectimaxAgent expectimaxAgent = new ExpectimaxAgent();
         final Board board = new Board();
         final Color currentColor = Color.WHITE;
-        minimaxAgent.setMaximizingColor(currentColor);
-        minimaxAgent.setMinimizingColor(currentColor.opposite());
+        expectimaxAgent.setMaximizingColor(currentColor);
+        expectimaxAgent.setExpectingColor(currentColor.opposite());
 
         board.setPiece(new Coordinates(3, 7), new Empty(new Coordinates(3, 7)));
         board.setPiece(new Coordinates(4, 6), new Empty(new Coordinates(4, 6)));
@@ -53,13 +55,13 @@ class MinimaxAgentTest {
         board.setPiece(new Coordinates(4, 4), new Pawn(new Coordinates(4, 4), Color.BLACK));
         board.setPiece(new Coordinates(7, 3), new Queen(new Coordinates(7, 3), Color.BLACK));
 
-        Assertions.assertEquals(-8000000, minimaxAgent.calculatePieces(board, currentColor));
-        Assertions.assertNotEquals(8000000, minimaxAgent.calculatePieces(board, currentColor));
+        Assertions.assertEquals(-80000, expectimaxAgent.calculatePieces(board, currentColor));
+        Assertions.assertNotEquals(80000, expectimaxAgent.calculatePieces(board, currentColor));
     }
 
     @Test
     void calculatePieces_stalemate() {
-        final MinimaxAgent minimaxAgent = new MinimaxAgent();
+        final ExpectimaxAgent expectimaxAgent = new ExpectimaxAgent();
         final Color currentColor = Color.WHITE;
         Board board = new Board();
         board.setBoard(Board.getEmptyBoard());
@@ -69,10 +71,10 @@ class MinimaxAgentTest {
         board.setPiece(new Coordinates(3, 2), new Bishop(new Coordinates(3, 2), Color.BLACK));
         board.setPiece(new Coordinates(4, 2), new Knight(new Coordinates(4, 2), Color.BLACK));
 
-        Assertions.assertEquals(0, minimaxAgent.calculatePieces(board, currentColor));
-        Assertions.assertNotEquals(-60, minimaxAgent.calculatePieces(board, currentColor));
-        Assertions.assertNotEquals(8000000, minimaxAgent.calculatePieces(board, currentColor));
-        Assertions.assertNotEquals(-8000000, minimaxAgent.calculatePieces(board, currentColor));
+        Assertions.assertEquals(0, expectimaxAgent.calculatePieces(board, currentColor));
+        Assertions.assertNotEquals(-60, expectimaxAgent.calculatePieces(board, currentColor));
+        Assertions.assertNotEquals(8000000, expectimaxAgent.calculatePieces(board, currentColor));
+        Assertions.assertNotEquals(-8000000, expectimaxAgent.calculatePieces(board, currentColor));
     }
 
     @Test
@@ -83,7 +85,7 @@ class MinimaxAgentTest {
         board.move(new Move(new Coordinates(4,6), new Coordinates(4,4), MoveType.ORDINARY, SwitchPieceType.NULL));
         board.move(new Move(new Coordinates(5,1), new Coordinates(5,2), MoveType.ORDINARY, SwitchPieceType.NULL));
 
-        Move move = new MinimaxAgent().getBestMove(board, 3, Double.MIN_VALUE, Double.MAX_VALUE, Color.BLACK);
+        Move move = new ExpectimaxAgent().getBestMove(board, 3, Color.BLACK);
 
         Assertions.assertEquals(new Coordinates(3, 7), move.startPosition());
         Assertions.assertEquals(new Coordinates(7, 3), move.endPosition());
@@ -101,7 +103,7 @@ class MinimaxAgentTest {
         board.move(new Move(new Coordinates(4,6), new Coordinates(4,5), MoveType.ORDINARY, SwitchPieceType.NULL));
         board.move(new Move(new Coordinates(5,2), new Coordinates(6,4), MoveType.ORDINARY, SwitchPieceType.NULL));
 
-        Move move = new NegamaxAgent().getBestMove(board, 3, Integer.MIN_VALUE + 10, Integer.MAX_VALUE - 10, Color.BLACK);
+        Move move = new ExpectimaxAgent().getBestMove(board, 3, Color.BLACK);
 
         Assertions.assertEquals(new Coordinates(3, 7), move.startPosition());
         Assertions.assertEquals(new Coordinates(6, 4), move.endPosition());
