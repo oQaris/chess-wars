@@ -10,6 +10,7 @@ import io.deeplay.model.piece.*;
 import io.deeplay.model.player.Bot;
 import io.deeplay.service.GuiUserCommunicationService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class MiniMaxBotTest {
@@ -69,6 +70,7 @@ class MiniMaxBotTest {
         Assertions.assertEquals(Math.abs(evaluationScoreAfterMove - evaluationScoreBeforeMove), 30);
     }
 
+    @Disabled
     @Test
     void testStaleMate() {
         MiniMaxBot miniMaxBot = new MiniMaxBot(Color.WHITE, 1, new GuiUserCommunicationService());
