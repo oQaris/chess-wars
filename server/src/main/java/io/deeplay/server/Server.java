@@ -1,17 +1,11 @@
 package io.deeplay.server;
 
-import io.deeplay.communication.converter.Converter;
-import io.deeplay.communication.dto.EndGameDTO;
 import io.deeplay.communication.model.GameType;
-import io.deeplay.communication.service.SerializationService;
-import io.deeplay.domain.Color;
-import io.deeplay.engine.GameSession;
-import io.deeplay.model.move.Move;
+import io.deeplay.marinaAI.bot.MiniMaxBot;
 import io.deeplay.model.player.Bot;
 import io.deeplay.model.player.Human;
 import io.deeplay.model.player.Player;
 import io.deeplay.service.GuiUserCommunicationService;
-import io.deeplay.service.UserCommunicationService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,11 +13,12 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import static io.deeplay.communication.converter.Converter.convertGameTypeDTO;
 
 public class Server {
     private static final Logger logger = LogManager.getLogger(Server.class);
@@ -85,18 +80,21 @@ public class Server {
                         clientHandler.setPlayer(serverPlayer1);
                         humanBotClientList.add(clientHandler);
                     } else {
-                        serverPlayer2 = new Bot(clientHandler.getColor(), clientHandler.getBotLevel(), new GuiUserCommunicationService());
+                        serverPlayer2 = new MiniMaxBot(clientHandler.getColor(), clientHandler.getBotLevel(),
+                                new GuiUserCommunicationService());
                         clientHandler.setPlayer(serverPlayer2);
                         humanBotClientList.add(clientHandler);
                     }
                 }
                 case BotVsBot -> {
                     if (serverPlayer1 == null) {
-                        serverPlayer1 = new Bot(clientHandler.getColor(), clientHandler.getBotLevel(), new GuiUserCommunicationService());
+                        serverPlayer1 = new MiniMaxBot(clientHandler.getColor(), clientHandler.getBotLevel(),
+                                new GuiUserCommunicationService());
                         clientHandler.setPlayer(serverPlayer1);
                         botBotClientList.add(clientHandler);
                     } else {
-                        serverPlayer2 = new Bot(clientHandler.getColor(), clientHandler.getBotLevel(), new GuiUserCommunicationService());
+                        serverPlayer2 = new Bot(clientHandler.getColor(), clientHandler.getBotLevel(),
+                                new GuiUserCommunicationService());
                         clientHandler.setPlayer(serverPlayer2);
                         botBotClientList.add(clientHandler);
                     }
@@ -122,10 +120,11 @@ public class Server {
         if (clientHandlerList.size() > 1) {
             for (int i = 0; i < clientHandlerList.size(); i++) {
                 ClientHandler tempCH = clientHandlerList.get(i);
-                for (int j = i+1; j < clientHandlerList.size(); j++) {
+                for (int j = i + 1; j < clientHandlerList.size(); j++) {
                     ClientHandler tempCH2 = clientHandlerList.get(j);
                     if (tempCH.getColor() != tempCH2.getColor()) {
-                        List<ClientHandler> startGameClientHandlerList = new ArrayList<>(Arrays.asList(tempCH, tempCH2));
+                        List<ClientHandler> startGameClientHandlerList =
+                                new ArrayList<>(Arrays.asList(tempCH, tempCH2));
                         GAMES.execute(new GameStarter(startGameClientHandlerList, gameType));
                         clientHandlerList.remove(tempCH);
                         clientHandlerList.remove(tempCH2);
@@ -134,6 +133,7 @@ public class Server {
                 }
             }
         }
+
         return clientHandlerList;
     }
 

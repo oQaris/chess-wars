@@ -34,6 +34,7 @@ public class Bishop extends Piece {
                 }
             }
         }
+
         return possibleMoves;
     }
 
@@ -53,11 +54,12 @@ public class Bishop extends Piece {
             return false;
         }
 
-        if (board.getBoard()[coordinates.getX()][coordinates.getY()].getColor().equals(getColor())) { // фигура того же цвета
+        if (board.getBoard()[coordinates.getX()][coordinates.getY()].getColor().equals(getColor())) {
             return false;
         }
 
-        if (Math.abs(coordinates.getX() - this.getCoordinates().getX()) != Math.abs(coordinates.getY() - this.getCoordinates().getY())) {
+        if (Math.abs(coordinates.getX() - this.getCoordinates().getX()) !=
+                Math.abs(coordinates.getY() - this.getCoordinates().getY())) {
             return false;
         }
 
@@ -68,7 +70,7 @@ public class Bishop extends Piece {
         int currentY = this.getCoordinates().getY() + yDirection;
 
         while (currentX != coordinates.getX() || currentY != coordinates.getY()) {
-            if (!board.getBoard()[currentX][currentY].getColor().equals(Color.EMPTY)) { // если не пустая, на пути стоит фигура другого цвета
+            if (!board.getBoard()[currentX][currentY].getColor().equals(Color.EMPTY)) {
                 return false;
             }
 

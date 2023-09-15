@@ -46,6 +46,7 @@ public class Pawn extends Piece {
      * @param board       доска для проверки возможности хода
      * @return true, если ход возможен, false в противном случае
      */
+    @Override
     public boolean canMoveAt(Coordinates coordinates, Board board) {
         int currentX = getCoordinates().getX();
         int currentY = getCoordinates().getY();
@@ -68,7 +69,7 @@ public class Pawn extends Piece {
             return false;
         }
 
-        if ((getColor() == Color.WHITE) && targetY <= currentY) { // только вперед хотьба
+        if ((getColor() == Color.WHITE) && targetY <= currentY) { // только вперед
             return false;
         }
 
@@ -82,8 +83,14 @@ public class Pawn extends Piece {
 
         if (Math.abs(targetY - currentY) == 2 && isStartPosition() && currentX == targetX) { // только из стартовой позиции
             if (board.getBoard()[targetX][targetY].getColor().equals(Color.EMPTY)) {
-                return board.getBoard()[currentX][currentY + 1].getColor().equals(Color.EMPTY)
-                        || board.getBoard()[currentX][currentY - 1].getColor().equals(Color.EMPTY);
+                if (currentY < targetY) {
+                    return board.getBoard()[currentX][currentY + 1].getColor().equals(Color.EMPTY)
+                            && board.getBoard()[currentX][currentY + 2].getColor().equals(Color.EMPTY);
+                }
+
+                return board.getBoard()[currentX][currentY - 1].getColor().equals(Color.EMPTY)
+                        && board.getBoard()[currentX][currentY - 2].getColor().equals(Color.EMPTY);
+
             }
         }
 

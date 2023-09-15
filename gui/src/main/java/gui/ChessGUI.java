@@ -197,6 +197,8 @@ public class ChessGUI extends JFrame implements EndpointUser {
                 switchColorAppearance();
 
                 waitAndUpdate();
+
+                // проверка конца игры
             }
         }
 
@@ -248,6 +250,15 @@ public class ChessGUI extends JFrame implements EndpointUser {
         }
     }
 
+//    ExecutorService executor = Executors.newSingleThreadExecutor();
+//
+//    public void waitAndUpdate() {
+//        executor.submit(() -> {
+//            Object playerAction = client.startListening();
+//            processClientInfo(playerAction);
+//        });
+//    }
+
     public void waitAndUpdate() {
         new Thread(() -> {
             Object playerAction = client.startListening();
@@ -260,9 +271,12 @@ public class ChessGUI extends JFrame implements EndpointUser {
             updateGameInfo(move);
         } else if (action instanceof List<?>) {
             System.out.println("game over in wait and update");
-
             List<String> endGameInfo = (List<String>) action;
             endGame(endGameInfo);
+//            Object endGame = client.getEndGame();
+//            System.out.println(endGame);
+//            endGame((List<String>) endGame);
+            // client.sendGameEnd(endGameInfo);
         }
     }
 
