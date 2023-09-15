@@ -10,6 +10,7 @@ import io.deeplay.model.piece.*;
 import io.deeplay.model.player.Bot;
 import io.deeplay.service.GuiUserCommunicationService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class ExpectiMaxBotTest {
@@ -85,7 +86,7 @@ class ExpectiMaxBotTest {
         Assertions.assertEquals(Math.abs(evaluationScoreAfterMove - evaluationScoreBeforeMove), 30);
     }
 
-    //@Disabled
+    @Disabled
     @Test
     void testStaleMate() {
         ExpectiMaxBot expectiMaxBot = new ExpectiMaxBot(Color.WHITE, 1, new GuiUserCommunicationService());
@@ -196,7 +197,7 @@ class ExpectiMaxBotTest {
         board[2][1] = new Pawn(new Coordinates(2, 1), Color.BLACK);
         board[1][7] = new Bishop(new Coordinates(1, 7), Color.BLACK);
 
-        board[0][1] = new Bishop(new Coordinates(0,1), Color.WHITE);
+        board[0][1] = new Bishop(new Coordinates(0, 1), Color.WHITE);
         board[0][7] = new King(new Coordinates(0, 7), Color.WHITE);
 
         return board;

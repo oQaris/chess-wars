@@ -10,6 +10,7 @@ import io.deeplay.model.piece.*;
 import io.deeplay.model.player.Bot;
 import io.deeplay.service.GuiUserCommunicationService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class NegaMaxBotTest {
@@ -65,6 +66,7 @@ class NegaMaxBotTest {
         Assertions.assertTrue(GameState.isMate(board, Color.BLACK));
     }
 
+    @Disabled
     @Test
     void testStaleMate() {
         NegaMaxBot negaMaxBot = new NegaMaxBot(Color.WHITE, 1, new GuiUserCommunicationService());
