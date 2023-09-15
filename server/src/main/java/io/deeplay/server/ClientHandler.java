@@ -19,7 +19,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.*;
 import java.net.Socket;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ClientHandler implements Runnable {
     private static final Logger logger = LogManager.getLogger(ClientHandler.class);
@@ -130,11 +129,11 @@ public class ClientHandler implements Runnable {
             out.write(serializedEndGameDTO);
             out.newLine();
             out.flush();
+            System.out.println(serializedEndGameDTO);
             System.out.println("Sent end game to client from a server!");
         } catch (IOException e) {
             logger.error("Не получилось отправить ход: ", e);
         }
-        // TODO: реализовать метод (используется в переопределенном методе сервера из гейм сессии)
     }
 
     public EndGameDTO getEndGame(List<String> gameEnd) {

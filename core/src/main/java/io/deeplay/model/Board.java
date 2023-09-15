@@ -30,6 +30,11 @@ public class Board {
         pieceMoved = new boolean[8][8];
     }
 
+    public Board(Piece[][] board) {
+        this.board = board;
+        pieceMoved = new boolean[8][8];
+    }
+
     /**
      * Возвращает начальную конфигурацию шахматной доски.
      *
@@ -140,8 +145,6 @@ public class Board {
             board[end.getX()][end.getY()] = pieceToMove;
             board[start.getX()][start.getY()] = new Empty(start);
             pieceToMove.setCoordinates(end);
-
-            logger.info("Игрок сделал обычный ход");
         } else if (moveType == MoveType.CASTLING) {
             Piece rookToMove = null;
             int moveSide = start.getX() - end.getX();

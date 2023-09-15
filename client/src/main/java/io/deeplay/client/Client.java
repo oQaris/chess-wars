@@ -2,7 +2,6 @@ package io.deeplay.client;
 
 import io.deeplay.communication.converter.Converter;
 import io.deeplay.communication.dto.EndGameDTO;
-import io.deeplay.communication.dto.MoveDTO;
 import io.deeplay.communication.dto.StartGameDTO;
 import io.deeplay.communication.service.DeserializationService;
 import io.deeplay.communication.service.SerializationService;
@@ -12,8 +11,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Client {
     private static final String HOST = "localhost";
@@ -61,12 +58,12 @@ public class Client {
 
     public Object processJson(String json) {
         try {
-            return Converter.convertDTOToMove(DeserializationService.convertJsonToMoveDTO(json));
+            EndGameDTO endGameDTO = DeserializationService.convertJsonToEndGameDTO(json);
+
+            return Converter.convertEndGameStateDTO(endGameDTO);
         } catch (NullPointerException e1) {
             try {
-                EndGameDTO endGameDTO = DeserializationService.convertJsonToEndGameDTO(json);
-
-                return Converter.convertEndGameStateDTO(endGameDTO);
+                return Converter.convertDTOToMove(DeserializationService.convertJsonToMoveDTO(json));
             } catch (NullPointerException e2) {
                 logger.error("wrong type DTO");
             }
@@ -113,4 +110,31 @@ public class Client {
             throw new RuntimeException(e);
         }
     }
+
+//    public Object getEndGame(){
+//        String endGame;
+//
+//        try {
+//            endGame = in.readLine();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        return endGame;
+//    }
+
+//    public void sendGameEnd(List<String> endGame){
+//        String endGameJson
+//                = SerializationService.convertEndGameDTOtoJSON(Converter.convertListEndGameToEndGameDTO(endGame));
+//        System.out.println(endGameJson);
+//
+//        try {
+//            out.write(endGameJson);
+//            out.newLine();
+//            out.flush();
+//        } catch (IOException e) {
+//            logger.error("Ошибка отправки хода от клиента");
+//            throw new RuntimeException(e);
+//        }
+//    }
 }

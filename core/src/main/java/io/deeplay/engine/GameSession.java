@@ -36,34 +36,33 @@ public class GameSession {
      * и передача его в GameInfo. Также отвечает за завершение игры.
      */
     public void startGameSession() {
-        printBoardOnce(gameInfo.getCurrentBoard());
+        // printBoardOnce(gameInfo.getCurrentBoard());
 
         while (true) {
             Color currentColor = gameInfo.getCurrentMoveColor();
             Color enemyColor = gameInfo.getCurrentMoveColor().opposite();
             log.info("Ход {}", currentColor);
-            System.out.println(currentColor);
+            //   System.out.println(currentColor);
 
             Player playerWhoMoves = choosePlayer(currentColor);
             log.info("Текущий игрок: {}", playerWhoMoves.getClass().getSimpleName());
-            System.out.println("current player: " + playerWhoMoves.getClass().getSimpleName());
+            //  System.out.println("current player: " + playerWhoMoves.getClass().getSimpleName());
 
             Move move = getMove(playerWhoMoves, currentColor);
-            System.out.println(move);
             sendMove(move);
 
             gameInfo.move(move);
-            printBoardOnce(gameInfo.getCurrentBoard());
+            // printBoardOnce(gameInfo.getCurrentBoard());
 
-            if (GameState.isCheck(gameInfo.getCurrentBoard(), currentColor)) {
-                log.info("Game ended {} win", currentColor.opposite());
-                gameEnd.add(0, GameStates.CHECK.toString());
-                gameEnd.add(1, currentColor.toString());
-
-                endGame("Game ended, because "
-                        + currentColor + " is in check and can't move");
-                return;
-            }
+//            if (GameState.isCheck(gameInfo.getCurrentBoard(), currentColor)) {
+//                log.info("Game ended {} win", currentColor.opposite());
+//                gameEnd.add(0, GameStates.CHECK.toString());
+//                gameEnd.add(1, currentColor.toString());
+//
+//                endGame("Game ended, because "
+//                        + currentColor + " is in check and can't move");
+//                return;
+//            }
 
             if (GameState.isMate(gameInfo.getCurrentBoard(), enemyColor)) {
                 gameEnd.add(0, GameStates.CHECKMATE.toString());
@@ -83,7 +82,6 @@ public class GameSession {
 
             if (GameState.drawWithGameWithoutTakingAndAdvancingPawns(gameInfo.getCurrentBoard())) {
                 gameEnd.add(0, GameStates.DRAW.toString());
-                gameEnd.add(1, currentColor.toString());
 
                 endGame("DRAW!");
                 return;
@@ -110,10 +108,10 @@ public class GameSession {
         System.out.println("Это из листа" + gameEnd);
         log.info("Игра окончена {}", textMessage);
         System.out.println("Game ended due to: " + textMessage);
+        printBoardOnce(gameInfo.getCurrentBoard());
     }
 
     public void sendMove(Move move) {
-
     }
 
     public Move getMove(Player player, Color color) {
@@ -121,10 +119,9 @@ public class GameSession {
     }
 
     public void sendGameEnd(List<String> gameEnd) {
-
     }
 
-    public List<String> getGameEnd(Color color) {
-        return gameEnd;
+    public String getGameEnd() {
+        return gameEnd.toString();
     }
 }

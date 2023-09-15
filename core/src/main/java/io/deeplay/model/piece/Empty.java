@@ -15,12 +15,12 @@ public class Empty extends Piece {
     @Override
     public List<Coordinates> getPossibleMoves(Board board) {
         return new ArrayList<>();
-    } // исключение пробросить
+    }
 
     @Override
     public boolean canMoveAt(Coordinates coordinates, Board board) {
         return false;
-    } // исключение пробросить
+    }
 
     @Override
     public String toString() {

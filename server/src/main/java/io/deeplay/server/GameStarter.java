@@ -20,7 +20,6 @@ public class GameStarter implements Runnable {
     private static final Logger logger = LogManager.getLogger(GameStarter.class);
     private final List<ClientHandler> clients;
     private final GameType gameType;
-
     private final Player serverPlayer1;
     private final Player serverPlayer2;
 
@@ -47,6 +46,7 @@ public class GameStarter implements Runnable {
                                 .convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
                         System.out.println("We sent move to other client: " + clients.get(1).getColor());
                     }
+
                     if (clients.get(1).getColor().equals(moveColor)) {
                         clients.get(0).sendMoveToClient((SerializationService
                                 .convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
@@ -57,6 +57,7 @@ public class GameStarter implements Runnable {
                         clients.get(1).sendMoveToClient((SerializationService
                                 .convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
                     }
+
                     if (clients.get(1).getColor().equals(moveColor)) {
                         clients.get(0).sendMoveToClient((SerializationService
                                 .convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move))));
@@ -88,6 +89,7 @@ public class GameStarter implements Runnable {
             @Override
             public void sendGameEnd(List<String> gameEnd) {
                 Color moveColor = getGameInfo().getCurrentMoveColor();
+
                 if (clients.get(0).getColor().equals(moveColor)) {
                     EndGameDTO endGameDTO1 = clients.get(0).getEndGame(gameEnd);
                     String jsonEndGameDTO1 = SerializationService.convertEndGameDTOtoJSON(endGameDTO1);

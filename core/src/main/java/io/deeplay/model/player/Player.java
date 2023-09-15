@@ -35,7 +35,7 @@ public abstract class Player {
      * @param color цвет текущего хода
      * @return лист из фигур
      */
-    public List<Piece> getPiecesPossibleToMove(Board board, Color color) {
+    public static List<Piece> getPiecesPossibleToMove(Board board, Color color) {
         List<Piece> movablePieces = new ArrayList<>();
 
         for (int x = 0; x < BOARD_HEIGHT; x++) {

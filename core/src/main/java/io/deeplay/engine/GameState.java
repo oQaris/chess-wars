@@ -10,10 +10,8 @@ import io.deeplay.model.move.Move;
 import io.deeplay.model.piece.Empty;
 import io.deeplay.model.piece.King;
 import io.deeplay.model.piece.Piece;
-import io.deeplay.model.player.Human;
 import io.deeplay.model.player.Player;
 import io.deeplay.service.BoardUtil;
-import io.deeplay.service.UserCommunicationService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -34,7 +32,7 @@ public class GameState {
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 Piece piece = board.getPiece(new Coordinates(x, y));
-                if(!(piece instanceof Empty) && piece.getColor() != color) {
+                if (!(piece instanceof Empty) && piece.getColor() != color) {
                     if (piece.canMoveAt(kingPosition, board)) {
                         return true;
                     }
@@ -57,39 +55,7 @@ public class GameState {
             return false;
         }
 
-        for (int x = 0; x < 8; x++) {
-            for (int y = 0; y < 8; y++) {
-                Piece piece = board.getPiece(new Coordinates(x, y));
-
-                if (!(piece instanceof Empty) && piece.getColor() == color) {
-                    for (Coordinates coordinates : piece.getPossibleMoves(board)) {
-                        Board duplicateBoard = new Board();
-                        BoardUtil.duplicateBoard(board).accept(duplicateBoard);
-
-                        MoveType moveType = Player.getType(piece, coordinates, duplicateBoard);
-                        if (moveType == MoveType.PROMOTION) {
-                            for (int i = 0; i < SwitchPieceType.values().length - 1; i++) {
-                                SwitchPieceType switchPieceType = SwitchPieceType.values()[i];
-                                duplicateBoard.move(new Move(piece.getCoordinates(), coordinates,
-                                        moveType, switchPieceType));
-                                if (!isCheck(duplicateBoard, color)) {
-                                    return false;
-                                }
-                            }
-                        } else {
-                            SwitchPieceType switchPieceType = SwitchPieceType.NULL;
-                            duplicateBoard.move(new Move(piece.getCoordinates(), coordinates,
-                                    moveType, switchPieceType));
-                            if (!isCheck(duplicateBoard, color)) {
-                                return false;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return true;
+        return isStaleMate(board, color);
     }
 
     /**
@@ -106,16 +72,19 @@ public class GameState {
 
                 if (!(piece instanceof Empty) && piece.getColor() == color) {
                     for (Coordinates coordinates : piece.getPossibleMoves(board)) {
+                        MoveType moveType = Player.getType(piece, coordinates, board);
                         Board duplicateBoard = new Board();
                         BoardUtil.duplicateBoard(board).accept(duplicateBoard);
 
-                        MoveType moveType = Player.getType(piece, coordinates, duplicateBoard);
                         if (moveType == MoveType.PROMOTION) {
+                            Board promotionBoard = new Board();
+                            BoardUtil.duplicateBoard(duplicateBoard).accept(promotionBoard);
+
                             for (int i = 0; i < SwitchPieceType.values().length - 1; i++) {
                                 SwitchPieceType switchPieceType = SwitchPieceType.values()[i];
-                                duplicateBoard.move(new Move(piece.getCoordinates(), coordinates,
+                                promotionBoard.move(new Move(piece.getCoordinates(), coordinates,
                                         moveType, switchPieceType));
-                                if (!isCheck(duplicateBoard, color)) {
+                                if (!isCheck(promotionBoard, color)) {
                                     return false;
                                 }
                             }
@@ -148,19 +117,23 @@ public class GameState {
     public static List<Coordinates> getMovesWithoutMakingCheck(Board board, Piece piece,
                                                                List<Coordinates> potentialCoordinates) {
         List<Coordinates> rightMoves = new ArrayList<>();
+        Color color = piece.getColor();
 
         for (Coordinates coordinates : potentialCoordinates) {
             Board duplicateBoard = new Board();
             BoardUtil.duplicateBoard(board).accept(duplicateBoard);
 
             MoveType moveType = Player.getType(piece, coordinates, duplicateBoard);
+
             if (moveType == MoveType.PROMOTION) {
                 for (int i = 0; i < SwitchPieceType.values().length - 1; i++) {
-                    BoardUtil.duplicateBoard(board).accept(duplicateBoard);
+                    Board promotionBoard = new Board();
+                    BoardUtil.duplicateBoard(duplicateBoard).accept(promotionBoard);
                     SwitchPieceType switchPieceType = SwitchPieceType.values()[i];
-                    duplicateBoard.move(new Move(piece.getCoordinates(), coordinates,
+                    promotionBoard.move(new Move(piece.getCoordinates(), coordinates,
                             moveType, switchPieceType));
-                    if (!isCheck(duplicateBoard, piece.getColor())) {
+
+                    if (!isCheck(promotionBoard, color)) {
                         rightMoves.add(coordinates);
                     }
                 }
@@ -168,7 +141,8 @@ public class GameState {
                 SwitchPieceType switchPieceType = SwitchPieceType.NULL;
                 duplicateBoard.move(new Move(piece.getCoordinates(), coordinates,
                         moveType, switchPieceType));
-                if (!isCheck(duplicateBoard, piece.getColor())) {
+
+                if (!isCheck(duplicateBoard, color)) {
                     rightMoves.add(coordinates);
                 }
             }
@@ -180,7 +154,7 @@ public class GameState {
     /**
      * Метод ищет короля заданного цвета и возвращает его координаты
      *
-     * @param board текущее состояние доски
+     * @param board     текущее состояние доски
      * @param kingColor цвет короля
      * @return координаты короля
      */
@@ -188,15 +162,22 @@ public class GameState {
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 Piece piece = board.getPiece(new Coordinates(x, y));
-                if (!(piece instanceof Empty)) {
-                    if (piece.getColor() == kingColor && piece instanceof King) {
-                        log.info(kingColor + " king is on coordinates x=" + x + ", y=" + y);
-                        return new Coordinates(x, y);
-                    }
+
+                if ((piece.getColor() == (kingColor)) && piece instanceof King) {
+                    log.info(kingColor + " king is on coordinates x=" + x + ", y=" + y);
+                    return new Coordinates(x, y);
                 }
             }
         }
+
+        Board.printBoardOnce(board);
+
         log.error(kingColor + " king is not on the board. Throw GameLogicException...");
         throw new GameLogicException(kingColor + " king is not on the board"); //пробросить потом ошибку
+    }
+
+    public static boolean isGameOver(Board board, Color color) {
+        // Color kingColor = color == Color.BLACK ? Color.WHITE : Color.BLACK;
+        return isStaleMate(board, color) || isMate(board, color) || drawWithGameWithoutTakingAndAdvancingPawns(board);
     }
 }
