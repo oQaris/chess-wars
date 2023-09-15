@@ -26,7 +26,7 @@ public class Bot extends Player {
      * Возвращает созданный объект класса Move с заданными параметрами. Метод рандомно выбирает параметры из листов
      * possiblePiecesToMove и availableMoves.
      *
-     * @param board        текущее состояние доски
+     * @param board текущее состояние доски
      * @param currentColor цвет текущего хода
      * @return новый объект класса Move
      */

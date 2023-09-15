@@ -154,7 +154,7 @@ public class GameState {
     /**
      * Метод ищет короля заданного цвета и возвращает его координаты
      *
-     * @param board     текущее состояние доски
+     * @param board текущее состояние доски
      * @param kingColor цвет короля
      * @return координаты короля
      */
@@ -170,14 +170,11 @@ public class GameState {
             }
         }
 
-        Board.printBoardOnce(board);
-
         log.error(kingColor + " king is not on the board. Throw GameLogicException...");
-        throw new GameLogicException(kingColor + " king is not on the board"); //пробросить потом ошибку
+        throw new GameLogicException(kingColor + " king is not on the board");
     }
 
     public static boolean isGameOver(Board board, Color color) {
-        // Color kingColor = color == Color.BLACK ? Color.WHITE : Color.BLACK;
         return isStaleMate(board, color) || isMate(board, color) || drawWithGameWithoutTakingAndAdvancingPawns(board);
     }
 }

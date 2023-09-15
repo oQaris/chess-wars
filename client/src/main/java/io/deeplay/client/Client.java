@@ -70,32 +70,6 @@ public class Client {
         }
 
         throw new NullPointerException("wrong type DTO");
-//        Gson gson = new Gson();
-//        JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
-//
-//        if (jsonObject.has("endGameStateType")) {
-//            EndGameDTO endGameDTO = DeserializationService.convertJsonToEndGameDTO(json);
-//            return endGameDTO;
-//            // обработать конец игры
-//        } else if (jsonObject.has("exception")) {
-//            ErrorResponseDTO errorResponseDTO = DeserializationService.convertJsonToErrorResponseDTO(json);
-//            return errorResponseDTO;
-//            // обработать ошибку
-//        } else if (jsonObject.has("startPosition")) {
-//            MoveDTO moveDTO = DeserializationService.convertJsonToMoveDTO(json);
-//            Move move = receiveMove(moveDTO);
-//            return move;
-//            // обработка хода
-//        } else if (jsonObject.has("currentMoveColor")) {
-//            MoveTransferDTO moveTransferDTO = DeserializationService.convertJsonToMoveTransferDTO(json);
-//            return moveTransferDTO;
-//            // обработать moveTransferDTO
-//        } else if (jsonObject.has("botLevel")) {
-//            StartGameDTO startGameDTO = DeserializationService.convertJsonToStartGameDTO(json);
-//            return startGameDTO;
-//        } else {
-//            throw new JsonSyntaxException("Тип Json не найден");
-//        }
     }
 
     public void sendMove(Move move) {
@@ -110,31 +84,4 @@ public class Client {
             throw new RuntimeException(e);
         }
     }
-
-//    public Object getEndGame(){
-//        String endGame;
-//
-//        try {
-//            endGame = in.readLine();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        return endGame;
-//    }
-
-//    public void sendGameEnd(List<String> endGame){
-//        String endGameJson
-//                = SerializationService.convertEndGameDTOtoJSON(Converter.convertListEndGameToEndGameDTO(endGame));
-//        System.out.println(endGameJson);
-//
-//        try {
-//            out.write(endGameJson);
-//            out.newLine();
-//            out.flush();
-//        } catch (IOException e) {
-//            logger.error("Ошибка отправки хода от клиента");
-//            throw new RuntimeException(e);
-//        }
-//    }
 }

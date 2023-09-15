@@ -1,7 +1,6 @@
 package io.deeplay.server;
 
 import io.deeplay.communication.model.GameType;
-import io.deeplay.marinaAI.bot.MiniMaxBot;
 import io.deeplay.model.player.Bot;
 import io.deeplay.model.player.Human;
 import io.deeplay.model.player.Player;
@@ -80,7 +79,7 @@ public class Server {
                         clientHandler.setPlayer(serverPlayer1);
                         humanBotClientList.add(clientHandler);
                     } else {
-                        serverPlayer2 = new MiniMaxBot(clientHandler.getColor(), clientHandler.getBotLevel(),
+                        serverPlayer2 = new Bot(clientHandler.getColor(), clientHandler.getBotLevel(),
                                 new GuiUserCommunicationService());
                         clientHandler.setPlayer(serverPlayer2);
                         humanBotClientList.add(clientHandler);
@@ -88,7 +87,7 @@ public class Server {
                 }
                 case BotVsBot -> {
                     if (serverPlayer1 == null) {
-                        serverPlayer1 = new MiniMaxBot(clientHandler.getColor(), clientHandler.getBotLevel(),
+                        serverPlayer1 = new Bot(clientHandler.getColor(), clientHandler.getBotLevel(),
                                 new GuiUserCommunicationService());
                         clientHandler.setPlayer(serverPlayer1);
                         botBotClientList.add(clientHandler);

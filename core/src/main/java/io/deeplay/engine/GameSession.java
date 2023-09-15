@@ -54,16 +54,6 @@ public class GameSession {
             gameInfo.move(move);
             // printBoardOnce(gameInfo.getCurrentBoard());
 
-//            if (GameState.isCheck(gameInfo.getCurrentBoard(), currentColor)) {
-//                log.info("Game ended {} win", currentColor.opposite());
-//                gameEnd.add(0, GameStates.CHECK.toString());
-//                gameEnd.add(1, currentColor.toString());
-//
-//                endGame("Game ended, because "
-//                        + currentColor + " is in check and can't move");
-//                return;
-//            }
-
             if (GameState.isMate(gameInfo.getCurrentBoard(), enemyColor)) {
                 gameEnd.add(0, GameStates.CHECKMATE.toString());
                 gameEnd.add(1, currentColor.toString());
