@@ -19,8 +19,6 @@ public class Board {
     private final boolean[][] pieceMoved;
     public static final int BOARD_LENGTH = 8;
     public static final int BOARD_HEIGHT = 8;
-    private int blackPiecesNumber = 16;
-    private int whitePiecesNumber = 16;
     private static final Logger logger = LogManager.getLogger(Board.class);
 
     private final MoveHistory moveHistory = new MoveHistory();
@@ -134,14 +132,6 @@ public class Board {
         Color pieceToRemoveColor = pieceToRemove.getColor();
 
         if (moveType == MoveType.ORDINARY || moveType == MoveType.TAKE) {
-            if (!pieceToRemoveColor.equals(Color.EMPTY)) {
-                if (pieceToRemoveColor.equals(Color.BLACK)) {
-                    blackPiecesNumber--;
-                } else {
-                    whitePiecesNumber--;
-                }
-            }
-
             board[end.getX()][end.getY()] = pieceToMove;
             board[start.getX()][start.getY()] = new Empty(start);
             pieceToMove.setCoordinates(end);
@@ -173,12 +163,6 @@ public class Board {
 
             logger.info("Игрок сделал рокировку");
         } else if (moveType == MoveType.EN_PASSANT) {
-            if (pieceToMove.getColor() == Color.WHITE) {
-                blackPiecesNumber--;
-            } else {
-                whitePiecesNumber--;
-            }
-
             board[end.getX()][start.getY()] = new Empty(new Coordinates(end.getX(), start.getY()));
             board[end.getX()][end.getY()] = new Pawn(new Coordinates(end.getX(), end.getY()), pieceToMove.getColor());
             board[start.getX()][start.getY()] = new Empty(new Coordinates(start.getX(), start.getY()));
@@ -192,14 +176,6 @@ public class Board {
                 case QUEEN -> newPiece = new Queen(end, pieceToMove.getColor());
                 case ROOK -> newPiece = new Rook(end, pieceToMove.getColor());
                 default -> throw new IllegalArgumentException("Invalid choice");
-            }
-
-            if (!pieceToRemoveColor.equals(Color.EMPTY)) {
-                if (pieceToRemoveColor.equals(Color.BLACK)) {
-                    blackPiecesNumber--;
-                } else {
-                    whitePiecesNumber--;
-                }
             }
 
             board[end.getX()][end.getY()] = newPiece;
@@ -217,14 +193,6 @@ public class Board {
 
     public void setBoard(Piece[][] board) {
         this.board = board;
-    }
-
-    public int getBlackPiecesNumber() {
-        return blackPiecesNumber;
-    }
-
-    public int getWhitePiecesNumber() {
-        return whitePiecesNumber;
     }
 
     public boolean[][] getPieceMoved() {

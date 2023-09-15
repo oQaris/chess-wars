@@ -1,5 +1,7 @@
-package io.deeplay.ai_agent;
+package io.deeplay.igorAI.ai_agent;
 
+import io.deeplay.igorAI.ai_agent.MinimaxAgent;
+import io.deeplay.igorAI.ai_agent.NegamaxAgent;
 import io.deeplay.domain.Color;
 import io.deeplay.domain.MoveType;
 import io.deeplay.domain.SwitchPieceType;
@@ -83,7 +85,7 @@ class MinimaxAgentTest {
         board.move(new Move(new Coordinates(4,6), new Coordinates(4,4), MoveType.ORDINARY, SwitchPieceType.NULL));
         board.move(new Move(new Coordinates(5,1), new Coordinates(5,2), MoveType.ORDINARY, SwitchPieceType.NULL));
 
-        Move move = new MinimaxAgent().getBestMove(board, 3, Double.MIN_VALUE, Double.MAX_VALUE, Color.BLACK);
+        Move move = new MinimaxAgent().getBestMove(board, 3, Integer.MIN_VALUE, Integer.MAX_VALUE, Color.BLACK);
 
         Assertions.assertEquals(new Coordinates(3, 7), move.startPosition());
         Assertions.assertEquals(new Coordinates(7, 3), move.endPosition());

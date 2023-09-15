@@ -43,7 +43,7 @@ public abstract class Player {
                 Piece piece = board.getPiece(new Coordinates(x, y));
                 if (!piece.getColor().equals(Color.EMPTY) && piece.getColor().equals(color)
                         && !piece.getPossibleMoves(board).isEmpty()) {
-                    if (!GameState.getMovesWithoutMakingCheck(board, piece, piece.getPossibleMoves(board)).isEmpty()) {
+                    if (!GameState.getMovesListWithoutMakingCheck(board, piece, piece.getPossibleMoves(board)).isEmpty()) {
                         movablePieces.add(piece);
                     }
                 }

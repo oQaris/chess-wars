@@ -5,9 +5,9 @@ import io.deeplay.domain.Color;
 import io.deeplay.domain.GameStates;
 import io.deeplay.model.CompetitivePlayer;
 import io.deeplay.model.player.Bot;
-import io.deeplay.model.player.ExpectimaxBot;
-import io.deeplay.model.player.MinimaxBot;
-import io.deeplay.model.player.NegamaxBot;
+import io.deeplay.igorAI.ExpectimaxBot;
+import io.deeplay.igorAI.MinimaxBot;
+import io.deeplay.igorAI.NegamaxBot;
 import io.deeplay.service.GuiUserCommunicationService;
 import lombok.Getter;
 

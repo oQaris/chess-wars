@@ -6,13 +6,11 @@ import io.deeplay.communication.dto.StartGameDTO;
 import io.deeplay.domain.Color;
 import io.deeplay.engine.GameInfo;
 import io.deeplay.model.move.Move;
-import io.deeplay.model.player.Bot;
-import io.deeplay.model.player.MinimaxBot;
+import io.deeplay.igorAI.MinimaxBot;
 import io.deeplay.model.player.Player;
 import io.deeplay.service.GuiUserCommunicationService;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class BotStarter implements EndpointUser {
     private boolean isPlayerMove;

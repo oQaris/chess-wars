@@ -73,22 +73,21 @@ public class GameState {
                 if (!(piece instanceof Empty) && piece.getColor() == color) {
                     for (Coordinates coordinates : piece.getPossibleMoves(board)) {
                         MoveType moveType = Player.getType(piece, coordinates, board);
-                        Board duplicateBoard = new Board();
-                        BoardUtil.duplicateBoard(board).accept(duplicateBoard);
-
                         if (moveType == MoveType.PROMOTION) {
-                            Board promotionBoard = new Board();
-                            BoardUtil.duplicateBoard(duplicateBoard).accept(promotionBoard);
-
                             for (int i = 0; i < SwitchPieceType.values().length - 1; i++) {
+                                Board duplicateBoard = new Board();
+                                BoardUtil.duplicateBoard(board).accept(duplicateBoard);
+
                                 SwitchPieceType switchPieceType = SwitchPieceType.values()[i];
-                                promotionBoard.move(new Move(piece.getCoordinates(), coordinates,
+                                duplicateBoard.move(new Move(piece.getCoordinates(), coordinates,
                                         moveType, switchPieceType));
-                                if (!isCheck(promotionBoard, color)) {
+                                if (!isCheck(duplicateBoard, color)) {
                                     return false;
                                 }
                             }
                         } else {
+                            Board duplicateBoard = new Board();
+                            BoardUtil.duplicateBoard(board).accept(duplicateBoard);
                             SwitchPieceType switchPieceType = SwitchPieceType.NULL;
                             duplicateBoard.move(new Move(piece.getCoordinates(), coordinates,
                                     moveType, switchPieceType));
@@ -120,30 +119,62 @@ public class GameState {
         Color color = piece.getColor();
 
         for (Coordinates coordinates : potentialCoordinates) {
-            Board duplicateBoard = new Board();
-            BoardUtil.duplicateBoard(board).accept(duplicateBoard);
-
-            MoveType moveType = Player.getType(piece, coordinates, duplicateBoard);
-
+            MoveType moveType = Player.getType(piece, coordinates, board);
             if (moveType == MoveType.PROMOTION) {
                 for (int i = 0; i < SwitchPieceType.values().length - 1; i++) {
-                    Board promotionBoard = new Board();
-                    BoardUtil.duplicateBoard(duplicateBoard).accept(promotionBoard);
+                    Board duplicateBoard = new Board();
+                    BoardUtil.duplicateBoard(board).accept(duplicateBoard);
                     SwitchPieceType switchPieceType = SwitchPieceType.values()[i];
-                    promotionBoard.move(new Move(piece.getCoordinates(), coordinates,
+                    duplicateBoard.move(new Move(piece.getCoordinates(), coordinates,
                             moveType, switchPieceType));
-
-                    if (!isCheck(promotionBoard, color)) {
+                    if (!isCheck(duplicateBoard, color)) {
                         rightMoves.add(coordinates);
                     }
                 }
             } else {
+                Board duplicateBoard = new Board();
+                BoardUtil.duplicateBoard(board).accept(duplicateBoard);
                 SwitchPieceType switchPieceType = SwitchPieceType.NULL;
                 duplicateBoard.move(new Move(piece.getCoordinates(), coordinates,
                         moveType, switchPieceType));
 
                 if (!isCheck(duplicateBoard, color)) {
                     rightMoves.add(coordinates);
+                }
+            }
+        }
+
+        return rightMoves;
+    }
+
+    public static List<Move> getMovesListWithoutMakingCheck(Board board, Piece piece,
+                                                               List<Coordinates> potentialCoordinates) {
+        List<Move> rightMoves = new ArrayList<>();
+
+        for (Coordinates coordinates : potentialCoordinates) {
+            MoveType moveType = Player.getType(piece, coordinates, board);
+            if (moveType == MoveType.PROMOTION) {
+                for (int i = 0; i < SwitchPieceType.values().length - 1; i++) {
+                    Board duplicateBoard = new Board();
+                    BoardUtil.duplicateBoard(board).accept(duplicateBoard);
+
+                    SwitchPieceType switchPieceType = SwitchPieceType.values()[i];
+                    Move potentialMove = new Move(piece.getCoordinates(), coordinates,
+                            moveType, switchPieceType);
+                    duplicateBoard.move(potentialMove);
+                    if (!isCheck(duplicateBoard, piece.getColor())) {
+                        rightMoves.add(potentialMove);
+                    }
+                }
+            } else {
+                Board duplicateBoard = new Board();
+                BoardUtil.duplicateBoard(board).accept(duplicateBoard);
+                SwitchPieceType switchPieceType = SwitchPieceType.NULL;
+                Move potentialMove = new Move(piece.getCoordinates(), coordinates,
+                        moveType, switchPieceType);
+                        duplicateBoard.move(potentialMove);
+                if (!isCheck(duplicateBoard, piece.getColor())) {
+                    rightMoves.add(potentialMove);
                 }
             }
         }
@@ -162,10 +193,11 @@ public class GameState {
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 Piece piece = board.getPiece(new Coordinates(x, y));
-
-                if ((piece.getColor() == (kingColor)) && piece instanceof King) {
-                    log.info(kingColor + " king is on coordinates x=" + x + ", y=" + y);
-                    return new Coordinates(x, y);
+                if (!(piece instanceof Empty)) {
+                    if (piece.getColor() == kingColor && piece instanceof King) {
+                        log.info(kingColor + " king is on coordinates x=" + x + ", y=" + y);
+                        return new Coordinates(x, y);
+                    }
                 }
             }
         }

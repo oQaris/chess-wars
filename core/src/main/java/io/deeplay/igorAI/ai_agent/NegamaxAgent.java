@@ -1,4 +1,4 @@
-package io.deeplay.ai_agent;
+package io.deeplay.igorAI.ai_agent;
 
 import io.deeplay.domain.Color;
 import io.deeplay.engine.GameState;
@@ -49,8 +49,8 @@ public class NegamaxAgent extends AbstractAiAgent {
 
     int calculatePieces(Board board, Color currentColor) {
         if (GameState.isMate(board, currentColor)) {
-            if (currentColor == maximizingColor) return 800000;
-            else return -800000;
+            if (currentColor == maximizingColor) return 10000;
+            else return -10000;
         }
 
         if (GameState.drawWithGameWithoutTakingAndAdvancingPawns(board) || GameState.isStaleMate(board, currentColor)) {
