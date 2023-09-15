@@ -1,4 +1,4 @@
-package io.deeplay.ai_agent;
+package io.deeplay.igorAI.ai_agent;
 
 import io.deeplay.domain.Color;
 import io.deeplay.engine.GameState;
@@ -9,24 +9,24 @@ import io.deeplay.model.piece.*;
 import io.deeplay.service.BoardUtil;
 import lombok.Setter;
 
-import java.util.*;
+import java.util.List;
 
-public class MinimaxAgent extends AbstractAiAgent {
+public class ExpectimaxAgent extends AbstractAiAgent {
     /**
      * Setter для тестов функции оценки
      */
     @Setter
     private Color maximizingColor;
     @Setter
-    private Color minimizingColor;
+    private Color expectingColor;
 
-    public Move getBestMove(Board board, int depth, double alpha, double beta, Color currentColor) {
+    public Move getBestMove(Board board, int depth, Color currentColor) {
         maximizingColor = currentColor;
-        minimizingColor = currentColor.opposite();
-        return (Move) minimax(board, depth, alpha, beta, currentColor, true)[0];
+        expectingColor = currentColor.opposite();
+        return (Move) expectimax(board, depth, currentColor, true)[0];
     }
 
-    public Object[] minimax(Board board, int depth, double alpha, double beta, Color currentColor, boolean maximizingPlayer) {
+    public Object[] expectimax(Board board, int depth, Color currentColor, boolean maximizingPlayer) {
         if (depth == 0
                 || GameState.isMate(board, currentColor)
                 || GameState.isStaleMate(board, currentColor)
@@ -37,64 +37,50 @@ public class MinimaxAgent extends AbstractAiAgent {
         if (maximizingPlayer) {
             List<Move> allPossibleMoves = getAllPossibleMoves(board, maximizingColor);
             Move currentBestMove = getRandomMove(allPossibleMoves);
-            double maxEval = Double.MIN_VALUE;
+            int maxEval = Integer.MIN_VALUE + 1000;
 
             for (Move move : allPossibleMoves) {
                 Board duplicateBoard = new Board();
                 BoardUtil.duplicateBoard(board).accept(duplicateBoard);
 
                 duplicateBoard.move(move);
-                double currentEval = (double) minimax(duplicateBoard, depth - 1, alpha, beta, currentColor.opposite(), false)[1];
+                int currentEval = (int) expectimax(duplicateBoard, depth - 1, currentColor.opposite(), false)[1];
 
                 if (currentEval > maxEval) {
                     maxEval = currentEval;
                     currentBestMove = move;
                 }
-
-                alpha = Math.max(alpha, currentEval);
-                if (beta <= alpha) {
-                    break;
-                }
             }
             return new Object[]{currentBestMove, maxEval};
         } else {
-            List<Move> allPossibleMoves = getAllPossibleMoves(board, minimizingColor);
-            Move currentBestMove = getRandomMove(allPossibleMoves);
-            double minEval = Double.MAX_VALUE;
+            List<Move> allPossibleMoves = getAllPossibleMoves(board, expectingColor);
+            int expectedMinEval = 0;
 
             for (Move move : allPossibleMoves) {
                 Board duplicateBoard = new Board();
                 BoardUtil.duplicateBoard(board).accept(duplicateBoard);
 
                 duplicateBoard.move(move);
-                double currentEval = (double) minimax(duplicateBoard, depth - 1, alpha, beta, currentColor.opposite(), true)[1];
-
-                if (currentEval < minEval) {
-                    minEval = currentEval;
-                    currentBestMove = move;
-                }
-
-                beta = Math.min(beta, currentEval);
-                if (beta <= alpha) {
-                    break;
-                }
+                int currentEval = (int) expectimax(duplicateBoard, depth - 1, currentColor.opposite(), true)[1];
+                expectedMinEval += currentEval;
             }
-            return new Object[]{currentBestMove, minEval};
+
+            int avgMinEval = expectedMinEval / allPossibleMoves.size();
+            return new Object[]{null, avgMinEval};
         }
     }
 
-    double calculatePieces(Board board, Color currentColor) {
+    int calculatePieces(Board board, Color currentColor) {
         if (GameState.isMate(board, currentColor)) {
-            if (currentColor == maximizingColor) {
-                return -8000000;
-            } else if (currentColor == minimizingColor) {
-                return 8000000;
-            }
-        } else if (GameState.drawWithGameWithoutTakingAndAdvancingPawns(board) || GameState.isStaleMate(board, currentColor)) {
+            if (currentColor == maximizingColor) return -8000000;
+            else return 8000000;
+        }
+
+        if (GameState.drawWithGameWithoutTakingAndAdvancingPawns(board) || GameState.isStaleMate(board, currentColor)) {
             return 0;
         }
 
-        double finalScore = 0;
+        int finalScore = 0;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 Piece curPiece = board.getPiece(new Coordinates(i, j));
@@ -105,7 +91,7 @@ public class MinimaxAgent extends AbstractAiAgent {
                         else if (curPiece instanceof Rook) finalScore += 50;
                         else if (curPiece instanceof Queen) finalScore += 90;
                         else if (curPiece instanceof King) finalScore += 900;
-                    } else if (curPiece.getColor() == minimizingColor){
+                    } else if (curPiece.getColor() == expectingColor){
                         if (curPiece instanceof Pawn) finalScore -= 10;
                         else if (curPiece instanceof Knight || curPiece instanceof Bishop) finalScore -= 30;
                         else if (curPiece instanceof Rook) finalScore -= 50;
@@ -115,7 +101,7 @@ public class MinimaxAgent extends AbstractAiAgent {
                 }
             }
         }
-        // TODO тест на то, что на depth = 2 съедает фигуру
+
         return finalScore;
     }
 }

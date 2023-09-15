@@ -1,5 +1,6 @@
-package io.deeplay.ai_agent;
+package io.deeplay.igorAI.ai_agent;
 
+import io.deeplay.igorAI.ai_agent.NegamaxAgent;
 import io.deeplay.domain.Color;
 import io.deeplay.domain.MoveType;
 import io.deeplay.domain.SwitchPieceType;
@@ -49,8 +50,8 @@ class NegamaxAgentTest {
         board.setPiece(new Coordinates(4, 4), new Pawn(new Coordinates(4, 4), Color.BLACK));
         board.setPiece(new Coordinates(7, 3), new Queen(new Coordinates(7, 3), Color.BLACK));
 
-        Assertions.assertEquals(-800000, negamaxAgent.calculatePieces(board, currentColor));
-        Assertions.assertNotEquals(800000, negamaxAgent.calculatePieces(board, currentColor));
+        Assertions.assertEquals(-10000, negamaxAgent.calculatePieces(board, currentColor));
+        Assertions.assertNotEquals(10000, negamaxAgent.calculatePieces(board, currentColor));
     }
 
     @Test
@@ -67,8 +68,8 @@ class NegamaxAgentTest {
 
         Assertions.assertEquals(0, negamaxAgent.calculatePieces(board, currentColor));
         Assertions.assertNotEquals(-60, negamaxAgent.calculatePieces(board, currentColor));
-        Assertions.assertNotEquals(8000000, negamaxAgent.calculatePieces(board, currentColor));
-        Assertions.assertNotEquals(-8000000, negamaxAgent.calculatePieces(board, currentColor));
+        Assertions.assertNotEquals(10000, negamaxAgent.calculatePieces(board, currentColor));
+        Assertions.assertNotEquals(-10000, negamaxAgent.calculatePieces(board, currentColor));
     }
 
     @Test

@@ -36,7 +36,7 @@ public class BoardUtil {
         };
     }
 
-    private static Piece copyPiece(Piece sourcePiece) {
+    public static Piece copyPiece(Piece sourcePiece) {
         try {
             if (sourcePiece instanceof King) {
                 return new King(new Coordinates(sourcePiece.getCoordinates().getX(), sourcePiece.getCoordinates().getY()),

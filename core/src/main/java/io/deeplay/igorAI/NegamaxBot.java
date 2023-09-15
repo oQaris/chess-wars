@@ -1,9 +1,10 @@
-package io.deeplay.model.player;
+package io.deeplay.igorAI;
 
 import io.deeplay.domain.Color;
-import io.deeplay.ai_agent.NegamaxAgent;
+import io.deeplay.igorAI.ai_agent.NegamaxAgent;
 import io.deeplay.model.Board;
 import io.deeplay.model.move.Move;
+import io.deeplay.model.player.Bot;
 import io.deeplay.service.IUserCommunication;
 
 public class NegamaxBot extends Bot {
@@ -14,6 +15,6 @@ public class NegamaxBot extends Bot {
 
     @Override
     public Move getMove(Board board, Color currentColor) {
-        return new NegamaxAgent().getBestMove(board, DEPTH, Integer.MIN_VALUE + 10, Integer.MAX_VALUE - 10, getColor());
+        return new NegamaxAgent().getBestMove(board, DEPTH, Integer.MIN_VALUE + 1, Integer.MAX_VALUE, getColor());
     }
 }

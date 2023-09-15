@@ -1,5 +1,6 @@
-package io.deeplay.ai_agent;
+package io.deeplay.igorAI.ai_agent;
 
+import io.deeplay.igorAI.ai_agent.ExpectimaxAgent;
 import io.deeplay.domain.Color;
 import io.deeplay.domain.MoveType;
 import io.deeplay.domain.SwitchPieceType;
@@ -10,8 +11,6 @@ import io.deeplay.model.move.Move;
 import io.deeplay.model.piece.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ExpectimaxAgentTest {
     @Test
@@ -55,8 +54,8 @@ class ExpectimaxAgentTest {
         board.setPiece(new Coordinates(4, 4), new Pawn(new Coordinates(4, 4), Color.BLACK));
         board.setPiece(new Coordinates(7, 3), new Queen(new Coordinates(7, 3), Color.BLACK));
 
-        Assertions.assertEquals(-80000, expectimaxAgent.calculatePieces(board, currentColor));
-        Assertions.assertNotEquals(80000, expectimaxAgent.calculatePieces(board, currentColor));
+        Assertions.assertEquals(-8000000, expectimaxAgent.calculatePieces(board, currentColor));
+        Assertions.assertNotEquals(8000000, expectimaxAgent.calculatePieces(board, currentColor));
     }
 
     @Test
