@@ -18,15 +18,17 @@ public class MainPage {
     private JPanel mainPanel;
     private JButton startGameButton;
     private JComboBox gameTypesBox;
-    private JComboBox botLevels;
+    private JComboBox botLevel1;
     private JComboBox playerColor;
+    private JComboBox botLevel2;
     private List<String> gameSettings;
 
     public MainPage() {
         gameTypesBox.addActionListener(e -> {
             String selectedGameType = (String) gameTypesBox.getSelectedItem();
             assert selectedGameType != null;
-            botLevels.setEnabled(selectedGameType.equals("Бот vs. Бот") || selectedGameType.equals("Человек vs. Бот"));
+            botLevel1.setEnabled(selectedGameType.equals("Бот vs. Бот") || selectedGameType.equals("Человек vs. Бот"));
+            botLevel2.setEnabled(selectedGameType.equals("Бот vs. Бот"));
         });
 
         startGameButton.addActionListener(e -> {
@@ -36,7 +38,7 @@ public class MainPage {
                 frames[0].dispose();
                 gameSettings.add(String.valueOf(gameTypesBox.getSelectedItem()));
                 gameSettings.add(String.valueOf(String.valueOf(playerColor.getSelectedItem())));
-                gameSettings.add(String.valueOf(String.valueOf(botLevels.getSelectedItem())));
+                gameSettings.add(String.valueOf(String.valueOf(botLevel1.getSelectedItem())));
                 StartGameDTO startGameDTO = Converter.getStartGameSettings(gameSettings);
 
                 System.out.println("creating new client ----- " + gameSettings);
@@ -50,8 +52,14 @@ public class MainPage {
                 }
                 else {
                     new ChessGUI(startGameDTO, PlayerType.BOT);
-                    startGameDTO.setCurrentColor(startGameDTO.getCurrentColor().opposite());
-                    new Thread(() -> new BotStarter(startGameDTO).initialize()).start();
+                    gameSettings = new ArrayList<>();
+                    gameSettings.add(String.valueOf(gameTypesBox.getSelectedItem()));
+                    gameSettings.add(String.valueOf(String.valueOf(playerColor.getSelectedItem())));
+                    gameSettings.add(String.valueOf(String.valueOf(botLevel2.getSelectedItem())));
+                    StartGameDTO startGameDTO2 = Converter.getStartGameSettings(gameSettings);
+
+                    startGameDTO2.setCurrentColor(startGameDTO.getCurrentColor().opposite());
+                    new Thread(() -> new BotStarter(startGameDTO2).initialize()).start();
                 }
             } catch (NullPointerException exception) {
                 log.error("Can't find any frame!" + exception);
@@ -79,8 +87,10 @@ public class MainPage {
         String[] playerTypes = {"Белый", "Черный"};
         playerColor = new JComboBox<>(playerTypes);
 
-        String[] botLevelsArray = {"Легкий", "Средний", "Сложный"};
-        botLevels = new JComboBox<>(botLevelsArray);
+        String[] botLevelsArray = {"Random", "MinimaxIgor", "MinimaxMarina", "NegamaxIgor", "NegamaxMarina",
+                "ExpectimaxIgor", "ExpectimaxMarina"};
+        botLevel1 = new JComboBox<>(botLevelsArray);
+        botLevel2 = new JComboBox<>(botLevelsArray);
     }
 
     {
@@ -109,7 +119,7 @@ public class MainPage {
         mainPanel.add(panel1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         panel1.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JPanel panel2 = new JPanel();
-        panel2.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(3, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel2.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(4, 2, new Insets(0, 0, 0, 0), -1, -1));
         panel2.setBackground(new Color(-1));
         panel1.add(panel2);
         panel2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
@@ -136,15 +146,29 @@ public class MainPage {
         label2.setForeground(new Color(-16777216));
         label2.setText("Выберите сложность бота:");
         panel4.add(label2);
-        botLevels.setBackground(new Color(-1));
-        botLevels.setEnabled(false);
-        botLevels.setForeground(new Color(-16777216));
-        panel4.add(botLevels);
+        botLevel1.setBackground(new Color(-1));
+        botLevel1.setEnabled(false);
+        botLevel1.setForeground(new Color(-16777216));
+        panel4.add(botLevel1);
+        final JPanel panel7 = new JPanel();
+        panel7.setLayout(new FlowLayout(FlowLayout.LEFT, 6, 6));
+        panel7.setBackground(new Color(-1));
+        panel7.setEnabled(true);
+        panel2.add(panel7, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel7.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        final JLabel label4 = new JLabel();
+        label4.setForeground(new Color(-16777216));
+        label4.setText("Выберите сложность бота:");
+        panel7.add(label4);
+        botLevel2.setBackground(new Color(-1));
+        botLevel2.setEnabled(false);
+        botLevel2.setForeground(new Color(-16777216));
+        panel7.add(botLevel2);
         final JPanel panel5 = new JPanel();
         panel5.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         panel5.setBackground(new Color(-1));
         panel5.setEnabled(false);
-        panel2.add(panel5, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        panel2.add(panel5, new com.intellij.uiDesigner.core.GridConstraints(3, 0, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel5.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label3 = new JLabel();
         label3.setForeground(new Color(-16777216));

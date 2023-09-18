@@ -1,5 +1,6 @@
 package io.deeplay.server;
 
+import io.deeplay.communication.converter.Converter;
 import io.deeplay.communication.model.GameType;
 import io.deeplay.model.player.Bot;
 import io.deeplay.model.player.Human;
@@ -79,21 +80,18 @@ public class Server {
                         clientHandler.setPlayer(serverPlayer1);
                         humanBotClientList.add(clientHandler);
                     } else {
-                        serverPlayer2 = new Bot(clientHandler.getColor(), clientHandler.getBotLevel(),
-                                new GuiUserCommunicationService());
+                        serverPlayer2 = Converter.createNewBot(clientHandler.getBotType(), clientHandler.getColor());
                         clientHandler.setPlayer(serverPlayer2);
                         humanBotClientList.add(clientHandler);
                     }
                 }
                 case BotVsBot -> {
                     if (serverPlayer1 == null) {
-                        serverPlayer1 = new Bot(clientHandler.getColor(), clientHandler.getBotLevel(),
-                                new GuiUserCommunicationService());
+                        serverPlayer1 = Converter.createNewBot(clientHandler.getBotType(), clientHandler.getColor());
                         clientHandler.setPlayer(serverPlayer1);
                         botBotClientList.add(clientHandler);
                     } else {
-                        serverPlayer2 = new Bot(clientHandler.getColor(), clientHandler.getBotLevel(),
-                                new GuiUserCommunicationService());
+                        serverPlayer2 = Converter.createNewBot(clientHandler.getBotType(), clientHandler.getColor());
                         clientHandler.setPlayer(serverPlayer2);
                         botBotClientList.add(clientHandler);
                     }

@@ -5,8 +5,16 @@ import io.deeplay.communication.dto.MoveDTO;
 import io.deeplay.communication.dto.StartGameDTO;
 import io.deeplay.communication.model.GameStateType;
 import io.deeplay.domain.*;
+import io.deeplay.igorAI.ExpectimaxBot;
+import io.deeplay.igorAI.MinimaxBot;
+import io.deeplay.igorAI.NegamaxBot;
+import io.deeplay.marinaAI.bot.ExpectiMaxBot;
+import io.deeplay.marinaAI.bot.MiniMaxBot;
+import io.deeplay.marinaAI.bot.NegaMaxBot;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
+import io.deeplay.model.player.Bot;
+import io.deeplay.service.GuiUserCommunicationService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +82,7 @@ public class Converter {
     public static StartGameDTO getStartGameSettings(List<String> gameSettings) {
         io.deeplay.communication.model.GameType clientGameType;
         io.deeplay.communication.model.Color clientColor;
-        int clientBotLevel;
+        BotType botType;
 
         switch (gameSettings.get(0)) {
             case "Человек vs. Человек" -> clientGameType = io.deeplay.communication.model.GameType.HumanVsHuman;
@@ -90,13 +98,33 @@ public class Converter {
         }
 
         switch (gameSettings.get(2)) {
-            case "Легкий" -> clientBotLevel = 1;
-            case "Средний" -> clientBotLevel = 2;
-            case "Сложный" -> clientBotLevel = 3;
-            default -> throw new IllegalArgumentException("Wrong Bot Level selection");
+            case "Random" -> botType = BotType.RANDOM;
+            case "MinimaxIgor" -> botType = BotType.MINIMAX_IGOR;
+            case "MinimaxMarina" -> botType = BotType.MINIMAX_MARINA;
+            case "NegamaxIgor" -> botType = BotType.NEGAMAX_IGOR;
+            case "NegamaxMarina" -> botType = BotType.NEGAMAX_MARINA;
+            case "ExpectimaxIgor" -> botType = BotType.EXPECTIMAX_IGOR;
+            case "ExpectimaxMarina" -> botType = BotType.EXPECTIMAX_MARINA;
+            default -> throw new IllegalArgumentException("Wrong Bot type selection");
         }
 
-        return new StartGameDTO(clientGameType, clientColor, clientBotLevel);
+        return new StartGameDTO(clientGameType, clientColor, botType);
+    }
+
+    public static Bot createNewBot(BotType botType, Color color) {
+        Bot bot;
+        switch (botType) {
+            case RANDOM -> bot = new Bot(color, 1, new GuiUserCommunicationService());
+            case MINIMAX_IGOR -> bot = new MinimaxBot(color, 1, new GuiUserCommunicationService());
+            case MINIMAX_MARINA -> bot = new MiniMaxBot(color, 1, new GuiUserCommunicationService());
+            case NEGAMAX_IGOR -> bot = new NegamaxBot(color, 1, new GuiUserCommunicationService());
+            case NEGAMAX_MARINA -> bot = new NegaMaxBot(color, 1, new GuiUserCommunicationService());
+            case EXPECTIMAX_IGOR -> bot = new ExpectimaxBot(color, 1, new GuiUserCommunicationService());
+            case EXPECTIMAX_MARINA -> bot = new ExpectiMaxBot(color, 1, new GuiUserCommunicationService());
+            default -> throw new IllegalStateException("Can't create new Bot");
+        }
+
+        return bot;
     }
 
     public static io.deeplay.communication.model.SwitchPieceType getSwitchPieceTypeDTO(Move move) {

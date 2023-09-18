@@ -7,6 +7,7 @@ import io.deeplay.communication.dto.StartGameDTO;
 import io.deeplay.communication.model.GameStateType;
 import io.deeplay.communication.model.GameType;
 import io.deeplay.communication.service.DeserializationService;
+import io.deeplay.domain.BotType;
 import io.deeplay.domain.Color;
 import io.deeplay.model.Board;
 import io.deeplay.model.move.Move;
@@ -33,7 +34,7 @@ public class ClientHandler implements Runnable {
     @Getter
     private Color color;
     @Getter
-    private int botLevel;
+    private BotType botType;
     @Setter
     @Getter
     private Player player;
@@ -48,7 +49,8 @@ public class ClientHandler implements Runnable {
         System.out.println(startGameDTO.toString());
         gameType = startGameDTO.getGameType();
         color = Converter.convertColor(startGameDTO.getCurrentColor());
-        botLevel = startGameDTO.getBotLevel();
+        System.out.println(startGameDTO.getBotType());
+        botType = startGameDTO.getBotType();
     }
 
     @Override
