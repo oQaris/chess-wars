@@ -79,7 +79,7 @@ public class ChessGUI extends JFrame implements EndpointUser {
         if (playerType == PlayerType.HUMAN) {
             this.player = new Human(currentColor, guiUserCommunicationService);
         } else {
-            this.player = new Bot(currentColor, startGameDTO.getBotLevel(), guiUserCommunicationService);
+            this.player = Converter.createNewBot(startGameDTO.getBotType(), currentColor);
         }
         this.client = new Client(startGameDTO);
         client.connectToServer();
@@ -197,8 +197,6 @@ public class ChessGUI extends JFrame implements EndpointUser {
                 switchColorAppearance();
 
                 waitAndUpdate();
-
-                // проверка конца игры
             }
         }
 
@@ -220,22 +218,20 @@ public class ChessGUI extends JFrame implements EndpointUser {
         new Thread(() -> {
             while (true) {
                 if (!isPlayerMove) {
-                    Object playerAction = client.startListening();
-                    processClientInfo(playerAction);
+                    waitAndUpdate();
                 } else {
                     try {
-                        TimeUnit.SECONDS.sleep(2);
+                        TimeUnit.SECONDS.sleep(1);
                         Move move = player.getMove(gameInfo.getCurrentBoard(), player.getColor());
 
                         gameInfo.move(move);
                         isPlayerMove = false;
                         switchColorAppearance();
-                        addToMoveHistory(player.getColor().opposite(), move.startPosition(), move.endPosition());
+                        addToMoveHistory(player.getColor(), move.startPosition(), move.endPosition());
                         paintBoard(gameInfo.getCurrentBoard().getBoard());
 
                         client.sendMove(move);
-                        Object playerAction = client.startListening();
-                        processClientInfo(playerAction);
+                        waitAndUpdate();
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
@@ -249,15 +245,6 @@ public class ChessGUI extends JFrame implements EndpointUser {
             waitAndUpdate();
         }
     }
-
-//    ExecutorService executor = Executors.newSingleThreadExecutor();
-//
-//    public void waitAndUpdate() {
-//        executor.submit(() -> {
-//            Object playerAction = client.startListening();
-//            processClientInfo(playerAction);
-//        });
-//    }
 
     public void waitAndUpdate() {
         new Thread(() -> {
@@ -273,10 +260,6 @@ public class ChessGUI extends JFrame implements EndpointUser {
             System.out.println("game over in wait and update");
             List<String> endGameInfo = (List<String>) action;
             endGame(endGameInfo);
-//            Object endGame = client.getEndGame();
-//            System.out.println(endGame);
-//            endGame((List<String>) endGame);
-            // client.sendGameEnd(endGameInfo);
         }
     }
 

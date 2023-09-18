@@ -27,11 +27,11 @@ public class RankingSystem {
         table.add(new CompetitivePlayer(new Bot(Color.WHITE, 1,
                 new GuiUserCommunicationService()), BotType.RANDOM, 1000, 0, 0, 0));
         table.add(new CompetitivePlayer(new MinimaxBot(Color.WHITE, 1,
-                new GuiUserCommunicationService()), BotType.MINIMAX, 1000, 0, 0, 0));
+                new GuiUserCommunicationService()), BotType.MINIMAX_IGOR, 1000, 0, 0, 0));
         table.add(new CompetitivePlayer(new NegamaxBot(Color.WHITE, 1,
-                new GuiUserCommunicationService()), BotType.NEGAMAX, 1000, 0, 0, 0));
+                new GuiUserCommunicationService()), BotType.NEGAMAX_IGOR, 1000, 0, 0, 0));
         table.add(new CompetitivePlayer(new ExpectimaxBot(Color.WHITE, 1,
-                new GuiUserCommunicationService()), BotType.EXPECTIMINIMAX, 1000, 0, 0, 0));
+                new GuiUserCommunicationService()), BotType.EXPECTIMAX_IGOR, 1000, 0, 0, 0));
     }
 
     /**
