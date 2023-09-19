@@ -4,6 +4,9 @@ public enum Color {
     BLACK,
     WHITE;
 
+    /**
+     * @return противоположный цвет
+     */
     public Color opposite() {
         if (this == WHITE) {
             return BLACK;

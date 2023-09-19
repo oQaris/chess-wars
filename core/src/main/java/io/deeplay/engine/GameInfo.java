@@ -3,7 +3,9 @@ package io.deeplay.engine;
 import io.deeplay.domain.Color;
 import io.deeplay.model.Board;
 import io.deeplay.model.move.Move;
+import lombok.Getter;
 
+@Getter
 public class GameInfo {
     private Color currentMoveColor;
     private final Board currentBoard;
@@ -19,9 +21,7 @@ public class GameInfo {
     }
 
     /**
-     * Метод делает движение, путем обновления текущего состояния доски, добавления хода в MoveHistory. Также
-     * меняет цвет текущего хода
-     *
+     * Метод делает движение, путем обновления текущего состояния доски. Вызывает метод изменения текущего хода.
      * @param move ход игрока
      */
     public void move(Move move) {
@@ -29,20 +29,11 @@ public class GameInfo {
         changeCurrentMoveColor();
     }
 
+    /**
+     * Метод меняет цвет текущего хода
+     */
     protected void changeCurrentMoveColor() {
         if (currentMoveColor == Color.WHITE) currentMoveColor = Color.BLACK;
         else currentMoveColor = Color.WHITE;
-    }
-
-    public Color getCurrentMoveColor() {
-        return currentMoveColor;
-    }
-
-    public void setCurrentMoveColor(Color currentMoveColor) {
-        this.currentMoveColor = currentMoveColor;
-    }
-
-    public Board getCurrentBoard() {
-        return currentBoard;
     }
 }

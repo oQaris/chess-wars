@@ -8,6 +8,9 @@ import io.deeplay.model.piece.Piece;
 
 import java.util.List;
 
+/**
+ * Интерфейс для задания абстракции использования пользовательского интерфейса
+ */
 public interface IUserCommunication {
     GameSession getGameSessionInfo();
 

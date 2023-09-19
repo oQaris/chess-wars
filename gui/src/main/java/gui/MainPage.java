@@ -17,12 +17,17 @@ public class MainPage {
     public static final int APP_HEIGHT = 400;
     private JPanel mainPanel;
     private JButton startGameButton;
-    private JComboBox gameTypesBox;
-    private JComboBox botLevel1;
-    private JComboBox playerColor;
-    private JComboBox botLevel2;
+    private JComboBox<?> gameTypesBox;
+    private JComboBox<?> botLevel1;
+    private JComboBox<?> playerColor;
+    private JComboBox<?> botLevel2;
     private List<String> gameSettings;
 
+    /**
+     * Конструктор класса. Задает слушателей для кнопки начала игры и JComboBox с типом игры.
+     * При нажатии на кнопку "начать игру" обрабатывает выбранные пользователем данные и конвертирует их в StartGameDTO.
+     * Затем создает объекты ChessGUI и\или создает новый поток BotStarter в зависимости от выбранного типа игры.
+     */
     public MainPage() {
         gameTypesBox.addActionListener(e -> {
             String selectedGameType = (String) gameTypesBox.getSelectedItem();
@@ -67,6 +72,9 @@ public class MainPage {
         });
     }
 
+    /**
+     * Метод запускает окно с главной страницей.
+     */
     public void startApplication() {
         JFrame frame = new JFrame("MainPage");
         frame.setContentPane(new MainPage().mainPanel);
@@ -80,11 +88,14 @@ public class MainPage {
         frame.setVisible(true);
     }
 
+    /**
+     * Метод задает начальные значения для ComboBox в интерфейсе.
+     */
     private void createUIComponents() {
         String[] gameTypes = {"Человек vs. Человек", "Бот vs. Бот", "Человек vs. Бот"};
         gameTypesBox = new JComboBox<>(gameTypes);
 
-        String[] playerTypes = {"Белый", "Черный"};
+        String[] playerTypes = {"Я", "Противник"};
         playerColor = new JComboBox<>(playerTypes);
 
         String[] botLevelsArray = {"Random", "MinimaxIgor", "MinimaxMarina", "NegamaxIgor", "NegamaxMarina",
@@ -144,7 +155,7 @@ public class MainPage {
         panel4.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label2 = new JLabel();
         label2.setForeground(new Color(-16777216));
-        label2.setText("Выберите сложность бота:");
+        label2.setText("Выберите сложность бота №1:");
         panel4.add(label2);
         botLevel1.setBackground(new Color(-1));
         botLevel1.setEnabled(false);
@@ -158,7 +169,7 @@ public class MainPage {
         panel7.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label4 = new JLabel();
         label4.setForeground(new Color(-16777216));
-        label4.setText("Выберите сложность бота:");
+        label4.setText("Выберите сложность бота №2:");
         panel7.add(label4);
         botLevel2.setBackground(new Color(-1));
         botLevel2.setEnabled(false);

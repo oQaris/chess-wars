@@ -8,6 +8,9 @@ import io.deeplay.model.piece.Piece;
 
 import java.util.List;
 
+/**
+ * Класс-заглушка. Используется в графическом интерфейсе приложения
+ */
 public class GuiUserCommunicationService implements IUserCommunication {
 
     @Override

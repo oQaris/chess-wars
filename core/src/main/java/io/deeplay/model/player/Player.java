@@ -12,6 +12,7 @@ import io.deeplay.model.piece.King;
 import io.deeplay.model.piece.Pawn;
 import io.deeplay.model.piece.Piece;
 import io.deeplay.service.IUserCommunication;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
 import static io.deeplay.model.Board.BOARD_HEIGHT;
 import static io.deeplay.model.Board.BOARD_LENGTH;
 
+@Getter
 public abstract class Player {
     protected Color color;
 
@@ -29,8 +31,7 @@ public abstract class Player {
     public abstract Move getMove(Board board, Color currentColor);
 
     /**
-     * Метод возвращает все возможные фигуры, которыми можно походить
-     *
+     * Метод возвращает все возможные фигуры, которыми можно походить при текущем положении доски
      * @param board текущее состояние доски
      * @param color цвет текущего хода
      * @return лист из фигур
@@ -54,7 +55,6 @@ public abstract class Player {
 
     /**
      * Метод возвращает тип хода
-     *
      * @param selectedPiece выбранная фигура для хода
      * @param moveCoordinates координаты выбранной фигуры
      * @param board текущее состояние доски
@@ -83,14 +83,13 @@ public abstract class Player {
     }
 
     /**
-     * Возвращает цвет игрока
-     * @return цвет игрока
+     * Метод используется в графическом интерфейсе. Нужен для получения хода из GUI
+     * @param board текущее состояние доски
+     * @param pieceCoordinates координаты фигуры
+     * @param moveCoordinates координаты хода
+     * @return собранный Move
      */
-    public Color getColor() {
-        return color;
-    }
-
-    public Move getMove(Board board, Color currentColor, Coordinates pieceCoordinates, Coordinates moveCoordinates) {
+    public Move getMove(Board board, Coordinates pieceCoordinates, Coordinates moveCoordinates) {
         Piece selectedPiece = board.getPiece(pieceCoordinates);
         MoveType moveType = getType(selectedPiece, moveCoordinates, board);
         SwitchPieceType selectedSwitchPiece = SwitchPieceType.NULL;

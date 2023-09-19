@@ -92,8 +92,8 @@ public class Converter {
         }
 
         switch (gameSettings.get(1)) {
-            case "Белый" -> clientColor = io.deeplay.communication.model.Color.WHITE;
-            case "Черный" -> clientColor = io.deeplay.communication.model.Color.BLACK;
+            case "Я" -> clientColor = io.deeplay.communication.model.Color.WHITE;
+            case "Противник" -> clientColor = io.deeplay.communication.model.Color.BLACK;
             default -> throw new IllegalArgumentException("Wrong Color selection");
         }
 

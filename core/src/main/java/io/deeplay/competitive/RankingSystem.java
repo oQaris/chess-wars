@@ -15,12 +15,12 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+@Getter
 public class RankingSystem {
-    @Getter
     private final List<CompetitivePlayer> table;
 
     /**
-     * Инициализирует 4 разных ботов
+     * Конструктор инициализирует 4 разных ботов и добавляет в таблицу
      */
     public RankingSystem() {
         table = new ArrayList<>();
@@ -36,7 +36,6 @@ public class RankingSystem {
 
     /**
      * Метод получает информацию о конце игры, обрабатывает ее и сохраняет
-     *
      * @param competitivePlayer1 игрок 1
      * @param competitivePlayer2 игрок 2
      * @param gameStates тип конца игры

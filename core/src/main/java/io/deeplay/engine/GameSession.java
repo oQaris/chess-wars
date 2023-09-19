@@ -17,11 +17,11 @@ import static io.deeplay.model.Board.printBoardOnce;
 public class GameSession {
     private final Player player1;
     private final Player player2;
-    private List<String> gameEnd = new ArrayList<>();
+    private final List<String> gameEnd = new ArrayList<>();
     @Getter
     private final GameType gameType;
     @Getter
-    private GameInfo gameInfo;
+    private final GameInfo gameInfo;
 
     public GameSession(Player player1, Player player2, GameType gameType) {
         this.player1 = player1;
@@ -33,7 +33,7 @@ public class GameSession {
     /**
      * Метод для создания текущей сессии игры. Отвечает за получение текущего хода;
      * выбора игрока, который должен ходить, исходя из текущего цвета игры; получение выбранного хода от игрока
-     * и передача его в GameInfo. Также отвечает за завершение игры.
+     * и передача его в GameInfo. Если конец игры - вызывает функцию endGame().
      */
     public void startGameSession() {
 //        printBoardOnce(gameInfo.getCurrentBoard());
@@ -80,8 +80,7 @@ public class GameSession {
     }
 
     /**
-     * Метод возвращает игрока, который должен ходить в текущем ходе
-     *
+     * Метод возвращает игрока, который должен ходить на текущий момент
      * @param movingColor текущий цвет хода
      * @return игрока, который ходит
      */
@@ -93,6 +92,10 @@ public class GameSession {
         }
     }
 
+    /**
+     * Метод обрабатывает конец игры.
+     * @param textMessage подробное сообщение о том, как завершилась игра
+     */
     public void endGame(String textMessage) {
         sendGameEnd(gameEnd);
         System.out.println("Это из листа" + gameEnd);
@@ -105,6 +108,12 @@ public class GameSession {
 
     }
 
+    /**
+     * Получает Move из класса player (от Bot или Human)
+     * @param player текущий игрок
+     * @param color текущий цвет
+     * @return полученный Move
+     */
     public Move getMove(Player player, Color color) {
         return player.getMove(gameInfo.getCurrentBoard(), color);
     }

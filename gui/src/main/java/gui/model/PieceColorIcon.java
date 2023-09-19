@@ -14,6 +14,7 @@ public enum PieceColorIcon {
     WHITE_BISHOP("/img/white_bishop.png"),
     WHITE_PAWN("/img/white_pawn.png");
 
+    /** Путь к файлу, лежащий в поле enum **/
     public final String path;
     private PieceColorIcon(String path) {
         this.path = path;

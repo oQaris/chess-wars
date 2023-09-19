@@ -2,7 +2,6 @@ package gui;
 
 import gui.model.PieceColorIcon;
 import gui.model.PlayerType;
-import gui.service.BoardService;
 import io.deeplay.client.Client;
 import io.deeplay.communication.converter.Converter;
 import io.deeplay.communication.dto.StartGameDTO;
@@ -50,6 +49,13 @@ public class ChessGUI extends JFrame implements EndpointUser {
     private final Client client;
     private Coordinates selectedMoveCoordinates;
 
+    /**
+     * Конструктор класса. Задает начальные параметры переменных, переопределяет GuiUserCommunicationService. Затем,
+     * в зависимости от выбранного типа игрока создает объект класса Human или выбранного бота. Создает нового клиента
+     * и создает соединение с сервером. Дальше запускает start метод для бота или человека.
+     * @param startGameDTO начальные параметры с главной страницы, выбранные пользователем
+     * @param playerType тип игрока (Human или Bot)
+     */
     public ChessGUI(StartGameDTO startGameDTO, PlayerType playerType) {
         io.deeplay.domain.Color currentColor = Converter.convertColor(startGameDTO.getCurrentColor());
         isPlayerMove = currentColor == io.deeplay.domain.Color.WHITE;
@@ -92,6 +98,9 @@ public class ChessGUI extends JFrame implements EndpointUser {
         }
     }
 
+    /**
+     * Метод инициализирует графический интерфейс
+     */
     public void initialize() {
         setTitle("Chess Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -102,7 +111,7 @@ public class ChessGUI extends JFrame implements EndpointUser {
         chessBoardSquares = new JButton[BOARD_SIZE][BOARD_SIZE];
         defaultCellColors = new Color[BOARD_SIZE][BOARD_SIZE];
 
-        paintInitialBoard(BoardService.getBoard(gameInfo.getCurrentBoard()));
+        paintInitialBoard(gameInfo.getCurrentBoard().getBoard());
 
         moveHistoryTextArea = new JTextArea(20, 18);
         moveHistoryTextArea.setEditable(false);
@@ -121,6 +130,10 @@ public class ChessGUI extends JFrame implements EndpointUser {
         setResizable(false);
     }
 
+    /**
+     * Приватный класс, который добавляет слушателя для каждой из 64 клеток на игровом поле.
+     * Отвечает за обработку нажатий на игровом поле.
+     */
     private class ChessSquareListener implements ActionListener {
         private final int x;
         private final int y;
@@ -173,7 +186,7 @@ public class ChessGUI extends JFrame implements EndpointUser {
                     if (selectedPiece.getCoordinates().getX() == coordinates.getKey().getX()
                             && selectedPiece.getCoordinates().getY() == coordinates.getKey().getY()) {
                         selectedMoveCoordinates = selectedPiece.getCoordinates();
-                        Move move = player.getMove(currentBoard, player.getColor(),
+                        Move move = player.getMove(currentBoard,
                                 prevSelectedPiece.getCoordinates(), selectedPiece.getCoordinates());
                         if (move.moveType() == MoveType.PROMOTION) {
                             SwitchPieceType switchPieceType = getSwitchPieceType();
@@ -200,6 +213,11 @@ public class ChessGUI extends JFrame implements EndpointUser {
             }
         }
 
+        /**
+         * Метод вызывает всплывающее окно из класса PromotionOptionPane для того, чтобы пользователь выбрал фигуру
+         * для promotion
+         * @return выбранную пользователем фигуру или ошибку
+         */
         public static SwitchPieceType getSwitchPieceType() {
             String result = new PromotionOptionPane().getResult();
             SwitchPieceType switchPieceType;
@@ -214,6 +232,12 @@ public class ChessGUI extends JFrame implements EndpointUser {
         }
     }
 
+    /**
+     * Метод для старта бота на графическом интерфейсе. Интерфейс, если ход противоположного бота, ждет запроса от
+     * сервера с ходом игрока, и при поступлении хода - обновляет доску. Затем, когда ход текущего бота, получает Move,
+     * обновляет доску и отправляет запрос на сервер с этим Move,
+     * после чего переходит в режим ожидания запроса от сервера.
+     */
     public void startBot() {
         new Thread(() -> {
             while (true) {
@@ -240,12 +264,18 @@ public class ChessGUI extends JFrame implements EndpointUser {
         }).start();
     }
 
+    /**
+     * Метод для старта графического интерфейса для игрока.
+     */
     public void startPlayer() {
         if (!isPlayerMove) {
             waitAndUpdate();
         }
     }
 
+    /**
+     * Метод ожидает запрос от сервера, а затем вызывает функцию обработки этого запроса.
+     */
     public void waitAndUpdate() {
         new Thread(() -> {
             Object playerAction = client.startListening();
@@ -253,6 +283,10 @@ public class ChessGUI extends JFrame implements EndpointUser {
         }).start();
     }
 
+    /**
+     * Метод обрабатывает входящий запрос от сервера в зависимости от его типа.
+     * @param action входящий запрос в виде объекта
+     */
     public void processClientInfo(Object action) {
         if (action instanceof Move move) {
             updateGameInfo(move);
@@ -263,6 +297,11 @@ public class ChessGUI extends JFrame implements EndpointUser {
         }
     }
 
+    /**
+     * Метод обрабатывает конец игры, путем вызова всплывающего окна.
+     * При нажатии на "Ок" или крестик - закрывает приложение
+     * @param endGameInfo информация об окончании игры
+     */
     public void endGame(List<String> endGameInfo) {
         String gameStates = endGameInfo.get(0);
         String winColor = endGameInfo.get(1);
@@ -283,6 +322,11 @@ public class ChessGUI extends JFrame implements EndpointUser {
         frame.setVisible(true);
     }
 
+    /**
+     * Обновляет GameInfo, вызывает функцию добавления хода в историю,
+     * отрисовывает заново доску, передает ход текущему игроку.
+     * @param incomingMove ход противоположного игрока
+     */
     public void updateGameInfo(Move incomingMove) {
         gameInfo.move(incomingMove);
         isPlayerMove = true;
@@ -291,10 +335,20 @@ public class ChessGUI extends JFrame implements EndpointUser {
         paintBoard(gameInfo.getCurrentBoard().getBoard());
     }
 
+    /**
+     * Добавляет ход в историю
+     * @param color цвет хода
+     * @param start начальная позиция
+     * @param end конечная позиция
+     */
     private void addToMoveHistory(io.deeplay.domain.Color color, Coordinates start, Coordinates end) {
         moveHistoryTextArea.append(" " + color + ": " + start + " -> " + end + "\n");
     }
 
+    /**
+     * Отрисовывает начальную доску, задает actionListener для клеток поля
+     * @param board начальная доска
+     */
     public void paintInitialBoard(Piece[][] board) {
         boolean isLightSquare = false;
 
@@ -350,6 +404,10 @@ public class ChessGUI extends JFrame implements EndpointUser {
         }
     }
 
+    /**
+     * Отрисовывает текущую доску
+     * @param board текущая доска
+     */
     private void paintBoard(Piece[][] board) {
         boolean isLightSquare = false;
 
@@ -392,6 +450,12 @@ public class ChessGUI extends JFrame implements EndpointUser {
         }
     }
 
+    /**
+     * Задает иконки для фигур
+     * @param className название класса фигуры
+     * @param color цвет фигуры
+     * @return иконку фигуры
+     */
     Icon setIcon(String className, io.deeplay.domain.Color color) {
         String path = "";
         if (color == io.deeplay.domain.Color.WHITE) {
@@ -422,6 +486,9 @@ public class ChessGUI extends JFrame implements EndpointUser {
         return new ImageIcon(image);
     }
 
+    /**
+     * Метод отвечает за смену отображения текущего хода.
+     */
     private void switchColorAppearance() {
         io.deeplay.domain.Color playerColor = player.getColor();
 

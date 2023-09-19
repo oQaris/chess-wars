@@ -20,12 +20,31 @@ public class ExpectimaxAgent extends AbstractAiAgent {
     @Setter
     private Color expectingColor;
 
+    /**
+     * Функция получения лучшего хода. Вызывает рекурсивную функцию expectimax,
+     * которая просчитывает и возвращает лучший ход.
+     * @param board текущее состояние доски
+     * @param depth глубина просчетов
+     * @param currentColor цвет текущего хода
+     * @return лучший Move
+     */
     public Move getBestMove(Board board, int depth, Color currentColor) {
         maximizingColor = currentColor;
         expectingColor = currentColor.opposite();
         return (Move) expectimax(board, depth, currentColor, true)[0];
     }
 
+    /**
+     * Рекурсивная функция экспектимакса. Проходит по каждому Move, делает ход,
+     * изменяя состояние доски и вызывается до тех пор, пока либо глубина не станет равной 0,
+     * либо не завершится игра. При одном из этих сценариев - вызывает функцию эвалюации и возвращает ее значение.
+     * В конце возвращает лучший ход по проделанным просчетам.
+     * @param board текущее состояние доски
+     * @param depth глубина просчетов
+     * @param currentColor цвет хода
+     * @param maximizingPlayer является ли текущий ход максимизирующим
+     * @return лучший ход, либо значение из функции эвалюации
+     */
     public Object[] expectimax(Board board, int depth, Color currentColor, boolean maximizingPlayer) {
         if (depth == 0
                 || GameState.isMate(board, currentColor)
@@ -70,6 +89,7 @@ public class ExpectimaxAgent extends AbstractAiAgent {
         }
     }
 
+    /** Функция эвалюации для Экспектимакса **/
     int calculatePieces(Board board, Color currentColor) {
         if (GameState.isMate(board, currentColor)) {
             if (currentColor == maximizingColor) return -8000000;

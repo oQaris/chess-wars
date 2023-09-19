@@ -2,7 +2,6 @@ package io.deeplay.server;
 
 import io.deeplay.communication.converter.Converter;
 import io.deeplay.communication.model.GameType;
-import io.deeplay.model.player.Bot;
 import io.deeplay.model.player.Human;
 import io.deeplay.model.player.Player;
 import io.deeplay.service.GuiUserCommunicationService;
@@ -31,17 +30,21 @@ public class Server {
     private final List<ClientHandler> clients = new ArrayList<>();
     private GameType gameType;
     private Player serverPlayer1;
-    private Player serverPlayer2;
 
-    public Server(int port) {
-    }
+    public Server() { }
 
     public static void main(String[] args) throws IOException {
         System.setOut(new java.io.PrintStream(System.out, true, StandardCharsets.UTF_8));
-        Server server = new Server(PORT);
+        Server server = new Server();
         server.start();
     }
 
+    /**
+     * Метод запускает сервер, при приходящем ClientHandler обрабатывает его, определяет его тип игры,
+     * добавляет в соответствующий лист ожидания, затем пытается запустить метод начала игры,
+     * если один из листов ожидания имеет больше 1 объекта. Затем переходит в режим ожидания нового ClientHandler.
+     * @throws IOException exception
+     */
     public void start() throws IOException {
         try {
             serverSocket = new ServerSocket(PORT);
@@ -62,6 +65,7 @@ public class Server {
 
             gameType = clientHandler.getGameType();
 
+            Player serverPlayer2;
             switch (clientHandler.getGameType()) {
                 case HumanVsHuman -> {
                     if (serverPlayer1 == null) {
@@ -113,6 +117,13 @@ public class Server {
         }
     }
 
+    /**
+     * Метод получает на вход лист из ClientHandler, по-очереди проходит по каждому clientHandler, пытается найти
+     * соперника с противоположным цветом для того, чтобы начать игру. Если такой находится - запускает для них игру.
+     * Затем удаляет из полученного на вход листа клиентов, которые запустились.
+     * @param clientHandlerList лист из ClientHandler, которые ожидают начала матча
+     * @return лист из клиентов, которых нужно будет удалить из списка ожидания
+     */
     private List<ClientHandler> tryStartingGame(List<ClientHandler> clientHandlerList) {
         if (clientHandlerList.size() > 1) {
             for (int i = 0; i < clientHandlerList.size(); i++) {
@@ -132,11 +143,5 @@ public class Server {
         }
 
         return clientHandlerList;
-    }
-
-    public void broadcast(String message) { // сообщения обоим игрокам
-        for (ClientHandler client : clients) {
-            client.sendMessage(message);
-        }
     }
 }

@@ -20,12 +20,35 @@ public class MinimaxAgent extends AbstractAiAgent {
     @Setter
     private Color minimizingColor;
 
+    /**
+     * Функция получения лучшего хода. Вызывает рекурсивную функцию minimax,
+     * которая просчитывает и возвращает лучший ход.
+     * @param board текущее состояние доски
+     * @param depth глубина просчетов
+     * @param alpha альфа
+     * @param beta бета
+     * @param currentColor цвет текущего хода
+     * @return лучший Move
+     */
     public Move getBestMove(Board board, int depth, int alpha, int beta, Color currentColor) {
         maximizingColor = currentColor;
         minimizingColor = currentColor.opposite();
         return (Move) minimax(board, depth, alpha, beta, currentColor, true)[0];
     }
 
+    /**
+     * Рекурсивная функция минимакса. Проходит по каждому Move, делает ход,
+     * изменяя состояние доски и вызывается до тех пор, пока либо глубина не станет равной 0,
+     * либо не завершится игра. При одном из этих сценариев - вызывает функцию эвалюации и возвращает ее значение.
+     * В конце возвращает лучший ход по проделанным просчетам.
+     * @param board текущее состояние доски
+     * @param depth глубина просчетов
+     * @param alpha альфа
+     * @param beta бета
+     * @param currentColor цвет хода
+     * @param maximizingPlayer является ли текущий ход максимизирующим
+     * @return лучший ход, либо значение из функции эвалюации
+     */
     public Object[] minimax(Board board, int depth, int alpha, int beta, Color currentColor, boolean maximizingPlayer) {
         if (depth == 0
                 || GameState.isStaleMate(board, currentColor)
@@ -83,6 +106,7 @@ public class MinimaxAgent extends AbstractAiAgent {
         }
     }
 
+    /** Функция эвалюации для Минимакса **/
     int calculatePieces(Board board, Color currentColor) {
         if (GameState.isMate(board, currentColor))
             if (currentColor == maximizingColor) return -8000000;

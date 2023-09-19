@@ -21,7 +21,6 @@ import java.util.List;
 public class GameState {
     /**
      * Метод проверяет шах при текущем состоянии доски
-     *
      * @param board текущее состояние доски
      * @param color цвет игрока, чьи фигуры проверяют на шах
      * @return есть ли шах
@@ -45,7 +44,6 @@ public class GameState {
 
     /**
      * Метод проверяет мат при текущем состоянии доски
-     *
      * @param board текущее состояние доски
      * @param color цвет игрока, которого проверяют
      * @return есть ли мат
@@ -60,7 +58,6 @@ public class GameState {
 
     /**
      * Метод проверяет пат при текущем состоянии доски
-     *
      * @param board текущее состояние доски
      * @param color цвет игрока, которого проверяют
      * @return есть ли пат
@@ -105,7 +102,6 @@ public class GameState {
 
     /**
      * Метод проверяет, если ходов без изменения состояния больше 50, то это ничья
-     *
      * @param board текущее состояние доски
      * @return было ли 50 ходов без изменения положения на доске
      */
@@ -113,6 +109,14 @@ public class GameState {
         return board.getMoveHistory().getMovesWithoutTake() >= 50;
     }
 
+    /**
+     * Метод проверяет каждый возможный ход переданной фигуры, и если он не подставляет короля, то добавляет эти
+     * координаты в лист. Затем его возвращает
+     * @param board текущее состояние доски
+     * @param piece текущая фигура
+     * @param potentialCoordinates координаты, куда может походить фигура
+     * @return лист из координат, куда фигура может походить без подставления своего короля
+     */
     public static List<Coordinates> getMovesWithoutMakingCheck(Board board, Piece piece,
                                                                List<Coordinates> potentialCoordinates) {
         List<Coordinates> rightMoves = new ArrayList<>();
@@ -147,6 +151,14 @@ public class GameState {
         return rightMoves;
     }
 
+    /**
+     * Метод проверяет каждый возможный ход переданной фигуры, и если он не подставляет короля,
+     * то создает Move и добавляет его в лист. Затем этот лист возвращает
+     * @param board текущее состояние доски
+     * @param piece текущая фигура
+     * @param potentialCoordinates координаты, куда может походить фигура
+     * @return лист из Move, куда фигура может походить без подставления своего короля
+     */
     public static List<Move> getMovesListWithoutMakingCheck(Board board, Piece piece,
                                                                List<Coordinates> potentialCoordinates) {
         List<Move> rightMoves = new ArrayList<>();
@@ -184,10 +196,9 @@ public class GameState {
 
     /**
      * Метод ищет короля заданного цвета и возвращает его координаты
-     *
      * @param board текущее состояние доски
      * @param kingColor цвет короля
-     * @return координаты короля
+     * @return координаты короля или выбрасывает ошибку
      */
     private static Coordinates getKingPosition(Board board, Color kingColor) {
         for (int x = 0; x < 8; x++) {
@@ -206,6 +217,12 @@ public class GameState {
         throw new GameLogicException(kingColor + " king is not on the board");
     }
 
+    /**
+     * Проверка на конец игры. По-очереди вызывает проверку на пат, на мат и на ничью
+     * @param board текущее состояние доски
+     * @param color текущий цвет
+     * @return конец игры или нет
+     */
     public static boolean isGameOver(Board board, Color color) {
         return isStaleMate(board, color) || isMate(board, color) || drawWithGameWithoutTakingAndAdvancingPawns(board);
     }

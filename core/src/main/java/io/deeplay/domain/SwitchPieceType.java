@@ -11,7 +11,6 @@ public enum SwitchPieceType {
 
     /**
      * Метод возвращает рандомную фигуру. Используется для рандомного выбора фигуры для рокировки в боте
-     *
      * @return рандомную фигуру
      */
     public static SwitchPieceType getRandomPiece() {
