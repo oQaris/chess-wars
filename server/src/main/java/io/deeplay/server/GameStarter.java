@@ -35,6 +35,11 @@ public class GameStarter implements Runnable {
         startGame();
     }
 
+    /**
+     * Метод создает новую сессию игры из переданных в конструкторе класса игроках и типа игры. Переопределяет
+     * методы sendMove() для отправки хода другому клиенту, getMove() для получения хода от бота или человека,
+     * sendGameEnd() для отпавки окончания игры другому клиенту
+     */
     public void startGame() {
         System.out.println("GAME STARTED!");
         GameSession gameSession = new GameSession(serverPlayer1, serverPlayer2, convertGameTypeDTO(gameType)) {

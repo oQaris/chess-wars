@@ -12,11 +12,13 @@ public class Empty extends Piece {
         super(coordinates, Color.EMPTY);
     }
 
+    /** У пустой клетки нет возможных ходов, возвращается пустой лист **/
     @Override
     public List<Coordinates> getPossibleMoves(Board board) {
         return new ArrayList<>();
     }
 
+    /** Пустая клетка не может никуда походить, возвращается false **/
     @Override
     public boolean canMoveAt(Coordinates coordinates, Board board) {
         return false;

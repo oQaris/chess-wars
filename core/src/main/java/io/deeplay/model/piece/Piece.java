@@ -3,9 +3,11 @@ package io.deeplay.model.piece;
 import io.deeplay.domain.Color;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
+import lombok.Getter;
 
 import java.util.List;
 
+@Getter
 public abstract class Piece {
     private Coordinates coordinates;
     private Color color;
@@ -15,16 +17,8 @@ public abstract class Piece {
         this.color = color;
     }
 
-    public Color getColor() {
-        return color;
-    }
-
     public void setColor(Color color) {
         this.color = color;
-    }
-
-    public Coordinates getCoordinates() {
-        return coordinates;
     }
 
     public void setCoordinates(Coordinates coordinates) {

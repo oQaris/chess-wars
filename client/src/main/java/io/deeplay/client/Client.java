@@ -15,20 +15,21 @@ import java.net.Socket;
 public class Client {
     private static final String HOST = "localhost";
     private static final int PORT = 8080;
-    private Socket socket;
     private BufferedWriter out;
     private BufferedReader in;
     private static final Logger logger = LogManager.getLogger(Client.class);
     private final StartGameDTO gameSettings;
-    private EndGameDTO endGameDTO;
 
     public Client(StartGameDTO gameSettings) {
         this.gameSettings = gameSettings;
     }
 
+    /**
+     * Метод подключается к серверу по заданному хосту и порту. Затем отправляет запрос на начало игры серверу.
+     */
     public void connectToServer() {
         try {
-            socket = new Socket(HOST, PORT);
+            Socket socket = new Socket(HOST, PORT);
             logger.info("Клиент подключился к серверу");
             System.out.println("Connected to server");
 
@@ -38,12 +39,15 @@ public class Client {
             out.write(response);
             out.newLine();
             out.flush();
-
         } catch (IOException e) {
             logger.error("Проблема с подключением к серверу");
         }
     }
 
+    /**
+     * Метод нужен для запуска "прослушивания". Ждет входящий json запрос.
+     * @return обработанный объект, полученный из json
+     */
     public Object startListening() {
         String request;
 
@@ -56,6 +60,11 @@ public class Client {
         return processJson(request);
     }
 
+    /**
+     * Обрабатывает приходящий json запрос.
+     * @param json строка запроса
+     * @return обработанный объект, полученный из json
+     */
     public Object processJson(String json) {
         try {
             EndGameDTO endGameDTO = DeserializationService.convertJsonToEndGameDTO(json);
@@ -72,6 +81,10 @@ public class Client {
         throw new NullPointerException("wrong type DTO");
     }
 
+    /**
+     * Отправляет сериализованный ход на сервер
+     * @param move ход игрока
+     */
     public void sendMove(Move move) {
         String moveJson = SerializationService.convertMoveDTOToJson(Converter.convertMoveToMoveDTO(move));
 

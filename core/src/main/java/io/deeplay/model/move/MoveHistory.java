@@ -1,10 +1,12 @@
 package io.deeplay.model.move;
 
 import io.deeplay.domain.MoveType;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class MoveHistory {
     private final List<Move> moveHistory;
     private int movesWithoutTake;
@@ -13,6 +15,11 @@ public class MoveHistory {
         moveHistory = new ArrayList<>();
     }
 
+    /**
+     * Метод добавляет переданный Move в MoveHistory. Если Move не изменяет материальное состояние на доске -
+     * инкрементирует movesWithoutTake
+     * @param move переданный ход
+     */
     public void addMove(Move move) {
         moveHistory.add(move);
 
@@ -23,6 +30,9 @@ public class MoveHistory {
         }
     }
 
+    /**
+     * Метод удаляет последний Move из MoveHistory
+     */
     public void removeLastMove() {
         if (!moveHistory.isEmpty()) {
             moveHistory.remove(moveHistory.size() - 1);
@@ -37,25 +47,20 @@ public class MoveHistory {
         moveHistory.add(move);
     }
 
+    /**
+     * Метод для получения последнего хода из истории
+     * @return последний Move из MoveHistory
+     */
     public Move getLastMove() {
         if (!moveHistory.isEmpty()) {
             return moveHistory.get(moveHistory.size() - 1);
         } else return new Move(null, null, null, null);
     }
 
+    /**
+     * Метод очищает историю ходов
+     */
     public void clearHistory() {
         moveHistory.clear();
-    }
-
-    public List<Move> getMoveHistory() {
-        return moveHistory;
-    }
-
-    public void setMovesWithoutTake(int movesWithoutTake) {
-        this.movesWithoutTake = movesWithoutTake;
-    }
-
-    public int getMovesWithoutTake() {
-        return movesWithoutTake;
     }
 }

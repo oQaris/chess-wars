@@ -7,6 +7,13 @@ import io.deeplay.communication.dto.*;
 public class DeserializationService {
     private static final Gson gson = new Gson();
 
+    /**
+     * Десериализует строку в выбранный класс
+     * @param json строка в json формате
+     * @param clazz класс, в который мы хотим превратить строку
+     * @return десериализованный объект
+     * @param <T> нужен для возврата любого класса
+     */
     private static <T> T deserialize(final String json, final Class<T> clazz) {
         try {
             return gson.fromJson(json, clazz);
@@ -25,13 +32,5 @@ public class DeserializationService {
 
     public static EndGameDTO convertJsonToEndGameDTO(final String json) {
         return deserialize(json, EndGameDTO.class);
-    }
-
-    public static MoveTransferDTO convertJsonToMoveTransferDTO(final String json) {
-        return deserialize(json, MoveTransferDTO.class);
-    }
-
-    public static ErrorResponseDTO convertJsonToErrorResponseDTO(final String json) {
-        return deserialize(json, ErrorResponseDTO.class);
     }
 }

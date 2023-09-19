@@ -9,13 +9,14 @@ import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
 import io.deeplay.model.piece.Piece;
 import io.deeplay.service.IUserCommunication;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.Random;
 
+@Getter
 public class Bot extends Player {
-    private int difficultyLevel;
-    private Color color;
+    private final int difficultyLevel;
 
     public Bot(Color color, int difficultyLevel, IUserCommunication iUserCommunication) {
         super(color, iUserCommunication);
@@ -24,8 +25,8 @@ public class Bot extends Player {
 
     /**
      * Возвращает созданный объект класса Move с заданными параметрами. Метод рандомно выбирает параметры из листов
-     * possiblePiecesToMove и availableMoves.
-     *
+     * possiblePiecesToMove и availableMoves. Если данный ход является promotion - выбирает рандомно фигуру,
+     * в которую пешка может превратиться.
      * @param board текущее состояние доски
      * @param currentColor цвет текущего хода
      * @return новый объект класса Move
@@ -66,27 +67,6 @@ public class Bot extends Player {
 //                + " to coordinates: x=" + randomMoveCoordinates.getX() + ", y=" + randomMoveCoordinates.getY());
 
         return new Move(randomPiece.getCoordinates(), randomMoveCoordinates, moveType, selectedSwitchPiece);
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    public void chooseDifficultyLevel(int level) {
-        switch (level) {
-            case 1: // easy
-                break;
-            case 2: //medium
-                break;
-            case 3: //hard
-                break;
-            default: // incorrect input
-                break;
-        }
-    }
-
-    public int getDifficultyLevel() {
-        return difficultyLevel;
     }
 
     @Override
