@@ -4,7 +4,6 @@ import io.deeplay.domain.Color;
 import io.deeplay.domain.GameType;
 import io.deeplay.engine.GameSession;
 import io.deeplay.marinaAI.bot.NegaMaxBot;
-import io.deeplay.model.player.Bot;
 import io.deeplay.service.GuiUserCommunicationService;
 
 import java.nio.charset.StandardCharsets;
@@ -14,13 +13,14 @@ public class NegaMaxMain {
     public static void main(String[] args) {
         System.setOut(new java.io.PrintStream(System.out, true, StandardCharsets.UTF_8));
         ArrayList<String> statistics = new ArrayList<>();
+        Color negamaxColor = Color.WHITE;
 
         int gameCount = 1000;
 
         for (int i = 0; i < gameCount; i++) {
             GameSession gameSession = new GameSession(
-                    new Bot(Color.WHITE, 1, new GuiUserCommunicationService()),
-                    new NegaMaxBot(Color.BLACK, 1, new GuiUserCommunicationService()),
+                    new NegaMaxBot(negamaxColor, 1, new GuiUserCommunicationService()),
+                    new NegaMaxBot(negamaxColor.opposite(), 1, new GuiUserCommunicationService()),
                     GameType.BotVsBot
             );
 
@@ -41,13 +41,13 @@ public class NegaMaxMain {
         for (int i = 0; i < gameCount; i++) {
             String statistic = statistics.get(i);
 
-            if (statistic.contains("CHECKMATE") && statistic.contains("BLACK")) {
+            if (statistic.contains("CHECKMATE") && statistic.contains(negamaxColor.toString())) {
                 winCount++;
             } else if (statistic.contains("STALEMATE")) {
                 staleMateCount++;
             } else if (statistic.contains("DRAW")) {
                 drawCount++;
-            } else if (statistic.contains("WHITE") && statistic.contains("CHECKMATE")) {
+            } else if (statistic.contains(negamaxColor.opposite().toString()) && statistic.contains("CHECKMATE")) {
                 loseCount++;
             }
         }

@@ -19,6 +19,11 @@ import java.util.List;
 
 @Slf4j
 public class GameState {
+    static List<Object> errorList;
+    public static List<Object> getErrorList() {
+        return errorList;
+    }
+
     /**
      * Метод проверяет шах при текущем состоянии доски
      * @param board текущее состояние доски
@@ -160,7 +165,7 @@ public class GameState {
      * @return лист из Move, куда фигура может походить без подставления своего короля
      */
     public static List<Move> getMovesListWithoutMakingCheck(Board board, Piece piece,
-                                                               List<Coordinates> potentialCoordinates) {
+                                                            List<Coordinates> potentialCoordinates) {
         List<Move> rightMoves = new ArrayList<>();
 
         for (Coordinates coordinates : potentialCoordinates) {
@@ -184,7 +189,7 @@ public class GameState {
                 SwitchPieceType switchPieceType = SwitchPieceType.NULL;
                 Move potentialMove = new Move(piece.getCoordinates(), coordinates,
                         moveType, switchPieceType);
-                        duplicateBoard.move(potentialMove);
+                duplicateBoard.move(potentialMove);
                 if (!isCheck(duplicateBoard, piece.getColor())) {
                     rightMoves.add(potentialMove);
                 }
@@ -196,7 +201,7 @@ public class GameState {
 
     /**
      * Метод ищет короля заданного цвета и возвращает его координаты
-     * @param board текущее состояние доски
+     * @param board     текущее состояние доски
      * @param kingColor цвет короля
      * @return координаты короля или выбрасывает ошибку
      */
@@ -214,6 +219,11 @@ public class GameState {
         }
 
         log.error(kingColor + " king is not on the board. Throw GameLogicException...");
+
+        String errorMessage = " king exception";
+        errorList.add(new GameLogicException(errorMessage));
+        errorList.add(errorMessage);
+
         throw new GameLogicException(kingColor + " king is not on the board");
     }
 

@@ -2,7 +2,8 @@ package io.deeplay.communication.model;
 
 public enum Color {
     BLACK,
-    WHITE;
+    WHITE,
+    EMPTY;
 
     /**
      * @return противоположный цвет

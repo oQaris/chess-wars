@@ -5,5 +5,5 @@ public enum GameStateType {
     CHECKMATE,
     STALEMATE,
     DRAW,
-    DEFAULT;
+    DEFAULT, SURRENDER;
 }

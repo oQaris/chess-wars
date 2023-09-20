@@ -18,6 +18,7 @@ public class GameSession {
     private final Player player1;
     private final Player player2;
     private final List<String> gameEnd = new ArrayList<>();
+    private List<Object> gameError = new ArrayList<>();
     @Getter
     private final GameType gameType;
     @Getter
@@ -47,12 +48,7 @@ public class GameSession {
             log.info("Текущий игрок: {}", playerWhoMoves.getClass().getSimpleName());
             System.out.println("current player: " + playerWhoMoves.getClass().getSimpleName());
 
-            Move move = getMove(playerWhoMoves, currentColor);
-            System.out.println(move);
-            sendMove(move);
-
-            gameInfo.move(move);
-             printBoardOnce(gameInfo.getCurrentBoard());
+            getEvent(playerWhoMoves, currentColor);
 
             if (GameState.isMate(gameInfo.getCurrentBoard(), enemyColor)) {
                 gameEnd.add(0, GameStates.CHECKMATE.toString());
@@ -72,9 +68,38 @@ public class GameSession {
 
             if (GameState.drawWithGameWithoutTakingAndAdvancingPawns(gameInfo.getCurrentBoard())) {
                 gameEnd.add(0, GameStates.DRAW.toString());
+                gameEnd.add(1, "DRAW");
 
                 endGame("DRAW!");
                 return;
+            }
+        }
+    }
+
+    public void getEvent(Player playerWhoMoves, Color currentColor) {
+        Move move;
+        List<String> gameEndList;
+        List<Object> gameErrorList;
+
+        try {
+            move = getMove(playerWhoMoves, currentColor);
+            sendMove(move);
+            gameInfo.move(move);
+        } catch (IllegalStateException e1) {
+            try {
+                gameEndList = getEndGame(currentColor);
+
+                gameEnd.add(0, gameEndList.get(0));
+                gameEnd.add(1, gameEndList.get(1));
+
+                endGame("SURRENDER, " + gameEndList.get(1) + "won");
+            } catch (IllegalStateException e2) {
+                gameErrorList = getKingError();
+
+                gameError.add(0, gameErrorList.get(0));
+                gameError.add(1, gameErrorList.get(1));
+
+                catchGameError((Exception) gameError.get(0), (String) gameError.get(1));
             }
         }
     }
@@ -98,14 +123,16 @@ public class GameSession {
      */
     public void endGame(String textMessage) {
         sendGameEnd(gameEnd);
-        System.out.println("Это из листа" + gameEnd);
         log.info("Игра окончена {}", textMessage);
-        System.out.println("Game ended due to: " + textMessage);
         printBoardOnce(gameInfo.getCurrentBoard());
     }
 
-    public void sendMove(Move move) {
+    public void catchGameError(Exception exception, String message) {
+        sendGameError(exception, message);
+        log.info("Игра закончена ошибкой {}", message);
+    }
 
+    public void sendMove(Move move) {
     }
 
     /**
@@ -121,7 +148,18 @@ public class GameSession {
     public void sendGameEnd(List<String> gameEnd) {
     }
 
+    public List<String> getEndGame(Color color) {
+        return gameEnd;
+    }
+
     public String getGameEnd() {
         return gameEnd.toString();
+    }
+
+    public List<Object> getKingError() {
+        return GameState.getErrorList();
+    }
+
+    public void sendGameError(Exception exception, String error) {
     }
 }

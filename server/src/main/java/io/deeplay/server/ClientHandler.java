@@ -2,15 +2,13 @@ package io.deeplay.server;
 
 import io.deeplay.communication.converter.Converter;
 import io.deeplay.communication.dto.EndGameDTO;
-import io.deeplay.communication.dto.MoveDTO;
+import io.deeplay.communication.dto.ErrorResponseDTO;
 import io.deeplay.communication.dto.StartGameDTO;
-import io.deeplay.communication.model.GameStateType;
 import io.deeplay.communication.model.GameType;
 import io.deeplay.communication.service.DeserializationService;
 import io.deeplay.domain.BotType;
 import io.deeplay.domain.Color;
 import io.deeplay.model.Board;
-import io.deeplay.model.move.Move;
 import io.deeplay.model.player.Player;
 import lombok.Getter;
 import lombok.Setter;
@@ -84,35 +82,32 @@ public class ClientHandler implements Runnable {
         return DeserializationService.convertJsonToStartGameDTO(clientInput);
     }
 
-//    public EndGameDTO getEndGame() {
-//        String clientInput;
-//
-//        try {
-//            clientInput = in.readLine();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        return DeserializationService.convertJsonToEndGameDTO(clientInput);
-//    }
+    public Object listenJson() {
+        String request;
 
-    public Move getMove() throws IOException {
-        String clientInput = in.readLine();
-        MoveDTO moveDTO = DeserializationService.convertJsonToMoveDTO(clientInput);
-        System.out.println("received move:" + moveDTO);
-        Move move = Converter.convertDTOToMove(moveDTO);
-        System.out.println("getMove in run method");
-        return move;
+        try {
+            request = in.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return processJson(request);
     }
 
-    public void sendMessage(String message) {
+    public Object processJson(String json) {
         try {
-            out.write(message);
-            out.newLine();
-            out.flush();
-        } catch (IOException e) {
-            logger.error("Не получилось отправить сообщение ", e);
+            EndGameDTO endGameDTO = DeserializationService.convertJsonToEndGameDTO(json);
+
+            return Converter.convertEndGameStateDTO(endGameDTO);
+        } catch (NullPointerException e1) {
+            try {
+                return Converter.convertDTOToMove(DeserializationService.convertJsonToMoveDTO(json));
+            } catch (NullPointerException e2) {
+                logger.error("wrong type DTO");
+            }
         }
+
+        throw new NullPointerException("wrong type DTO");
     }
 
     public void sendMoveToClient(String serializedMoveDTO) {
@@ -131,50 +126,26 @@ public class ClientHandler implements Runnable {
             out.write(serializedEndGameDTO);
             out.newLine();
             out.flush();
-            System.out.println(serializedEndGameDTO);
-            System.out.println("Sent end game to client from a server!");
         } catch (IOException e) {
             logger.error("Не получилось отправить ход: ", e);
         }
     }
 
-    public EndGameDTO getEndGame(List<String> gameEnd) {
-        GameStateType endGameStateType;
-        io.deeplay.communication.model.Color winColor;
-
-        switch (gameEnd.get(0)) {
-            case "CHECK" -> endGameStateType = GameStateType.CHECK;
-            case "CHECKMATE" -> endGameStateType = GameStateType.CHECKMATE;
-            case "STALEMATE" -> endGameStateType = GameStateType.STALEMATE;
-            case "DRAW" -> endGameStateType = GameStateType.DRAW;
-            default -> throw new IllegalArgumentException("Wrong game ending");
-        }
-
-        switch (gameEnd.get(1)) {
-            case "WHITE" -> winColor = io.deeplay.communication.model.Color.WHITE;
-            case "BLACK" -> winColor = io.deeplay.communication.model.Color.BLACK;
-            default -> throw new IllegalArgumentException("Wrong Color");
-        }
-
-        return new EndGameDTO(endGameStateType, winColor);
-    }
-
-    /**
-     * Отправляет сообщение клиенту.
-     *
-     * @param message сообщение для отправки
-     */
-    void sendMessageToClient(String message) {
+    public void sendErrorToClient(String serializedErrorDTO) {
         try {
-            out.write(message);
+            out.write(serializedErrorDTO);
             out.newLine();
             out.flush();
         } catch (IOException e) {
-            logger.error("Не получилось отправить сообщение клиенту: ", e);
-            e.printStackTrace();
+            logger.error("Не получилось отправить ошибку: ", e);
         }
     }
 
-    private void handleGameStart(GameType gameType) { // обработать запрос на старт игры
+    public EndGameDTO getEndGame(List<String> gameEnd) {
+        return Converter.convertListEndGameToEndGameDTO(gameEnd);
+    }
+
+    public ErrorResponseDTO getError(Exception exception, String error) {
+        return Converter.convertErrorToErrorResponseDTO(exception, error);
     }
 }

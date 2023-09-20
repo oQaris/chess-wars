@@ -2,6 +2,7 @@ package io.deeplay.server;
 
 import io.deeplay.communication.converter.Converter;
 import io.deeplay.communication.dto.EndGameDTO;
+import io.deeplay.communication.dto.ErrorResponseDTO;
 import io.deeplay.communication.model.GameType;
 import io.deeplay.communication.service.SerializationService;
 import io.deeplay.domain.Color;
@@ -11,7 +12,6 @@ import io.deeplay.model.player.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
 import java.util.List;
 
 import static io.deeplay.communication.converter.Converter.convertGameTypeDTO;
@@ -71,27 +71,6 @@ public class GameStarter implements Runnable {
             }
 
             @Override
-            public Move getMove(Player player, Color color) {
-                if (clients.get(0).getColor().equals(color)) {
-                    try {
-                        return clients.get(0).getMove();
-                    } catch (IOException e) {
-                        logger.error("cannot get move");
-                    }
-                }
-
-                if (clients.get(1).getColor().equals(color)) {
-                    try {
-                        return clients.get(1).getMove();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-
-                throw new IllegalStateException();
-            }
-
-            @Override
             public void sendGameEnd(List<String> gameEnd) {
                 Color moveColor = getGameInfo().getCurrentMoveColor();
 
@@ -110,6 +89,63 @@ public class GameStarter implements Runnable {
                 } else {
                     logger.error("Ошибка отправки конца игры клиенту");
                 }
+            }
+
+            @Override
+            public void sendGameError(Exception exception, String error) {
+                Color moveColor = getGameInfo().getCurrentMoveColor();
+
+                if (clients.get(0).getColor().equals(moveColor)) {
+                    ErrorResponseDTO errorResponseDTO1 = clients.get(0).getError(exception, error);
+                    String jsonErrorDTO1 = SerializationService.convertErrorResponseDTOtoJSON(errorResponseDTO1);
+
+                    clients.get(0).sendErrorToClient(jsonErrorDTO1);
+                    clients.get(1).sendErrorToClient(jsonErrorDTO1);
+                } else if (clients.get(1).getColor().equals(moveColor)) {
+                    ErrorResponseDTO errorResponseDTO2 = clients.get(1).getError(exception, error);
+                    String jsonErrorDTO2 = SerializationService.convertErrorResponseDTOtoJSON(errorResponseDTO2);
+
+                    clients.get(0).sendErrorToClient(jsonErrorDTO2);
+                    clients.get(1).sendErrorToClient(jsonErrorDTO2);
+                } else {
+                    logger.error("Ошибка отправки конца игры клиенту");
+                }
+            }
+
+            private Object eventResult;
+
+            public Object getEvent(Color color) {
+                if (clients.get(0).getColor().equals(color)) {
+                    eventResult = clients.get(0).listenJson();
+                } else if (clients.get(1).getColor().equals(color)) {
+                    eventResult = clients.get(1).listenJson();
+                } else {
+                    throw new IllegalArgumentException();
+                }
+
+                return eventResult;
+            }
+
+            @Override
+            public Move getMove(Player player, Color color) {
+                Object object = getEvent(color);
+
+                if (object instanceof Move move) {
+                    return move;
+                }
+
+                throw new IllegalStateException();
+            }
+
+            @Override
+            public List<String> getEndGame(Color color) {
+                Object object = eventResult;
+
+                if (object instanceof List<?> endGame) {
+                    return (List<String>) endGame;
+                }
+
+                throw new IllegalArgumentException();
             }
         };
 

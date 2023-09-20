@@ -5,5 +5,6 @@ public enum GameStates {
     CHECKMATE,
     STALEMATE,
     DRAW,
-    DEFAULT;
+    DEFAULT,
+    SURRENDER;
 }
