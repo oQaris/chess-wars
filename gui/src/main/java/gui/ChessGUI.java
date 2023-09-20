@@ -372,7 +372,9 @@ public class ChessGUI extends JFrame implements EndpointUser {
                         chessBoardSquares[x][y].setBackground(new Color(0xFFB74D00, true));
                     }
 
-                    chessBoardSquares[x][y].addActionListener(new ChessSquareListener(x, y));
+                    if (player instanceof Human) {
+                        chessBoardSquares[x][y].addActionListener(new ChessSquareListener(x, y));
+                    }
                     chessBoardPanel.add(chessBoardSquares[x][y]);
                 }
             }
@@ -396,7 +398,9 @@ public class ChessGUI extends JFrame implements EndpointUser {
                         chessBoardSquares[x][y].setBackground(new Color(0xFFB74D00, true));
                     }
 
-                    chessBoardSquares[x][y].addActionListener(new ChessSquareListener(x, y));
+                    if (player instanceof Human) {
+                        chessBoardSquares[x][y].addActionListener(new ChessSquareListener(x, y));
+                    }
                     chessBoardPanel.add(chessBoardSquares[x][y]);
                 }
                 System.out.println();
