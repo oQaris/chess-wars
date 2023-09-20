@@ -36,23 +36,23 @@ public class GameSession {
      * и передача его в GameInfo. Если конец игры - вызывает функцию endGame().
      */
     public void startGameSession() {
-//        printBoardOnce(gameInfo.getCurrentBoard());
+        printBoardOnce(gameInfo.getCurrentBoard());
         while (true) {
             Color currentColor = gameInfo.getCurrentMoveColor();
             Color enemyColor = gameInfo.getCurrentMoveColor().opposite();
             log.info("Ход {}", currentColor);
-//            System.out.println(currentColor);
+            System.out.println(currentColor);
 
             Player playerWhoMoves = choosePlayer(currentColor);
             log.info("Текущий игрок: {}", playerWhoMoves.getClass().getSimpleName());
-//            System.out.println("current player: " + playerWhoMoves.getClass().getSimpleName());
+            System.out.println("current player: " + playerWhoMoves.getClass().getSimpleName());
 
             Move move = getMove(playerWhoMoves, currentColor);
-//            System.out.println(move);
+            System.out.println(move);
             sendMove(move);
 
             gameInfo.move(move);
-            // printBoardOnce(gameInfo.getCurrentBoard());
+             printBoardOnce(gameInfo.getCurrentBoard());
 
             if (GameState.isMate(gameInfo.getCurrentBoard(), enemyColor)) {
                 gameEnd.add(0, GameStates.CHECKMATE.toString());

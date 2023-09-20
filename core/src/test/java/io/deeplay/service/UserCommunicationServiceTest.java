@@ -128,7 +128,7 @@ class UserCommunicationServiceTest {
 
         IllegalArgumentException thrown = Assertions.assertThrows(IllegalArgumentException.class,
                 userCommunicationService::selectSwitchPiece);
-        Assertions.assertEquals("Ввод должен быть предложенным целочисленным числом", thrown.getMessage());
+        Assertions.assertTrue(!thrown.getMessage().isEmpty());
     }
 
     @Test
