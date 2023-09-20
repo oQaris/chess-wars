@@ -1,6 +1,7 @@
 package io.deeplay.marinaAI.strategy;
 
 import io.deeplay.domain.Color;
+import io.deeplay.engine.GameState;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.piece.*;
@@ -221,10 +222,23 @@ public class PestoStrategy implements Strategy {
 
         int endGamePhase = 24 - midGamePhase;
 
+
         if (maximizingPlayerIndex == 0) {
-            return (midGameScore * midGamePhase + endGameScore * endGamePhase) / 24;
+            if (GameState.isMate(board, Color.BLACK)) {
+                return 100000000;
+//            } else if (GameState.isMate(board, Color.WHITE)) { // здесь 4
+//                return -100000000;
+            } else {
+                return (midGameScore * midGamePhase + endGameScore * endGamePhase) / 24;
+            }
         } else {
-            return (-midGameScore * midGamePhase - endGameScore * endGamePhase) / 24;
+            if (GameState.isMate(board, Color.WHITE)) {
+                return 100000000;
+            } else if (GameState.isMate(board, Color.BLACK)) {
+                return -100000000;
+            } else {
+                return (-midGameScore * midGamePhase - endGameScore * endGamePhase) / 24;
+            }
         }
     }
 
@@ -248,12 +262,12 @@ public class PestoStrategy implements Strategy {
             pieceScore = 4;
         } else if (piece instanceof King) {
             pieceScore = 5;
+        }
 
-            if (piece.getColor() == Color.BLACK) {
-                pieceColor = 1;
-            } else if (piece.getColor() == maximizingColor) {
-                pieceColor = 0;
-            }
+        if (piece.getColor() == Color.BLACK) {
+            pieceColor = 1;
+        } else if (piece.getColor() == Color.WHITE) {
+            pieceColor = 0;
         }
 
         return 2 * pieceScore + pieceColor;

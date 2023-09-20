@@ -2,6 +2,7 @@ package io.deeplay.client;
 
 import io.deeplay.communication.converter.Converter;
 import io.deeplay.communication.dto.EndGameDTO;
+import io.deeplay.communication.dto.ErrorResponseDTO;
 import io.deeplay.communication.dto.StartGameDTO;
 import io.deeplay.communication.service.DeserializationService;
 import io.deeplay.communication.service.SerializationService;
@@ -11,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
 
 public class Client {
     private static final String HOST = "localhost";
@@ -74,7 +76,13 @@ public class Client {
             try {
                 return Converter.convertDTOToMove(DeserializationService.convertJsonToMoveDTO(json));
             } catch (NullPointerException e2) {
-                logger.error("wrong type DTO");
+                try {
+                    ErrorResponseDTO errorResponseDTO = DeserializationService.convertJsonToErrorResponseDTO(json);
+
+                    return Converter.convertErrorResponseDTOToList(errorResponseDTO);
+                } catch (NullPointerException e3) {
+                    logger.error("wrong type DTO");
+                }
             }
         }
 
@@ -90,6 +98,19 @@ public class Client {
 
         try {
             out.write(moveJson);
+            out.newLine();
+            out.flush();
+        } catch (IOException e) {
+            logger.error("Ошибка отправки хода от клиента");
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void sendEndGameToServer(List<String> endGame) {
+        String endGameJson = SerializationService.convertEndGameDTOtoJSON(Converter.convertListEndGameToEndGameDTO(endGame));
+
+        try {
+            out.write(endGameJson);
             out.newLine();
             out.flush();
         } catch (IOException e) {

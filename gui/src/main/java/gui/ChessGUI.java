@@ -5,10 +5,12 @@ import gui.model.PlayerType;
 import io.deeplay.client.Client;
 import io.deeplay.communication.converter.Converter;
 import io.deeplay.communication.dto.StartGameDTO;
+import io.deeplay.domain.GameStates;
 import io.deeplay.domain.MoveType;
 import io.deeplay.domain.SwitchPieceType;
 import io.deeplay.engine.GameInfo;
 import io.deeplay.engine.GameState;
+import io.deeplay.igorAI.MinimaxBot;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
@@ -25,10 +27,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class ChessGUI extends JFrame implements EndpointUser {
@@ -41,6 +41,7 @@ public class ChessGUI extends JFrame implements EndpointUser {
     private JTextArea moveHistoryTextArea;
     private JLabel currentPlayerLabel;
     private JButton selectedSquare = null;
+    private JButton surrenderButton;
     private Piece prevSelectedPiece = null;
     private Map<Coordinates, Boolean> possibleMoveCells = null;
     private boolean isPlayerMove;
@@ -119,6 +120,10 @@ public class ChessGUI extends JFrame implements EndpointUser {
         currentPlayerLabel = new JLabel();
         currentPlayerLabel.setText("Текущий ход: БЕЛЫЙ");
         add(currentPlayerLabel, BorderLayout.NORTH);
+
+        surrenderButton = new JButton("Сдаться");
+        surrenderButton.addActionListener(new SurrenderButtonListener());
+        add(surrenderButton, BorderLayout.SOUTH);
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, chessBoardPanel, new JScrollPane(moveHistoryTextArea));
         splitPane.setDividerLocation(490);
@@ -248,6 +253,16 @@ public class ChessGUI extends JFrame implements EndpointUser {
                         TimeUnit.SECONDS.sleep(1);
                         Move move = player.getMove(gameInfo.getCurrentBoard(), player.getColor());
 
+                        if (move == null) {
+                            try {
+                                Object playerAction = client.startListening();
+                                processClientInfo(playerAction);
+                                System.out.println(playerAction);
+                            } catch (NullPointerException e) {
+                                System.out.println("i cant move");
+                            }
+                        }
+
                         gameInfo.move(move);
                         isPlayerMove = false;
                         switchColorAppearance();
@@ -290,10 +305,16 @@ public class ChessGUI extends JFrame implements EndpointUser {
     public void processClientInfo(Object action) {
         if (action instanceof Move move) {
             updateGameInfo(move);
-        } else if (action instanceof List<?>) {
-            System.out.println("game over in wait and update");
-            List<String> endGameInfo = (List<String>) action;
-            endGame(endGameInfo);
+        } else if (action instanceof List<?> list) {
+
+            if (list.get(0) instanceof String) {
+                List<String> endGameInfo = (List<String>) list;
+                endGame(endGameInfo);
+            } else if (list.get(0) instanceof Exception) {
+                List<Object> errorGame = (List<Object>) list;
+
+                endGameWithError(errorGame);
+            }
         }
     }
 
@@ -304,22 +325,45 @@ public class ChessGUI extends JFrame implements EndpointUser {
      */
     public void endGame(List<String> endGameInfo) {
         String gameStates = endGameInfo.get(0);
-        String winColor = endGameInfo.get(1);
+        String winColor;
+        JLabel winColorLabel = new JLabel();
+
+        if (!gameStates.equals(GameStates.DRAW.toString())) {
+            winColor = endGameInfo.get(1);
+            winColorLabel = new JLabel("Победитель: " + winColor);
+        }
 
         JFrame frame = new JFrame("Игра завершена");
-
         JLabel gameStatesLabel = new JLabel("Состояние игры: " + gameStates);
-        JLabel winColorLabel = new JLabel("Победитель: " + winColor);
 
         JPanel panel = new JPanel();
         panel.add(gameStatesLabel);
-        panel.add(winColorLabel);
+
+        if (!gameStates.equals(GameStates.DRAW.toString())) {
+            panel.add(winColorLabel);
+        }
 
         frame.getContentPane().add(panel);
         frame.setSize(200, 100);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+    }
+
+    private void endGameWithError(List<Object> errorGame) {
+        Exception exception = (Exception) errorGame.get(0);
+        String message = (String) errorGame.get(1);
+        String errorMessage = "Произошла ошибка во время игры: " + message + "\n"
+                + exception.getMessage() + "\nХотите начать новую игру?";
+        int choice = JOptionPane.showConfirmDialog(null, errorMessage,
+                "Ошибка", JOptionPane.YES_NO_OPTION);
+
+        if (choice == JOptionPane.YES_OPTION) {
+
+            // начать новую игру
+        } else {
+            System.exit(0);
+        }
     }
 
     /**
@@ -333,6 +377,9 @@ public class ChessGUI extends JFrame implements EndpointUser {
         switchColorAppearance();
         addToMoveHistory(player.getColor().opposite(), incomingMove.startPosition(), incomingMove.endPosition());
         paintBoard(gameInfo.getCurrentBoard().getBoard());
+
+        System.out.println("I made move in chessGui");
+        waitAndUpdate();
     }
 
     /**
@@ -502,6 +549,27 @@ public class ChessGUI extends JFrame implements EndpointUser {
         } else {
             if (isPlayerMove) currentPlayerLabel.setText("Текущий ход: ЧЕРНЫЙ");
             else currentPlayerLabel.setText("Текущий ход: БЕЛЫЙ");
+        }
+    }
+
+    private class SurrenderButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int choice = JOptionPane.showConfirmDialog(null, "Вы уверены, что хотите сдаться?",
+                    "Сдаться", JOptionPane.YES_NO_OPTION);
+
+            if (choice == JOptionPane.YES_OPTION) {
+                endGameInfo();
+            }
+        }
+
+        private void endGameInfo() {
+            String winColor = player.getColor().opposite().toString();
+            List<String> endGameInfo = new ArrayList<>();
+            endGameInfo.add(GameStates.SURRENDER.toString());
+            endGameInfo.add(winColor);
+
+            client.sendEndGameToServer(endGameInfo);
         }
     }
 }

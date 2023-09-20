@@ -4,7 +4,7 @@ import io.deeplay.domain.Color;
 import io.deeplay.domain.MoveType;
 import io.deeplay.domain.SwitchPieceType;
 import io.deeplay.engine.GameState;
-import io.deeplay.marinaAI.strategy.MaterialStrategy;
+import io.deeplay.marinaAI.strategy.PestoStrategy;
 import io.deeplay.marinaAI.strategy.Strategy;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
@@ -24,8 +24,7 @@ public class MiniMaxBot extends Bot {
     public MiniMaxBot(Color color, int difficultyLevel, IUserCommunication iUserCommunication) {
         super(color, difficultyLevel, iUserCommunication);
         maximizingColor = color;
-        strategy = new MaterialStrategy(maximizingColor);
-        // strategy = new PestoStrategy(maximizingColor);
+        strategy = new PestoStrategy(maximizingColor);
     }
 
     public void setStrategy(Strategy strategy) {
