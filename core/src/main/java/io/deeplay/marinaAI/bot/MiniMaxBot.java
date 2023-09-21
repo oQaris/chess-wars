@@ -38,10 +38,6 @@ public class MiniMaxBot extends Bot {
         strategy = new PestoStrategy(maximizingColor);
     }
 
-    public void setStrategy(Strategy strategy) {
-        this.strategy = strategy;
-    }
-
     /**
      * Рекурсивный метод для выполнения алгоритма минимакс.
      *
