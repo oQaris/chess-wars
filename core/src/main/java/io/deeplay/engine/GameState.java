@@ -19,13 +19,15 @@ import java.util.List;
 
 @Slf4j
 public class GameState {
-    static List<Object> errorList;
+    public static List<Object> errorList = new ArrayList<>();
+
     public static List<Object> getErrorList() {
         return errorList;
     }
 
     /**
      * Метод проверяет шах при текущем состоянии доски
+     *
      * @param board текущее состояние доски
      * @param color цвет игрока, чьи фигуры проверяют на шах
      * @return есть ли шах
@@ -49,6 +51,7 @@ public class GameState {
 
     /**
      * Метод проверяет мат при текущем состоянии доски
+     *
      * @param board текущее состояние доски
      * @param color цвет игрока, которого проверяют
      * @return есть ли мат
@@ -63,6 +66,7 @@ public class GameState {
 
     /**
      * Метод проверяет пат при текущем состоянии доски
+     *
      * @param board текущее состояние доски
      * @param color цвет игрока, которого проверяют
      * @return есть ли пат
@@ -107,6 +111,7 @@ public class GameState {
 
     /**
      * Метод проверяет, если ходов без изменения состояния больше 50, то это ничья
+     *
      * @param board текущее состояние доски
      * @return было ли 50 ходов без изменения положения на доске
      */
@@ -117,8 +122,9 @@ public class GameState {
     /**
      * Метод проверяет каждый возможный ход переданной фигуры, и если он не подставляет короля, то добавляет эти
      * координаты в лист. Затем его возвращает
-     * @param board текущее состояние доски
-     * @param piece текущая фигура
+     *
+     * @param board                текущее состояние доски
+     * @param piece                текущая фигура
      * @param potentialCoordinates координаты, куда может походить фигура
      * @return лист из координат, куда фигура может походить без подставления своего короля
      */
@@ -159,8 +165,9 @@ public class GameState {
     /**
      * Метод проверяет каждый возможный ход переданной фигуры, и если он не подставляет короля,
      * то создает Move и добавляет его в лист. Затем этот лист возвращает
-     * @param board текущее состояние доски
-     * @param piece текущая фигура
+     *
+     * @param board                текущее состояние доски
+     * @param piece                текущая фигура
      * @param potentialCoordinates координаты, куда может походить фигура
      * @return лист из Move, куда фигура может походить без подставления своего короля
      */
@@ -201,6 +208,7 @@ public class GameState {
 
     /**
      * Метод ищет короля заданного цвета и возвращает его координаты
+     *
      * @param board     текущее состояние доски
      * @param kingColor цвет короля
      * @return координаты короля или выбрасывает ошибку
@@ -220,15 +228,18 @@ public class GameState {
 
         log.error(kingColor + " king is not on the board. Throw GameLogicException...");
 
-        String errorMessage = " king exception";
+        String errorMessage = "King exception";
+
         errorList.add(new GameLogicException(errorMessage));
         errorList.add(errorMessage);
 
-        throw new GameLogicException(kingColor + " king is not on the board");
+        return new Coordinates(0, 0);
+        // throw new GameLogicException(kingColor + " king is not on the board");
     }
 
     /**
      * Проверка на конец игры. По-очереди вызывает проверку на пат, на мат и на ничью
+     *
      * @param board текущее состояние доски
      * @param color текущий цвет
      * @return конец игры или нет

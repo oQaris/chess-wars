@@ -68,7 +68,7 @@ public class GameSession {
 
             if (GameState.drawWithGameWithoutTakingAndAdvancingPawns(gameInfo.getCurrentBoard())) {
                 gameEnd.add(0, GameStates.DRAW.toString());
-                gameEnd.add(1, "DRAW");
+                gameEnd.add(1, Color.EMPTY.toString());
 
                 endGame("DRAW!");
                 return;
@@ -80,9 +80,11 @@ public class GameSession {
         Move move;
         List<String> gameEndList;
         List<Object> gameErrorList;
+        List<Object> d = getKingError();
 
         try {
             move = getMove(playerWhoMoves, currentColor);
+
             sendMove(move);
             gameInfo.move(move);
         } catch (IllegalStateException e1) {
@@ -93,19 +95,24 @@ public class GameSession {
                 gameEnd.add(1, gameEndList.get(1));
 
                 endGame("SURRENDER, " + gameEndList.get(1) + "won");
-            } catch (IllegalStateException e2) {
-                gameErrorList = getKingError();
+            } catch (IllegalArgumentException e2) {
+                try {
+                    gameErrorList = getError();
 
-                gameError.add(0, gameErrorList.get(0));
-                gameError.add(1, gameErrorList.get(1));
+                    gameError.add(0, gameErrorList.get(0));
+                    gameError.add(1, gameErrorList.get(1));
 
-                catchGameError((Exception) gameError.get(0), (String) gameError.get(1));
+                    catchGameError((Exception) gameError.get(0), (String) gameError.get(1));
+                } catch (IllegalStateException e3) {
+                    log.error("ошибка в получении информации");
+                }
             }
         }
     }
 
     /**
      * Метод возвращает игрока, который должен ходить на текущий момент
+     *
      * @param movingColor текущий цвет хода
      * @return игрока, который ходит
      */
@@ -119,6 +126,7 @@ public class GameSession {
 
     /**
      * Метод обрабатывает конец игры.
+     *
      * @param textMessage подробное сообщение о том, как завершилась игра
      */
     public void endGame(String textMessage) {
@@ -127,39 +135,87 @@ public class GameSession {
         printBoardOnce(gameInfo.getCurrentBoard());
     }
 
+    /**
+     * Метод обрабатывает конец игры из-за ошибки.
+     *
+     * @param message   подробное сообщение о том, какая ошибка произошла
+     * @param exception ошибка, по причине которой завершилась игра
+     */
     public void catchGameError(Exception exception, String message) {
         sendGameError(exception, message);
         log.info("Игра закончена ошибкой {}", message);
     }
 
-    public void sendMove(Move move) {
-    }
-
     /**
      * Получает Move из класса player (от Bot или Human)
+     *
      * @param player текущий игрок
-     * @param color текущий цвет
+     * @param color  текущий цвет
      * @return полученный Move
      */
     public Move getMove(Player player, Color color) {
         return player.getMove(gameInfo.getCurrentBoard(), color);
     }
 
+    /**
+     * Получает List<Object>
+     *
+     * @return полученный List<Object>
+     */
+    public List<Object> getError() {
+        return new ArrayList<>();
+    }
+
+    /**
+     * Метод отправляет событие окончания игры.
+     *
+     * @param gameEnd список строк, содержащий информацию об окончании игры
+     */
     public void sendGameEnd(List<String> gameEnd) {
     }
 
+    /**
+     * Метод отправляет информацию о ходе игры.
+     *
+     * @param move объект типа Move, содержащий информацию о ходе
+     */
+    public void sendMove(Move move) {
+    }
+
+    /**
+     * Метод возвращает список строк, содержащий информацию об окончании игры для указанного цвета.
+     *
+     * @param color цвет, для которого нужно получить информацию об окончании игры
+     * @return список строк, содержащий информацию об окончании игры
+     */
     public List<String> getEndGame(Color color) {
         return gameEnd;
     }
 
+    /**
+     * Метод возвращает строковое представление информации об окончании игры.
+     *
+     * @return строковое представление информации об окончании игры
+     */
     public String getGameEnd() {
         return gameEnd.toString();
     }
 
+    /**
+     * Метод возвращает список объектов, содержащий информацию об ошибках короля.
+     *
+     * @return список объектов, содержащий информацию об ошибках короля
+     */
     public List<Object> getKingError() {
         return GameState.getErrorList();
     }
 
+    /**
+     * Метод отправляет информацию об ошибке игры.
+     *
+     * @param exception исключение, возникшее в игре
+     * @param error     описание ошибки
+     */
     public void sendGameError(Exception exception, String error) {
     }
 }

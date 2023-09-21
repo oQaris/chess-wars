@@ -17,8 +17,19 @@ import io.deeplay.service.IUserCommunication;
 import java.util.List;
 
 public class MiniMaxBot extends Bot {
+    /**
+     * Константа, определяющая максимальную глубину поиска в алгоритме ExpectiMax.
+     */
     private static final int MAX_DEPTH = 3;
-    final Color maximizingColor;
+
+    /**
+     * Цвет, за который играет бот и старается максимизировать.
+     */
+    private final Color maximizingColor;
+
+    /**
+     * Стратегия, используемая ботом для оценки доски.
+     */
     private Strategy strategy;
 
     public MiniMaxBot(Color color, int difficultyLevel, IUserCommunication iUserCommunication) {
@@ -31,6 +42,17 @@ public class MiniMaxBot extends Bot {
         this.strategy = strategy;
     }
 
+    /**
+     * Рекурсивный метод для выполнения алгоритма минимакс.
+     *
+     * @param board            текущая шахматная доска
+     * @param depth            текущая глубина рекурсии
+     * @param alpha            значение альфа
+     * @param beta             значение бета
+     * @param maximizingPlayer флаг, указывающий, является ли текущий игрок максимизирующим
+     * @param color            цвет текущего игрока
+     * @return оценка позиции на доске
+     */
     private int minMax(Board board, int depth, int alpha, int beta, boolean maximizingPlayer, Color color) {
         if (depth == 0 || GameState.isGameOver(board, color)) {
             return strategy.evaluate(board);
@@ -43,6 +65,13 @@ public class MiniMaxBot extends Bot {
         }
     }
 
+    /**
+     * Метод для получения лучшего хода для бота.
+     *
+     * @param board текущая шахматная доска
+     * @param color цвет текущего игрока
+     * @return лучший ход для бота
+     */
     @Override
     public Move getMove(Board board, Color color) {
         int bestScore = Integer.MIN_VALUE;
@@ -94,6 +123,12 @@ public class MiniMaxBot extends Bot {
         return bestMove;
     }
 
+    /**
+     * Метод для создания копии шахматной доски.
+     *
+     * @param board исходная шахматная доска
+     * @return копия шахматной доски
+     */
     private Board duplicateBoard(Board board) {
         Board duplicateBoard = new Board();
         BoardUtil.duplicateBoard(board).accept(duplicateBoard);
@@ -101,6 +136,15 @@ public class MiniMaxBot extends Bot {
         return duplicateBoard;
     }
 
+    /**
+     * Метод для получения максимальной оценки позиции на доске.
+     *
+     * @param board текущая шахматная доска
+     * @param depth текущая глубина рекурсии
+     * @param alpha значение альфа
+     * @param beta  значение бета
+     * @return максимальная оценка позиции на доске
+     */
     private int getMaxScore(Board board, int depth, int alpha, int beta) {
         int maxScore = Integer.MIN_VALUE;
 
@@ -154,6 +198,15 @@ public class MiniMaxBot extends Bot {
         return maxScore;
     }
 
+    /**
+     * Метод для получения минимальной оценки позиции на доске.
+     *
+     * @param board текущая шахматная доска
+     * @param depth текущая глубина рекурсии
+     * @param alpha значение альфа
+     * @param beta  значение бета
+     * @return минимальная оценка позиции на доске
+     */
     private int getMinScore(Board board, int depth, int alpha, int beta) {
         int minScore = Integer.MAX_VALUE;
         List<Piece> possiblePieces = getPiecesPossibleToMove(board, maximizingColor.opposite());

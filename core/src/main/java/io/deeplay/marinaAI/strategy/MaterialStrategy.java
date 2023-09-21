@@ -38,6 +38,11 @@ public class MaterialStrategy implements Strategy {
         return getMaterialScore(board);
     }
 
+    /**
+     Метод getMaterialScore вычисляет оценку материального баланса на шахматной доске.
+     @param board         шахматная доска, для которой нужно вычислить оценку
+     @return оценка материального баланса на доске
+     */
     public int getMaterialScore(Board board) {
         int finalScore = 0;
 
@@ -56,6 +61,12 @@ public class MaterialStrategy implements Strategy {
         return finalScore;
     }
 
+
+    /**
+     Метод getPieceScore вычисляет оценку для конкретной фигуры на шахматной доске.
+     @param piece  фигура, для которой нужно вычислить оценку
+     @return оценка для данной фигуры
+     */
     private int getPieceScore(Piece piece) {
         if (piece instanceof Pawn) {
             return 10;

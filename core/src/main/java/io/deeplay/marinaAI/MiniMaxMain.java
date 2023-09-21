@@ -3,8 +3,8 @@ package io.deeplay.marinaAI;
 import io.deeplay.domain.Color;
 import io.deeplay.domain.GameType;
 import io.deeplay.engine.GameSession;
+import io.deeplay.marinaAI.bot.ExpectiMaxBot;
 import io.deeplay.marinaAI.bot.MiniMaxBot;
-import io.deeplay.marinaAI.bot.NegaMaxBot;
 import io.deeplay.service.GuiUserCommunicationService;
 
 import java.nio.charset.StandardCharsets;
@@ -16,16 +16,15 @@ public class MiniMaxMain {
         ArrayList<String> statistics = new ArrayList<>();
         Color minimaxColor = Color.WHITE;
 
-        int gameCount = 1;
+        int gameCount = 2;
 
         for (int i = 0; i < gameCount; i++) {
             GameSession gameSession = new GameSession(
                     new MiniMaxBot(minimaxColor, 1, new GuiUserCommunicationService()),
-                    new NegaMaxBot(minimaxColor.opposite(), 1, new GuiUserCommunicationService()),
+                    new ExpectiMaxBot(minimaxColor.opposite(), 1, new GuiUserCommunicationService()),
                     GameType.BotVsBot
             );
 
-            System.out.println("Minimax: " + Color.WHITE + " depth = 4 vs NegaMax" );
             gameSession.startGameSession();
 
             System.out.println("Game " + (i + 1) + " of " + gameCount + " over ");

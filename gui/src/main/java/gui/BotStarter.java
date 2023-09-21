@@ -6,8 +6,8 @@ import io.deeplay.communication.dto.StartGameDTO;
 import io.deeplay.domain.Color;
 import io.deeplay.domain.GameStates;
 import io.deeplay.engine.GameInfo;
+import io.deeplay.engine.GameState;
 import io.deeplay.model.move.Move;
-import io.deeplay.igorAI.MinimaxBot;
 import io.deeplay.model.player.Player;
 
 import javax.swing.*;
@@ -23,6 +23,7 @@ public class BotStarter implements EndpointUser {
     /**
      * Конструктор класса. Задает начальные параметры переменных.
      * Создает нового клиента и создает соединение с сервером.
+     *
      * @param startGameDTO начальные параметры с главной страницы, выбранные пользователем
      */
     public BotStarter(StartGameDTO startGameDTO) {
@@ -48,6 +49,7 @@ public class BotStarter implements EndpointUser {
      * Если ход игрока - получает выбранный ботом ход. Добавляет этот ход в GameInfo, отправляет ход серверу
      * и переходит в ожидание запроса от сервера.
      */
+    @Override
     public void initialize() {
         while (true) {
             if (isPlayerMove) {
@@ -59,8 +61,15 @@ public class BotStarter implements EndpointUser {
                 }
 
                 gameInfo.move(move);
-                client.sendMove(move);
-                isPlayerMove = false;
+                List<Object> error = GameState.getErrorList();
+
+                if (!error.isEmpty()) {
+                    List<Object> trimmedError = error.subList(0, 2);
+                    client.sendErrorToServer(trimmedError);
+                } else {
+                    client.sendMove(move);
+                    isPlayerMove = false;
+                }
             }
 
             waitAndUpdate();
@@ -69,8 +78,10 @@ public class BotStarter implements EndpointUser {
 
     /**
      * Метод обрабатывает конец игры
+     *
      * @param endGameInfo информация об окончании игры
      */
+    @Override
     public void endGame(List<String> endGameInfo) {
         String gameStates = endGameInfo.get(0);
         String winColor;
@@ -101,6 +112,7 @@ public class BotStarter implements EndpointUser {
     /**
      * Метод ожидает запрос от сервера, а затем вызывает функцию обработки этого запроса.
      */
+    @Override
     public void waitAndUpdate() {
         Object playerAction = client.startListening();
         processClientInfo(playerAction);
@@ -108,8 +120,10 @@ public class BotStarter implements EndpointUser {
 
     /**
      * Обновляет GameInfo, передает ход текущему игроку.
+     *
      * @param incomingMove ход противоположного игрока
      */
+    @Override
     public void updateGameInfo(Move incomingMove) {
         gameInfo.move(incomingMove);
         isPlayerMove = true;
@@ -133,16 +147,14 @@ public class BotStarter implements EndpointUser {
     private void endGameWithError(List<Object> errorGame) {
         Exception exception = (Exception) errorGame.get(0);
         String message = (String) errorGame.get(1);
-        String errorMessage = "Произошла ошибка во время игры: " + message + "\n"
-                + exception.getMessage() + "\nХотите начать новую игру?";
-        int choice = JOptionPane.showConfirmDialog(null, errorMessage,
-                "Ошибка", JOptionPane.YES_NO_OPTION);
+        String errorMessage = "Произошла ошибка во время игры: " + message + "\n" + exception.getMessage();
 
-        if (choice == JOptionPane.YES_OPTION) {
+        JFrame frame = new JFrame("Ошибка");
+        frame.setSize(200, 100);
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            // начать новую игру
-        } else {
-            System.exit(0);
-        }
+        JOptionPane.showMessageDialog(frame, errorMessage, "Ошибка", JOptionPane.ERROR_MESSAGE);
+        System.exit(0);
     }
 }

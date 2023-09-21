@@ -47,11 +47,4 @@ public class Human extends Player {
 
         return new Move(selectedPiece.getCoordinates(), moveCoordinates, moveType, selectedSwitchPiece);
     }
-
-    /**
-     * Метод для запроса на проигрыш
-     */
-    public void lose() {
-        // surrender
-    }
 }

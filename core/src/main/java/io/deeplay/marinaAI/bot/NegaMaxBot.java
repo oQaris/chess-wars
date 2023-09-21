@@ -4,7 +4,6 @@ import io.deeplay.domain.Color;
 import io.deeplay.domain.MoveType;
 import io.deeplay.domain.SwitchPieceType;
 import io.deeplay.engine.GameState;
-import io.deeplay.marinaAI.strategy.Strategy;
 import io.deeplay.marinaAI.utils.ScoredMove;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
@@ -17,19 +16,19 @@ import io.deeplay.service.IUserCommunication;
 import java.util.List;
 
 public class NegaMaxBot extends Bot {
+    /**
+     * Константа, определяющая максимальную глубину поиска в алгоритме ExpectiMax.
+     */
     private static final int MAX_DEPTH = 3;
-    final Color maximizingColor;
-    private Strategy strategy;
+
+    /**
+     * Цвет, за который играет бот и старается максимизировать.
+     */
+    private final Color maximizingColor;
 
     public NegaMaxBot(Color color, int difficultyLevel, IUserCommunication iUserCommunication) {
         super(color, difficultyLevel, iUserCommunication);
         maximizingColor = color;
-        // strategy = new MaterialStrategy(maximizingColor);
-        // strategy = new PestoStrategy(color.opposite());
-    }
-
-    public void setStrategy(Strategy strategy) {
-        this.strategy = strategy;
     }
 
     @Override
@@ -41,7 +40,6 @@ public class NegaMaxBot extends Bot {
     private ScoredMove negaMax(Board board, int depth, Color currentColor, int alpha, int beta) {
         if (depth == 0 || GameState.isGameOver(board, currentColor)) {
             int score = evaluate(board, currentColor);
-            //  int score = strategy.evaluate(board);
 
             return new ScoredMove(score, null);
         }
@@ -108,6 +106,12 @@ public class NegaMaxBot extends Bot {
         return new ScoredMove(bestScore, bestMove);
     }
 
+    /**
+     * Метод создает копию доски.
+     *
+     * @param board исходная доска
+     * @return копия доски
+     */
     private Board duplicateBoard(Board board) {
         Board duplicateBoard = new Board();
         BoardUtil.duplicateBoard(board).accept(duplicateBoard);
@@ -115,6 +119,13 @@ public class NegaMaxBot extends Bot {
         return duplicateBoard;
     }
 
+    /**
+     * Метод evaluate вычисляет оценку позиции на шахматной доске.
+     *
+     * @param board        шахматная доска, для которой нужно вычислить оценку
+     * @param currentColor цвет текущего игрока
+     * @return оценка позиции на доске
+     */
     int evaluate(Board board, Color currentColor) {
         if (GameState.isMate(board, maximizingColor)) {
             return 100000000;
@@ -139,6 +150,13 @@ public class NegaMaxBot extends Bot {
         return getMaterialScore(board, currentColor);
     }
 
+    /**
+     * Метод getMaterialScore вычисляет оценку материального баланса на шахматной доске.
+     *
+     * @param board        шахматная доска, для которой нужно вычислить оценку
+     * @param currentColor цвет текущего игрока
+     * @return оценка материального баланса на доске
+     */
     private int getMaterialScore(Board board, Color currentColor) {
         int finalScore = 0;
 
@@ -157,6 +175,12 @@ public class NegaMaxBot extends Bot {
         return finalScore;
     }
 
+    /**
+     * Метод getPieceScore вычисляет оценку для конкретной фигуры на шахматной доске.
+     *
+     * @param piece фигура, для которой нужно вычислить оценку
+     * @return оценка для данной фигуры
+     */
     private int getPieceScore(Piece piece) {
         if (piece instanceof Pawn) {
             return 10;

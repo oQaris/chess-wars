@@ -123,20 +123,17 @@ public class Board {
         MoveType moveType = move.moveType();
 
         Piece pieceToMove = board[start.getX()][start.getY()];
-        Piece pieceToRemove = board[end.getX()][end.getY()];
 
         if (pieceToMove instanceof King || pieceToMove instanceof Rook) {
             pieceMoved[start.getX()][start.getY()] = true;
         }
-
-        Color pieceToRemoveColor = pieceToRemove.getColor();
 
         if (moveType == MoveType.ORDINARY || moveType == MoveType.TAKE) {
             board[end.getX()][end.getY()] = pieceToMove;
             board[start.getX()][start.getY()] = new Empty(start);
             pieceToMove.setCoordinates(end);
         } else if (moveType == MoveType.CASTLING) {
-            Piece rookToMove = null;
+            Piece rookToMove;
             int moveSide = start.getX() - end.getX();
 
             if (moveSide == 2) {
