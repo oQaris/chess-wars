@@ -48,6 +48,7 @@ public class Client {
 
     /**
      * Метод нужен для запуска "прослушивания". Ждет входящий json запрос.
+     *
      * @return обработанный объект, полученный из json
      */
     public Object startListening() {
@@ -64,6 +65,7 @@ public class Client {
 
     /**
      * Обрабатывает приходящий json запрос.
+     *
      * @param json строка запроса
      * @return обработанный объект, полученный из json
      */
@@ -91,6 +93,7 @@ public class Client {
 
     /**
      * Отправляет сериализованный ход на сервер
+     *
      * @param move ход игрока
      */
     public void sendMove(Move move) {
@@ -102,20 +105,47 @@ public class Client {
             out.flush();
         } catch (IOException e) {
             logger.error("Ошибка отправки хода от клиента");
-            throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Отправляет сериализованный конец игры на сервер
+     *
+     * @param endGame ход игрока
+     */
     public void sendEndGameToServer(List<String> endGame) {
-        String endGameJson = SerializationService.convertEndGameDTOtoJSON(Converter.convertListEndGameToEndGameDTO(endGame));
+        String endGameJson = SerializationService.
+                convertEndGameDTOtoJSON(Converter.convertListEndGameToEndGameDTO(endGame));
 
         try {
             out.write(endGameJson);
             out.newLine();
             out.flush();
         } catch (IOException e) {
-            logger.error("Ошибка отправки хода от клиента");
-            throw new RuntimeException(e);
+            logger.error("Ошибка отправки окончания игры от клиента");
+        }
+    }
+
+    /**
+     * Отправляет сериализованную ошибку от игрока на сервер
+     *
+     * @param error ход игрока
+     */
+    public void sendErrorToServer(List<Object> error) {
+        Exception exception = (Exception) error.get(0);
+        String message = (String) error.get(1);
+
+        ErrorResponseDTO errorDTO = new ErrorResponseDTO();
+        errorDTO.setException(exception);
+        errorDTO.setMessage(message);
+        String errorGameJson = SerializationService.convertErrorResponseDTOtoJSON(errorDTO);
+
+        try {
+            out.write(errorGameJson);
+            out.newLine();
+            out.flush();
+        } catch (IOException e) {
+            logger.error("Ошибка отправки окончания игры с ошибкой от клиента");
         }
     }
 }

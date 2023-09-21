@@ -22,28 +22,25 @@ import java.util.List;
 public class ClientHandler implements Runnable {
     private static final Logger logger = LogManager.getLogger(ClientHandler.class);
     Socket clientSocket;
-    private final Server server;
     BufferedWriter out;
     BufferedReader in;
     Board board;
-    private StartGameDTO startGameDTO;
     @Getter
-    private GameType gameType;
+    private final GameType gameType;
     @Getter
-    private Color color;
+    private final Color color;
     @Getter
-    private BotType botType;
+    private final BotType botType;
     @Setter
     @Getter
     private Player player;
 
     public ClientHandler(Socket clientSocket, Server server) throws IOException {
         this.clientSocket = clientSocket;
-        this.server = server;
         board = new Board();
         out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        startGameDTO = getStartGame();
+        StartGameDTO startGameDTO = getStartGame();
         System.out.println(startGameDTO.toString());
         gameType = startGameDTO.getGameType();
         color = Converter.convertColor(startGameDTO.getCurrentColor());
@@ -70,6 +67,13 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Метод getStartGame возвращает объект типа StartGameDTO, который представляет собой настройки игры,
+     * полученные от клиента.
+     *
+     * @return объект типа StartGameDTO, содержащий настройки игры
+     * @throws RuntimeException если возникла ошибка при чтении ввода от клиента
+     */
     public StartGameDTO getStartGame() {
         String clientInput;
 
@@ -82,6 +86,12 @@ public class ClientHandler implements Runnable {
         return DeserializationService.convertJsonToStartGameDTO(clientInput);
     }
 
+    /**
+     * Метод listenJson слушает входящий JSON-запрос от клиента и передает его на обработку.
+     *
+     * @return объект, полученный в результате обработки JSON-запроса
+     * @throws RuntimeException если возникла ошибка при чтении ввода от клиента
+     */
     public Object listenJson() {
         String request;
 
@@ -94,6 +104,13 @@ public class ClientHandler implements Runnable {
         return processJson(request);
     }
 
+    /**
+     * Метод processJson обрабатывает входящий JSON-запрос и возвращает соответствующий объект.
+     *
+     * @param json строка, содержащая JSON-запрос
+     * @return объект, полученный в результате обработки JSON-запроса
+     * @throws NullPointerException если передан неверный тип объекта в JSON-запросе
+     */
     public Object processJson(String json) {
         try {
             EndGameDTO endGameDTO = DeserializationService.convertJsonToEndGameDTO(json);
@@ -103,13 +120,25 @@ public class ClientHandler implements Runnable {
             try {
                 return Converter.convertDTOToMove(DeserializationService.convertJsonToMoveDTO(json));
             } catch (NullPointerException e2) {
-                logger.error("wrong type DTO");
+                try {
+                    ErrorResponseDTO errorResponseDTO = DeserializationService.convertJsonToErrorResponseDTO(json);
+                    System.out.println(errorResponseDTO);
+
+                    return Converter.convertErrorResponseDTOToList(errorResponseDTO);
+                } catch (NullPointerException e3) {
+                    logger.error("wrong type DTO");
+                }
             }
         }
 
         throw new NullPointerException("wrong type DTO");
     }
 
+    /**
+     * Метод sendMoveToClient отправляет сериализованный объект типа MoveDTO клиенту.
+     *
+     * @param serializedMoveDTO строка, содержащая сериализованный объект типа MoveDTO
+     */
     public void sendMoveToClient(String serializedMoveDTO) {
         try {
             out.write(serializedMoveDTO);
@@ -121,6 +150,11 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Метод sendEndGameToClient отправляет сериализованный объект типа EndGameDTO клиенту.
+     *
+     * @param serializedEndGameDTO строка, содержащая сериализованный объект типа EndGameDTO
+     */
     public void sendEndGameToClient(String serializedEndGameDTO) {
         try {
             out.write(serializedEndGameDTO);
@@ -131,6 +165,11 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Метод sendErrorToClient отправляет сериализованный объект типа ErrorDTO клиенту.
+     *
+     * @param serializedErrorDTO строка, содержащая сериализованный объект типа ErrorDTO
+     */
     public void sendErrorToClient(String serializedErrorDTO) {
         try {
             out.write(serializedErrorDTO);
@@ -141,10 +180,23 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Метод getEndGame преобразует список строк gameEnd в объект типа EndGameDTO.
+     *
+     * @param gameEnd список строк, содержащий информацию об окончании игры
+     * @return объект типа EndGameDTO, соответствующий переданным данным об окончании игры
+     */
     public EndGameDTO getEndGame(List<String> gameEnd) {
         return Converter.convertListEndGameToEndGameDTO(gameEnd);
     }
 
+    /**
+     * Метод getError преобразует исключение и сообщение об ошибке в объект типа ErrorResponseDTO.
+     *
+     * @param exception исключение, которое произошло
+     * @param error     сообщение об ошибке
+     * @return объект типа ErrorResponseDTO, содержащий информацию об ошибке
+     */
     public ErrorResponseDTO getError(Exception exception, String error) {
         return Converter.convertErrorToErrorResponseDTO(exception, error);
     }

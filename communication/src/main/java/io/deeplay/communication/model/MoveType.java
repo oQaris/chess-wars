@@ -5,5 +5,5 @@ public enum MoveType {
     TAKE,
     EN_PASSANT,
     CASTLING,
-    PROMOTION;
+    PROMOTION
 }

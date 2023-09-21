@@ -19,14 +19,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExpectiMaxBot extends Bot {
+    /**
+     * Константа, определяющая максимальную глубину поиска в алгоритме ExpectiMax.
+     */
     private static final int MAX_DEPTH = 3;
+
+    /**
+     * Цвет, за который играет бот и старается максимизировать.
+     */
     private final Color maximizingColor;
+
+    /**
+     * Стратегия, используемая ботом для оценки доски.
+     */
     private Strategy strategy;
 
     public ExpectiMaxBot(Color color, int difficultyLevel, IUserCommunication iUserCommunication) {
         super(color, difficultyLevel, iUserCommunication);
         maximizingColor = color;
-        // strategy = new PestoStrategy(maximizingColor);
         strategy = new MaterialStrategy(maximizingColor);
     }
 
@@ -40,6 +50,14 @@ public class ExpectiMaxBot extends Bot {
         return bestMove.getMove();
     }
 
+    /**
+     * Метод реализует алгоритм ExpectiMax для выбора наилучшего хода.
+     *
+     * @param board        текущая доска
+     * @param depth        текущая глубина поиска
+     * @param currentColor текущий цвет
+     * @return наилучший ход и его оценка
+     */
     private ScoredMove expectiMax(Board board, int depth, Color currentColor) {
         if (depth == 0 || GameState.isGameOver(board, currentColor)) {
             int score = strategy.evaluate(board);
@@ -99,6 +117,12 @@ public class ExpectiMaxBot extends Bot {
         return new ScoredMove((int) averageScore, bestScoredMove.getMove());
     }
 
+    /**
+     * Метод создает копию доски.
+     *
+     * @param board исходная доска
+     * @return копия доски
+     */
     private Board duplicateBoard(Board board) {
         Board duplicateBoard = new Board();
         BoardUtil.duplicateBoard(board).accept(duplicateBoard);

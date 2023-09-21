@@ -20,9 +20,20 @@ import io.deeplay.service.GuiUserCommunicationService;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Класс Converter предоставляет статические методы для конвертации данных
+ * между различными форматами и типами данных.
+ */
 public class Converter {
     private static final String ERROR_MESSAGE = "Illegal parameter converting";
 
+    /**
+     * Метод преобразует объект типа MoveDTO в перечисление MoveType.
+     *
+     * @param moveDTO объект типа MoveDTO, который необходимо преобразовать
+     * @return перечисление MoveType, соответствующее переданному объекту
+     * @throws IllegalArgumentException если передан недопустимый параметр
+     */
     public static MoveType getMoveTypeFromDTO(MoveDTO moveDTO) {
         String moveType = moveDTO.getMoveType().toString();
 
@@ -37,6 +48,14 @@ public class Converter {
         };
     }
 
+
+    /**
+     * Метод преобразует объект типа Move в перечисление io.deeplay.communication.model.MoveType.
+     *
+     * @param move объект типа Move, который необходимо преобразовать
+     * @return перечисление io.deeplay.communication.model.MoveType, соответствующее переданному объекту
+     * @throws IllegalArgumentException если передан недопустимый параметр
+     */
     public static io.deeplay.communication.model.MoveType getMoveTypeFromMove(Move move) {
         String moveType = move.moveType().toString();
 
@@ -51,6 +70,13 @@ public class Converter {
         };
     }
 
+    /**
+     * Метод преобразует объект типа MoveDTO в перечисление SwitchPieceType.
+     *
+     * @param moveDTO объект типа MoveDTO, который необходимо преобразовать
+     * @return перечисление SwitchPieceType, соответствующее переданному объекту
+     * @throws IllegalArgumentException если передан недопустимый параметр
+     */
     public static SwitchPieceType getSwitchPieceType(MoveDTO moveDTO) {
         String switchPieceType = moveDTO.getSwitchPieceType().toString();
 
@@ -65,6 +91,13 @@ public class Converter {
         };
     }
 
+    /**
+     * Метод преобразует список строк gameSettings в объект типа StartGameDTO.
+     *
+     * @param gameSettings список строк, содержащий настройки игры
+     * @return объект типа StartGameDTO, соответствующий переданным настройкам игры
+     * @throws IllegalArgumentException если переданы недопустимые параметры
+     */
     public static StartGameDTO getStartGameSettings(List<String> gameSettings) {
         io.deeplay.communication.model.GameType clientGameType;
         io.deeplay.communication.model.Color clientColor;
@@ -98,6 +131,14 @@ public class Converter {
         return new StartGameDTO(clientGameType, clientColor, botType);
     }
 
+    /**
+     * Метод createNewBot создает новый объект типа Bot на основе переданных параметров.
+     *
+     * @param botType тип бота
+     * @param color   цвет бота
+     * @return новый объект типа Bot
+     * @throws IllegalStateException если не удалось создать новый бот
+     */
     public static Bot createNewBot(BotType botType, Color color) {
         Bot bot;
         switch (botType) {
@@ -114,6 +155,13 @@ public class Converter {
         return bot;
     }
 
+    /**
+     * Метод getSwitchPieceTypeDTO преобразует объект типа Move в объект типа SwitchPieceTypeDTO.
+     *
+     * @param move объект типа Move
+     * @return объект типа SwitchPieceTypeDTO, соответствующий переданному ходу
+     * @throws IllegalArgumentException если передан недопустимый ход
+     */
     public static io.deeplay.communication.model.SwitchPieceType getSwitchPieceTypeDTO(Move move) {
         String switchPieceType = move.switchPieceType().toString();
 
@@ -128,6 +176,13 @@ public class Converter {
         };
     }
 
+    /**
+     * Метод convertColor преобразует объект типа io.deeplay.communication.model.Color в объект типа Color.
+     *
+     * @param color объект типа io.deeplay.communication.model.Color
+     * @return объект типа Color, соответствующий переданному цвету
+     * @throws IllegalArgumentException если передан недопустимый цвет
+     */
     public static Color convertColor(io.deeplay.communication.model.Color color) {
         String colorString = color.toString();
 
@@ -140,6 +195,13 @@ public class Converter {
         };
     }
 
+    /**
+     * Метод convertColorFromString преобразует строку в объект типа io.deeplay.communication.model.Color.
+     *
+     * @param color строка, представляющая цвет
+     * @return объект типа io.deeplay.communication.model.Color, соответствующий переданной строке
+     * @throws IllegalArgumentException если передана недопустимая строка
+     */
     public static io.deeplay.communication.model.Color convertColorFromString(String color) {
         return switch (color) {
             case "WHITE" -> io.deeplay.communication.model.Color.WHITE;
@@ -150,6 +212,13 @@ public class Converter {
         };
     }
 
+    /**
+     * Метод convertEndGameDTOToGameStates преобразует объект типа EndGameDTO в объект типа GameStates.
+     *
+     * @param endGameDTO объект типа EndGameDTO
+     * @return объект типа GameStates, соответствующий переданному объекту EndGameDTO
+     * @throws IllegalArgumentException если передан недопустимый объект EndGameDTO
+     */
     public static GameStates convertEndGameDTOToGameStates(EndGameDTO endGameDTO) {
         String endGameStateType = endGameDTO.getEndGameStateType().toString();
         return switch (endGameStateType) {
@@ -164,6 +233,13 @@ public class Converter {
         };
     }
 
+    /**
+     * Метод преобразует список строк gameEnd в объект типа EndGameDTO.
+     *
+     * @param gameEnd список строк, содержащий информацию о завершении игры
+     * @return объект типа EndGameDTO, соответствующий переданным данным о завершении игры
+     * @throws IllegalArgumentException если переданы недопустимые параметры
+     */
     public static EndGameDTO convertListEndGameToEndGameDTO(List<String> gameEnd) {
         String gameState = gameEnd.get(0);
 
@@ -181,7 +257,13 @@ public class Converter {
         return new EndGameDTO(gameStateType, convertColorFromString(gameEnd.get(1)));
     }
 
-
+    /**
+     * Метод преобразует объект типа GameType в объект типа io.deeplay.communication.model.GameType.
+     *
+     * @param gameType объект типа GameType, содержащий информацию о типе игры
+     * @return объект типа io.deeplay.communication.model.GameType, соответствующий переданному типу игры
+     * @throws IllegalArgumentException если переданы недопустимые параметры
+     */
     public static GameType convertGameTypeDTO(io.deeplay.communication.model.GameType gameType) {
         String gameTypeString = gameType.toString();
         return switch (gameTypeString) {
@@ -193,6 +275,12 @@ public class Converter {
         };
     }
 
+    /**
+     * Метод преобразует объект типа MoveDTO в объект типа Move.
+     *
+     * @param moveDTO объект типа MoveDTO, содержащий информацию о ходе
+     * @return объект типа Move, соответствующий переданному ходу
+     */
     public static Move convertDTOToMove(MoveDTO moveDTO) {
         int startPositionX = moveDTO.getStartPosition().getX();
         int startPositionY = moveDTO.getStartPosition().getY();
@@ -202,6 +290,12 @@ public class Converter {
                 getMoveTypeFromDTO(moveDTO), getSwitchPieceType(moveDTO));
     }
 
+    /**
+     * Метод преобразует объект типа Move в объект типа MoveDTO.
+     *
+     * @param move объект типа Move, содержащий информацию о ходе
+     * @return объект типа MoveDTO, соответствующий переданному ходу
+     */
     public static MoveDTO convertMoveToMoveDTO(Move move) {
         int startPositionX = move.startPosition().getX();
         int startPositionY = move.startPosition().getY();
@@ -212,6 +306,12 @@ public class Converter {
                 getMoveTypeFromMove(move), getSwitchPieceTypeDTO(move));
     }
 
+    /**
+     * Метод преобразует объект типа EndGameDTO в список строк.
+     *
+     * @param endGameDTO объект типа EndGameDTO, содержащий информацию о завершении игры
+     * @return список строк, соответствующий переданному объекту EndGameDTO
+     */
     public static List<String> convertEndGameStateDTO(EndGameDTO endGameDTO) {
         List<String> result = new ArrayList<>();
         String gameStates = convertEndGameDTOToGameStates(endGameDTO).toString();
@@ -223,6 +323,13 @@ public class Converter {
         return result;
     }
 
+    /**
+     * Метод преобразует исключение и сообщение об ошибке в объект типа ErrorResponseDTO.
+     *
+     * @param exception исключение, которое произошло
+     * @param message   сообщение об ошибке
+     * @return объект типа ErrorResponseDTO, содержащий информацию об ошибке
+     */
     public static ErrorResponseDTO convertErrorToErrorResponseDTO(Exception exception, String message) {
         ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO(exception, message);
         errorResponseDTO.setException(exception);
@@ -230,6 +337,12 @@ public class Converter {
         return errorResponseDTO;
     }
 
+    /**
+     * Метод преобразует объект типа ErrorResponseDTO в список объектов.
+     *
+     * @param errorResponseDTO объект типа ErrorResponseDTO, содержащий информацию об ошибке
+     * @return список объектов, соответствующий переданному объекту ErrorResponseDTO
+     */
     public static List<Object> convertErrorResponseDTOToList(ErrorResponseDTO errorResponseDTO) {
         List<Object> errorList = new ArrayList<>();
         errorList.add(errorResponseDTO.getException());

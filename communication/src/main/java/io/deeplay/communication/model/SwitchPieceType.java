@@ -5,5 +5,5 @@ public enum SwitchPieceType {
     KNIGHT,
     QUEEN,
     ROOK,
-    NULL;
+    NULL
 }

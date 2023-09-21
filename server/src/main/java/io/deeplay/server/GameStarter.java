@@ -114,6 +114,11 @@ public class GameStarter implements Runnable {
 
             private Object eventResult;
 
+            /**
+             Метод getEvent(Color color) возвращает результат события в зависимости от переданного цвета.
+             @param color цвет, для которого нужно получить результат события
+             @return объект типа Object, содержащий результат события
+             @throws IllegalArgumentException если передан недопустимый цвет */
             public Object getEvent(Color color) {
                 if (clients.get(0).getColor().equals(color)) {
                     eventResult = clients.get(0).listenJson();
@@ -142,7 +147,22 @@ public class GameStarter implements Runnable {
                 Object object = eventResult;
 
                 if (object instanceof List<?> endGame) {
-                    return (List<String>) endGame;
+                    if (endGame.get(0) instanceof String) {
+                        return (List<String>) endGame;
+                    }
+                }
+
+                throw new IllegalArgumentException();
+            }
+
+            @Override
+            public List<Object> getError() {
+                Object object = eventResult;
+
+                if (object instanceof List<?> error) {
+                    if (error.get(0) instanceof Exception) {
+                        return (List<Object>) error;
+                    }
                 }
 
                 throw new IllegalArgumentException();

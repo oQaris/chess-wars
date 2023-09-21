@@ -10,7 +10,6 @@ import io.deeplay.domain.MoveType;
 import io.deeplay.domain.SwitchPieceType;
 import io.deeplay.engine.GameInfo;
 import io.deeplay.engine.GameState;
-import io.deeplay.igorAI.MinimaxBot;
 import io.deeplay.model.Board;
 import io.deeplay.model.Coordinates;
 import io.deeplay.model.move.Move;
@@ -41,7 +40,6 @@ public class ChessGUI extends JFrame implements EndpointUser {
     private JTextArea moveHistoryTextArea;
     private JLabel currentPlayerLabel;
     private JButton selectedSquare = null;
-    private JButton surrenderButton;
     private Piece prevSelectedPiece = null;
     private Map<Coordinates, Boolean> possibleMoveCells = null;
     private boolean isPlayerMove;
@@ -54,8 +52,9 @@ public class ChessGUI extends JFrame implements EndpointUser {
      * Конструктор класса. Задает начальные параметры переменных, переопределяет GuiUserCommunicationService. Затем,
      * в зависимости от выбранного типа игрока создает объект класса Human или выбранного бота. Создает нового клиента
      * и создает соединение с сервером. Дальше запускает start метод для бота или человека.
+     *
      * @param startGameDTO начальные параметры с главной страницы, выбранные пользователем
-     * @param playerType тип игрока (Human или Bot)
+     * @param playerType   тип игрока (Human или Bot)
      */
     public ChessGUI(StartGameDTO startGameDTO, PlayerType playerType) {
         io.deeplay.domain.Color currentColor = Converter.convertColor(startGameDTO.getCurrentColor());
@@ -102,6 +101,7 @@ public class ChessGUI extends JFrame implements EndpointUser {
     /**
      * Метод инициализирует графический интерфейс
      */
+    @Override
     public void initialize() {
         setTitle("Chess Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -121,7 +121,7 @@ public class ChessGUI extends JFrame implements EndpointUser {
         currentPlayerLabel.setText("Текущий ход: БЕЛЫЙ");
         add(currentPlayerLabel, BorderLayout.NORTH);
 
-        surrenderButton = new JButton("Сдаться");
+        JButton surrenderButton = new JButton("Сдаться");
         surrenderButton.addActionListener(new SurrenderButtonListener());
         add(surrenderButton, BorderLayout.SOUTH);
 
@@ -221,6 +221,7 @@ public class ChessGUI extends JFrame implements EndpointUser {
         /**
          * Метод вызывает всплывающее окно из класса PromotionOptionPane для того, чтобы пользователь выбрал фигуру
          * для promotion
+         *
          * @return выбранную пользователем фигуру или ошибку
          */
         public static SwitchPieceType getSwitchPieceType() {
@@ -257,9 +258,8 @@ public class ChessGUI extends JFrame implements EndpointUser {
                             try {
                                 Object playerAction = client.startListening();
                                 processClientInfo(playerAction);
-                                System.out.println(playerAction);
                             } catch (NullPointerException e) {
-                                System.out.println("i cant move");
+                                System.out.println("i can't move");
                             }
                         }
 
@@ -291,6 +291,7 @@ public class ChessGUI extends JFrame implements EndpointUser {
     /**
      * Метод ожидает запрос от сервера, а затем вызывает функцию обработки этого запроса.
      */
+    @Override
     public void waitAndUpdate() {
         new Thread(() -> {
             Object playerAction = client.startListening();
@@ -300,6 +301,7 @@ public class ChessGUI extends JFrame implements EndpointUser {
 
     /**
      * Метод обрабатывает входящий запрос от сервера в зависимости от его типа.
+     *
      * @param action входящий запрос в виде объекта
      */
     public void processClientInfo(Object action) {
@@ -321,8 +323,10 @@ public class ChessGUI extends JFrame implements EndpointUser {
     /**
      * Метод обрабатывает конец игры, путем вызова всплывающего окна.
      * При нажатии на "Ок" или крестик - закрывает приложение
+     *
      * @param endGameInfo информация об окончании игры
      */
+    @Override
     public void endGame(List<String> endGameInfo) {
         String gameStates = endGameInfo.get(0);
         String winColor;
@@ -353,24 +357,24 @@ public class ChessGUI extends JFrame implements EndpointUser {
     private void endGameWithError(List<Object> errorGame) {
         Exception exception = (Exception) errorGame.get(0);
         String message = (String) errorGame.get(1);
-        String errorMessage = "Произошла ошибка во время игры: " + message + "\n"
-                + exception.getMessage() + "\nХотите начать новую игру?";
-        int choice = JOptionPane.showConfirmDialog(null, errorMessage,
-                "Ошибка", JOptionPane.YES_NO_OPTION);
+        String errorMessage = "Произошла ошибка во время игры: " + message + "\n" + exception.getMessage();
 
-        if (choice == JOptionPane.YES_OPTION) {
+        JFrame frame = new JFrame("Ошибка");
+        frame.setSize(200, 100);
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            // начать новую игру
-        } else {
-            System.exit(0);
-        }
+        JOptionPane.showMessageDialog(frame, errorMessage, "Ошибка", JOptionPane.ERROR_MESSAGE);
+        System.exit(0);
     }
 
     /**
      * Обновляет GameInfo, вызывает функцию добавления хода в историю,
      * отрисовывает заново доску, передает ход текущему игроку.
+     *
      * @param incomingMove ход противоположного игрока
      */
+    @Override
     public void updateGameInfo(Move incomingMove) {
         gameInfo.move(incomingMove);
         isPlayerMove = true;
@@ -378,15 +382,15 @@ public class ChessGUI extends JFrame implements EndpointUser {
         addToMoveHistory(player.getColor().opposite(), incomingMove.startPosition(), incomingMove.endPosition());
         paintBoard(gameInfo.getCurrentBoard().getBoard());
 
-        System.out.println("I made move in chessGui");
         waitAndUpdate();
     }
 
     /**
      * Добавляет ход в историю
+     *
      * @param color цвет хода
      * @param start начальная позиция
-     * @param end конечная позиция
+     * @param end   конечная позиция
      */
     private void addToMoveHistory(io.deeplay.domain.Color color, Coordinates start, Coordinates end) {
         moveHistoryTextArea.append(" " + color + ": " + start + " -> " + end + "\n");
@@ -394,6 +398,7 @@ public class ChessGUI extends JFrame implements EndpointUser {
 
     /**
      * Отрисовывает начальную доску, задает actionListener для клеток поля
+     *
      * @param board начальная доска
      */
     public void paintInitialBoard(Piece[][] board) {
@@ -450,13 +455,13 @@ public class ChessGUI extends JFrame implements EndpointUser {
                     }
                     chessBoardPanel.add(chessBoardSquares[x][y]);
                 }
-                System.out.println();
             }
         }
     }
 
     /**
      * Отрисовывает текущую доску
+     *
      * @param board текущая доска
      */
     private void paintBoard(Piece[][] board) {
@@ -503,8 +508,9 @@ public class ChessGUI extends JFrame implements EndpointUser {
 
     /**
      * Задает иконки для фигур
+     *
      * @param className название класса фигуры
-     * @param color цвет фигуры
+     * @param color     цвет фигуры
      * @return иконку фигуры
      */
     Icon setIcon(String className, io.deeplay.domain.Color color) {
