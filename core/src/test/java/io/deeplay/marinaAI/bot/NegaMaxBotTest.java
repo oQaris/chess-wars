@@ -10,7 +10,6 @@ import io.deeplay.model.piece.*;
 import io.deeplay.model.player.Bot;
 import io.deeplay.service.GuiUserCommunicationService;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class NegaMaxBotTest {
@@ -64,28 +63,6 @@ class NegaMaxBotTest {
         Board.printBoardOnce(board);
 
         Assertions.assertTrue(GameState.isMate(board, Color.BLACK));
-    }
-
-    @Disabled
-    @Test
-    void testStaleMate() {
-        NegaMaxBot negaMaxBot = new NegaMaxBot(Color.WHITE, 1, new GuiUserCommunicationService());
-        MiniMaxBot enemyBot = new MiniMaxBot(Color.BLACK, 1, new GuiUserCommunicationService());
-        Board board = new Board(getStalemateBoard());
-
-        Board.printBoardOnce(board);
-
-        Move bestMove = negaMaxBot.getMove(board, negaMaxBot.getColor());
-        board.move(bestMove);
-        System.out.println(bestMove);
-        Board.printBoardOnce(board);
-
-        Move randomMove = enemyBot.getMove(board, enemyBot.getColor());
-        board.move(randomMove);
-        System.out.println(randomMove);
-        Board.printBoardOnce(board);
-
-        Assertions.assertTrue(GameState.isStaleMate(board, Color.WHITE));
     }
 
     @Test

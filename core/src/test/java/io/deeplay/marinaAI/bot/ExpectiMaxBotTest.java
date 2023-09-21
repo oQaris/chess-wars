@@ -10,7 +10,6 @@ import io.deeplay.model.piece.*;
 import io.deeplay.model.player.Bot;
 import io.deeplay.service.GuiUserCommunicationService;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class ExpectiMaxBotTest {
@@ -84,28 +83,6 @@ class ExpectiMaxBotTest {
         int evaluationScoreAfterMove = materialStrategy.getMaterialScore(board);
 
         Assertions.assertEquals(Math.abs(evaluationScoreAfterMove - evaluationScoreBeforeMove), 30);
-    }
-
-    @Disabled
-    @Test
-    void testStaleMate() {
-        ExpectiMaxBot expectiMaxBot = new ExpectiMaxBot(Color.WHITE, 1, new GuiUserCommunicationService());
-        MiniMaxBot enemyBot = new MiniMaxBot(Color.BLACK, 1, new GuiUserCommunicationService());
-        Board board = new Board(getStalemateBoard());
-
-        Board.printBoardOnce(board);
-
-        Move bestMove = expectiMaxBot.getMove(board, expectiMaxBot.getColor());
-        board.move(bestMove);
-        System.out.println(bestMove);
-        Board.printBoardOnce(board);
-
-        Move randomMove = enemyBot.getMove(board, enemyBot.getColor());
-        board.move(randomMove);
-        System.out.println(randomMove);
-        Board.printBoardOnce(board);
-
-        Assertions.assertTrue(GameState.isStaleMate(board, Color.WHITE));
     }
 
     private Piece[][] getCheckmateInTwoMovesBoard1() {
