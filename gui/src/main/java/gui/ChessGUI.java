@@ -534,7 +534,7 @@ public class ChessGUI extends JFrame implements EndpointUser {
                 case "Pawn" -> path = PieceColorIcon.BLACK_PAWN.path;
             }
         }
-        Image image = null;
+        Image image;
         try {
             image = ImageIO.read(Objects.requireNonNull(getClass().getResource(path)));
         } catch (IOException e) {

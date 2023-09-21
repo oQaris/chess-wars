@@ -18,7 +18,7 @@ public class GameSession {
     private final Player player1;
     private final Player player2;
     private final List<String> gameEnd = new ArrayList<>();
-    private List<Object> gameError = new ArrayList<>();
+    private final List<Object> gameError = new ArrayList<>();
     @Getter
     private final GameType gameType;
     @Getter
@@ -80,7 +80,6 @@ public class GameSession {
         Move move;
         List<String> gameEndList;
         List<Object> gameErrorList;
-        List<Object> d = getKingError();
 
         try {
             move = getMove(playerWhoMoves, currentColor);

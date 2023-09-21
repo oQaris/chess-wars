@@ -25,23 +25,13 @@ public class ExpectiMaxBot extends Bot {
     private static final int MAX_DEPTH = 3;
 
     /**
-     * Цвет, за который играет бот и старается максимизировать.
-     */
-    private final Color maximizingColor;
-
-    /**
      * Стратегия, используемая ботом для оценки доски.
      */
     private Strategy strategy;
 
     public ExpectiMaxBot(Color color, int difficultyLevel, IUserCommunication iUserCommunication) {
         super(color, difficultyLevel, iUserCommunication);
-        maximizingColor = color;
-        strategy = new MaterialStrategy(maximizingColor);
-    }
-
-    public void setStrategy(Strategy strategy) {
-        this.strategy = strategy;
+        strategy = new MaterialStrategy(color);
     }
 
     @Override
