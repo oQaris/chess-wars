@@ -122,7 +122,6 @@ public class ClientHandler implements Runnable {
             } catch (NullPointerException e2) {
                 try {
                     ErrorResponseDTO errorResponseDTO = DeserializationService.convertJsonToErrorResponseDTO(json);
-                    System.out.println(errorResponseDTO);
 
                     return Converter.convertErrorResponseDTOToList(errorResponseDTO);
                 } catch (NullPointerException e3) {

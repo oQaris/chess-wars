@@ -19,7 +19,7 @@ import java.util.List;
 
 @Slf4j
 public class GameState {
-    public static List<Object> errorList = new ArrayList<>();
+    static List<Object> errorList = new ArrayList<>();
 
     public static List<Object> getErrorList() {
         return errorList;

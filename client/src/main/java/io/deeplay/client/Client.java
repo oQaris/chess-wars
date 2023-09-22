@@ -30,7 +30,8 @@ public class Client {
      * Метод подключается к серверу по заданному хосту и порту. Затем отправляет запрос на начало игры серверу.
      */
     public void connectToServer() {
-        try (Socket socket = new Socket(HOST, PORT)) {
+        try {
+            Socket socket = new Socket(HOST, PORT);
             logger.info("Клиент подключился к серверу");
             System.out.println("Connected to server");
 

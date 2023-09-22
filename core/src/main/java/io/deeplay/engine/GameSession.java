@@ -77,18 +77,14 @@ public class GameSession {
     }
 
     public void getEvent(Player playerWhoMoves, Color currentColor) {
-        Move move;
-        List<String> gameEndList;
-        List<Object> gameErrorList;
-
         try {
-            move = getMove(playerWhoMoves, currentColor);
+            Move move = getMove(playerWhoMoves, currentColor);
 
             sendMove(move);
             gameInfo.move(move);
         } catch (IllegalStateException e1) {
             try {
-                gameEndList = getEndGame(currentColor);
+                List<String> gameEndList = getEndGame(currentColor);
 
                 gameEnd.add(0, gameEndList.get(0));
                 gameEnd.add(1, gameEndList.get(1));
@@ -96,7 +92,7 @@ public class GameSession {
                 endGame("SURRENDER, " + gameEndList.get(1) + "won");
             } catch (IllegalArgumentException e2) {
                 try {
-                    gameErrorList = getError();
+                    List<Object> gameErrorList = getError();
 
                     gameError.add(0, gameErrorList.get(0));
                     gameError.add(1, gameErrorList.get(1));
@@ -198,15 +194,6 @@ public class GameSession {
      */
     public String getGameEnd() {
         return gameEnd.toString();
-    }
-
-    /**
-     * Метод возвращает список объектов, содержащий информацию об ошибках короля.
-     *
-     * @return список объектов, содержащий информацию об ошибках короля
-     */
-    public List<Object> getKingError() {
-        return GameState.getErrorList();
     }
 
     /**

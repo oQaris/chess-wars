@@ -14,9 +14,9 @@ public class MiniMaxMain {
     public static void main(String[] args) {
         System.setOut(new java.io.PrintStream(System.out, true, StandardCharsets.UTF_8));
         ArrayList<String> statistics = new ArrayList<>();
-        Color minimaxColor = Color.WHITE;
+        Color minimaxColor = Color.BLACK;
 
-        int gameCount = 2;
+        int gameCount = 1;
 
         for (int i = 0; i < gameCount; i++) {
             GameSession gameSession = new GameSession(
